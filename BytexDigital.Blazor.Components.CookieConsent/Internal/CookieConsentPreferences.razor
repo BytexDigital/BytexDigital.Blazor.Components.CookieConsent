@@ -1,0 +1,48 @@
+﻿@namespace BytexDigital.Blazor.Components.CookieConsent.Internal
+
+<div class="cc:fixed cc:top-0 cc:left-0 cc:w-full cc:h-screen cc:text-bluegray-700 cc:animate-fade-in cc:flex cc:items-center cc:justify-center cc:bg-coolgray-800 cc:bg-opacity-75" style="z-index: 1001;">
+    <div class="cc:max-w-xl cc:bg-white cc:rounded-md cc:filter cc:drop-shadow-2xl cc:animate-fade-move-in">
+
+        <div class="cc:px-7 cc:py-4 cc:border-b cc:border-gray-100 cc:flex cc:justify-between cc:items-center">
+            <h1 class="cc:text-xl cc:text-bluegray-700 cc:font-bold">
+                @Options.Value.SettingsTitleText.GetLocalization(CultureCode, Options.Value.DefaultLocalizationCode)
+            </h1>
+
+            <button @onclick="async () => await Close.InvokeAsync(false)" class="cc:block cc:p-2 cc:rounded-md cc:bg-gray-100 cc:text-bluegray-700 cc:text-sm cc:font-semibold hover:cc:bg-gray-200 hover:cc:text-bluegray-900 cc:transition-all cc:duration-100 cc:ease-in-out">
+                <svg xmlns="http://www.w3.org/2000/svg" class="cc:h-5 cc:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="cc:px-7 cc:py-4 cc:overflow-y-auto cc:max-h-96">
+            <p class="cc:text-sm">
+                @Options.Value.SettingsDescriptionText.GetLocalization(CultureCode, Options.Value.DefaultLocalizationCode)
+            </p>
+
+            <div class="cc:mt-2">
+                <a class="cc:text-sm cc:border-b cc:border-bluegray-700 hover:cc:border-transparent hover:cc:text-blue-500 cc:transition-all cc:duration-100 cc:ease-in-out" href="@Options.Value.PolicyUrl" target="_blank">@Options.Value.ShowPolicyText.GetLocalization(CultureCode, Options.Value.DefaultLocalizationCode)</a>
+            </div>
+
+            <div class="cc:mt-5 cc:space-y-2">
+                @foreach (var category in Options.Value.Categories)
+                {
+                    <CookieConsentSettingsCategory Category="category" Selected="AcceptedCategories.Contains(category.Identifier)" SelectedChanged="(val) => SelectedChanged(category, val)" />
+                }
+            </div>
+        </div>
+
+        <div class="cc:px-7 cc:py-4 cc:flex cc:justify-between cc:border-t cc:border-gray-100">
+            <button @onclick="AllowSelectedAsync" class="cc:block cc:p-3 cc:px-5  cc:rounded-md cc:bg-gray-200 cc:text-bluegray-700 cc:text-sm cc:font-semibold hover:cc:bg-gray-300 hover:cc:text-bluegray-900 cc:transition-all cc:duration-100 cc:ease-in-out">
+                @Options.Value.SettingsContinueWithSelectedPreferencesText.GetLocalization(CultureCode, Options.Value.DefaultLocalizationCode)
+            </button>
+
+            <div class="cc:flex cc:space-x-2">
+                <button @onclick="AllowAllAsync" class="cc:block cc:p-3 cc:px-5 cc:rounded-md cc:bg-bluegray-800 cc:text-white cc:text-sm cc:font-semibold hover:cc:bg-bluegray-900 cc:transition-all cc:duration-100 cc:ease-in-out">
+                    @Options.Value.ConsentAcceptAllText.GetLocalization(CultureCode, Options.Value.DefaultLocalizationCode)
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+

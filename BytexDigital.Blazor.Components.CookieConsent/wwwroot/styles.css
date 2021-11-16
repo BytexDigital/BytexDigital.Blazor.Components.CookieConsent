@@ -1,0 +1,13 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    input:checked.cc\:switch ~ .cc\:dot {
+        transform: translateX(150%);
+    }
+
+    input:checked.cc\:switch ~ .cc\:dot-background {
+        @apply cc:bg-coolgray-700;
+    }
+}

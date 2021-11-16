@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+	</PropertyGroup>
+
+
+	<ItemGroup>
+		<SupportedPlatform Include="browser" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0" />
+	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="npm run all" />
+	</Target>
+</Project>
