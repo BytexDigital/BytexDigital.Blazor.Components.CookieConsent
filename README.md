@@ -103,6 +103,8 @@ builder.Services.AddCookieConsent(o =>
 ## Localization
 For now, localization is done entirely inside the configuration of the services as seen in the example above. The library ships with default texts in English and German.
 
+The library uses the current `CurrentCulture` by default. Blazor's `.AddLocalization(..)` will automatically set the current culture. We aim at adding proper support for `IStringLocalizer` aswell, so that all localization can be done inside resource files instead.
+
 <br />
 
 ## Available ways to hide/show content based on cookie preferences
@@ -116,13 +118,13 @@ If you wish to use services like Google Analytics, you can integrate them with t
 The result should look like so:
 ```html
 <script type="text/plain" data-consent-category="google">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-ga('create', 'UA-XXXXX-Y', 'auto');
-ga('send', 'pageview');
+    ga('create', 'UA-XXXXX-Y', 'auto');
+    ga('send', 'pageview');
 </script>
 ```
 
@@ -162,4 +164,14 @@ Defining something custom to render can be done the following way. It's a good i
         <button @onclick="async () => await Component.AcceptRequiredAsync()">Show it!</button>
     </NotAllowed>
 </CookieConsentCheck>
+```
+
+<br/>
+
+## Manually open the preferences modal
+
+Call the following method to show the preferences menu. This could be done from an element inside your footer for example.
+
+```csharp
+CookieConsentService.ShowSettingsModalAsync();
 ```
