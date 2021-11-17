@@ -11,12 +11,12 @@
 
 ## How to install
 ```ps1
-Install-Package BytexDigital.Blazor.Components.Appear
+Install-Package BytexDigital.Blazor.Components.CookieConsent
 ```
 
 <br />
 
-## Configure in your project
+### Configure in your project
 Add the `CookieConsentHandler` your App.razor, wrapping around the `Router` component, like so:
 
 ```html
@@ -35,6 +35,14 @@ Add the `CookieConsentHandler` your App.razor, wrapping around the `Router` comp
     </Router> 
 </BytexDigital.Blazor.Components.CookieConsent.CookieConsentHandler>
 ```
+
+<br />
+
+Add the following css include to your index.html/_Host.cshtml file.
+```html
+<link href="_content/BytexDigital.Blazor.Components.CookieConsent/styles.min.css" rel="stylesheet"  />
+```
+
 <br />
 Add the required services in your Program.cs/Startup.cs. For example:
 
