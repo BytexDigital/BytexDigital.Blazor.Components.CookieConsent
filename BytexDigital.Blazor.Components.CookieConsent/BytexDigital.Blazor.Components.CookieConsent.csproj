@@ -17,6 +17,7 @@
 		<IsPublishable>True</IsPublishable>
 		<SignAssembly>False</SignAssembly>
 		<PackageProjectUrl>https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent</PackageProjectUrl>
+		<PackageIcon>logo_squared_128.png</PackageIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -26,7 +27,7 @@
 		</None>
 		<None Include="..\logo_squared_128.png">
 			<Pack>True</Pack>
-			<PackagePath></PackagePath>
+			<PackagePath>\</PackagePath>
 		</None>
 	</ItemGroup>
 	

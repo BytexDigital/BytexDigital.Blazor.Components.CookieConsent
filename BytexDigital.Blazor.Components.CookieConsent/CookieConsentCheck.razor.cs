@@ -92,6 +92,13 @@ namespace BytexDigital.Blazor.Components.CookieConsent
 
         private async Task EvaluateStateAsync(CookiePreferences preferences = null)
         {
+            // If the user hasn't given permission the the newest cookie policy, we should not display anything.
+            if (!await CookieConsentService.IsCurrentRevisionAcceptedAsync())
+            {
+                IsAllowed = false;
+                return;
+            }
+
             preferences ??= await CookieConsentService.GetPreferencesAsync();
 
             IsAllowed = preferences.AllowedCategories.Contains(RequiredCategory);

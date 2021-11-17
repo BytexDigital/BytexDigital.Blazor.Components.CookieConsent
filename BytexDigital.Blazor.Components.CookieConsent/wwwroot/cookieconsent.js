@@ -21,9 +21,15 @@
             if (!requiredCategory) return;
 
             if (categories.includes(requiredCategory)) {
-                var clonedElement = element.cloneNode(true);
+                let clonedElement = element.cloneNode(true);
 
-                clonedElement.setAttribute("type", "text/javascript")
+                let targetType = element.getAttribute("data-consent-targetType");
+
+                if (!targetType) {
+                    clonedElement.setAttribute("type", "text/javascript");
+                } else {
+                    clonedElement.setAttribute("type", targetType);
+                }
 
                 element.parentElement.insertBefore(clonedElement, element.nextSibling);
                 element.remove();
