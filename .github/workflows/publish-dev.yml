@@ -23,7 +23,8 @@ jobs:
         uses: actions/checkout@master
 
       - name: Restore NPM packages
-        run: npm install ./BytexDigital.Blazor.Components.CookieConsent/package.json
+        working-directory: ./BytexDigital.Blazor.Components.CookieConsent
+        run: npm install
 
       - name: Build project
         run: dotnet build -c Release -p:VersionSuffix=development.$(date +%s)
