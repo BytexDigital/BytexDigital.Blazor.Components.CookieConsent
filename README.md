@@ -7,10 +7,14 @@
 <img src=".github/resources/2.png">
 </div>
 
+<br />
+
 ## How to install
 ```ps1
 Install-Package BytexDigital.Blazor.Components.Appear
 ```
+
+<br />
 
 ## Configure in your project
 Add the `CookieConsentHandler` your App.razor, wrapping around the `Router` component, like so:
@@ -94,6 +98,8 @@ builder.Services.AddCookieConsent(o =>
 });
 ```
 
+<br />
+
 ## Localization
 For now, localization is done entirely inside the configuration of the services as seen in the example above. The library ships with default texts in English and German.
 
@@ -122,6 +128,8 @@ ga('send', 'pageview');
 
 This Google Analytics script will only load if given permission.
 
+<br />
+
 ### `CookieConsentCheck` component
 You can use the prebuilt component to show content only if given permission in a category. This can be useful for displaying iframes, for example Google Maps or YouTube videos:
 
@@ -135,9 +143,13 @@ You can use the prebuilt component to show content only if given permission in a
 
 You can customize what this component will render when the given `RequiredCategory` is not allowed by defining a `NotAllowed` tag. By default, the component will render this:
 
-<div align="center" style="padding-top: 3rem; padding-bottom: 5rem;">
+<br />
+
+<div align="center">
 <img src=".github/resources/3.png">
 </div>
+
+<br />
 
 Defining something custom to render can be done the following way. It's a good idea to set the `Context` parameter on the `CookieConsentCheck` component so you can easily access it's properties inside your custom `NotAllowed` block (for example the `Component.Category` property to access the display name of the required category).
 
