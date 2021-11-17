@@ -1,4 +1,4 @@
-name: Publish selected development build
+name: Publish selected production build
 on:
   workflow_dispatch:
 
