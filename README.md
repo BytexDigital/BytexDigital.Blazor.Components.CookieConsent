@@ -44,7 +44,8 @@ Add the following css include to your index.html/_Host.cshtml file.
 ```
 
 <br />
-Add the required services in your Program.cs/Startup.cs. For example:
+
+Add the required services in your Program.cs/Startup.cs and configure cookie categories present in your application. The library implicitly adds a `necessary` (value of constant `CookieCategory.NecessaryCategoryIdentifier`) category. For example:
 
 ```cs
 builder.Services.AddCookieConsent(o =>
