@@ -9,9 +9,15 @@ namespace BytexDigital.Blazor.Components.CookieConsent
 {
     public partial class CookieConsentCheck : IDisposable
     {
+        /// <summary>
+        /// Content that gets rendered if the requirement is not met.
+        /// </summary>
         [Parameter]
         public RenderFragment<CookieConsentCheck> NotAllowed { get; set; }
 
+        /// <summary>
+        /// Content that gets rendered if the requirement is met.
+        /// </summary>
         [Parameter]
         public RenderFragment Allowed { get; set; }
 
@@ -21,14 +27,31 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         [Inject]
         public IOptions<CookieConsentOptions> Options { get; set; }
 
+        /// <summary>
+        /// Identifier of the required category. Must be set OR <see cref="RequiredService"/>.
+        /// </summary>
         [Parameter]
         public string RequiredCategory { get; set; }
 
+        /// <summary>
+        /// Identifier of the required service. Must be set OR <see cref="RequiredCategory"/>.
+        /// </summary>
         [Parameter]
         public string RequiredService { get; set; }
 
+        /// <summary>
+        /// <see cref="CookieCategory"/> object.
+        /// </summary>
         public CookieCategory Category { get; private set; }
+
+        /// <summary>
+        /// <see cref="CookieCategoryService"/> object if met.
+        /// </summary>
         public CookieCategoryService Service { get; private set; }
+
+        /// <summary>
+        /// Indicates if the content is currently showing.
+        /// </summary>
         public bool IsAllowed { get; private set; }
 
         protected override async Task OnInitializedAsync()
@@ -53,6 +76,10 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             await EvaluateStateAsync();
         }
 
+        /// <summary>
+        /// Accepts the required <see cref="RequiredCategory"/> and displays the content.
+        /// </summary>
+        /// <returns></returns>
         public async Task AcceptRequiredAsync()
         {
             await CookieConsentService.AllowCategoryAsync(Category.Identifier);
