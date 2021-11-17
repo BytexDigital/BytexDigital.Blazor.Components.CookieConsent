@@ -27,9 +27,9 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         [Parameter]
         public string RequiredService { get; set; }
 
-        private bool _isAllowed = false;
-        private CookieCategory _requiredCategory = null;
-        private CookieCategoryService _requiredService = null;
+        public CookieCategory Category { get; private set; }
+        public CookieCategoryService Service { get; private set; }
+        public bool IsAllowed { get; private set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -40,22 +40,22 @@ namespace BytexDigital.Blazor.Components.CookieConsent
 
             if (RequiredService != null)
             {
-                _requiredCategory = Options.Value.Categories.FirstOrDefault(x => x.Services.Any(x => x.Identifier == RequiredService));
-                _requiredService = _requiredCategory?.Services.First(x => x.Identifier == RequiredService);
+                Category = Options.Value.Categories.FirstOrDefault(x => x.Services.Any(x => x.Identifier == RequiredService));
+                Service = Category?.Services.First(x => x.Identifier == RequiredService);
             }
             else if (RequiredCategory != null)
             {
-                _requiredCategory = Options.Value.Categories.FirstOrDefault(x => x.Identifier == RequiredCategory);
+                Category = Options.Value.Categories.FirstOrDefault(x => x.Identifier == RequiredCategory);
             }
 
-            if (_requiredCategory == null) throw new Exception($"The required service or category '{RequiredService ?? RequiredCategory}' was not configured.");
-          
+            if (Category == null) throw new Exception($"The required service or category '{RequiredService ?? RequiredCategory}' was not configured.");
+
             await EvaluateStateAsync();
         }
 
         public async Task AcceptRequiredAsync()
         {
-            await CookieConsentService.AllowCategoryAsync(_requiredCategory.Identifier);
+            await CookieConsentService.AllowCategoryAsync(Category.Identifier);
         }
 
         private async void CookieConsentService_CookiePreferencesChanged(object sender, CookiePreferences e)
@@ -67,7 +67,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         {
             preferences ??= await CookieConsentService.GetPreferencesAsync();
 
-            _isAllowed = preferences.AllowedCategories.Contains(RequiredCategory);
+            IsAllowed = preferences.AllowedCategories.Contains(RequiredCategory);
 
             StateHasChanged();
         }

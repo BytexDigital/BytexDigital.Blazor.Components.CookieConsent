@@ -2,7 +2,7 @@
 @using Microsoft.Extensions.Options
 @using System.Globalization
 
-@if (_isAllowed)
+@if (IsAllowed)
 {
     @Allowed
 }
@@ -14,13 +14,13 @@ else
     }
     else
     {
-        <div class="cc:w-full cc:bg-coolgray-100 cc:flex cc:flex-col cc:items-center cc:justify-center cc:p-6">
+        <div class="cc:w-full cc:h-full cc:bg-coolgray-100 cc:flex cc:flex-col cc:items-center cc:justify-center cc:p-6">
             <p class="tw:text-xs cc:text-center">
                 @Options.Value.CheckOptions.Text.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)
             </p>
 
             <p class="tw:text-sm cc:text-center cc:font-semibold cc:mt-2">
-                @_requiredCategory.TitleText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)
+                @Category.TitleText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)
             </p>
 
             <div class="cc:mt-5 cc:flex cc:flex-wrap cc:justify-center cc:gap-5">

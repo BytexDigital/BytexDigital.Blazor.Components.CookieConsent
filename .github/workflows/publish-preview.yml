@@ -1,0 +1,29 @@
+name: Publish selected development build
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: production
+    steps:
+      - name: Setup dotnet tools
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Checkout repository
+        uses: actions/checkout@master
+
+      - name: Build project
+        run: dotnet build -c Release -p:VersionSuffix=development.$(date +%s)
+
+      - name: Push project
+        run: dotnet nuget push **/*.nupkg -s ${{secrets.GH_NUGET_FEED_URL}} -k ${{secrets.GITHUB_TOKEN}} --skip-duplicate

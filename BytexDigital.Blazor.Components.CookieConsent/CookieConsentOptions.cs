@@ -45,8 +45,8 @@ namespace BytexDigital.Blazor.Components.CookieConsent
 
         public Dictionary<string, string> ConsentNecessaryOnlyText { get; set; } = new()
         {
-            ["en"] = "Accept only necessary",
-            ["de"] = "Nur Notwendiges akzeptieren"
+            ["en"] = "Decline",
+            ["de"] = "Ablehnen"
         };
 
         public Dictionary<string, string> ConsentOpenPreferencesText { get; set; } = new()
@@ -112,8 +112,8 @@ namespace BytexDigital.Blazor.Components.CookieConsent
     public class CookieConsentCheckOptions {
         public Dictionary<string, string> Text { get; set; } = new()
         {
-            ["en"] = "This content is hosted by a third party. To show it, we need to adjust your cookie settings for our website. We require your consent for:",
-            ["de"] = "Dieser Inhalt wird von einem externen Anbieter bereitgestellt. Um ihn anzuzeigen, müssen Sie Ihre Cookie-Präferenzen auf unserer Webseite aktualisieren. Wir benötigen Ihre Zustimmung für:"
+            ["en"] = "This content uses cookies that are disallowed by your settings. To show it, we need to adjust your cookie settings for our website. We require your consent for:",
+            ["de"] = "Dieser Inhalt nutzt Cookies, die aktuell nicht erlaubt sind. Um ihn anzuzeigen, müssen Sie Ihre Cookie-Präferenzen auf unserer Webseite aktualisieren. Wir benötigen Ihre Zustimmung für:"
         };
 
         public Dictionary<string, string> AcceptText { get; set; } = new()
