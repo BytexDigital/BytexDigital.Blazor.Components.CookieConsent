@@ -28,7 +28,7 @@
                         <div class="cc:flex cc:space-x-2 cc:mt-2">
                             @if (!Options.Value.ConsentSecondaryActionOpensSettings && !OnlyRequiredCategoriesExist)
                             {
-                                <a @onclick=OpenSettings class="cc:text-xs cc:border-b cc:border-bluegray-700 hover:cc:border-transparent cc:font-semibold hover:cc:text-blue-500 cc:transition-all cc:duration-100 cc:ease-in-out" href="@Options.Value.PolicyUrl">Manage preferences</a>
+                                <a @onclick=OpenSettings class="cc:text-xs cc:border-b cc:border-bluegray-700 hover:cc:border-transparent cc:font-semibold hover:cc:text-blue-500 cc:transition-all cc:duration-100 cc:ease-in-out" href="@Options.Value.PolicyUrl">@Options.Value.ConsentOpenPreferencesText.GetLocalization(CultureCode, Options.Value.DefaultLocalizationCode)</a>
                             }
                             <a class="cc:text-xs cc:border-b cc:border-bluegray-700 hover:cc:border-transparent hover:cc:text-blue-500 cc:transition-all cc:duration-100 cc:ease-in-out" href="@Options.Value.PolicyUrl" target="_blank">@Options.Value.ShowPolicyText.GetLocalization(CultureCode, Options.Value.DefaultLocalizationCode)</a>
                         </div>
