@@ -2,39 +2,39 @@
 @using Microsoft.Extensions.Options
 @using System.Globalization
 
-<div class="cc:rounded-md cc:bg-gray-100 cc:text-bluegray-700 cc:text-blugraye-800">
-    <div @onclick="() => Collapsed = !Collapsed" class="cc:w-full cc:p-3 cc:rounded-md hover:cc:bg-gray-200 cc:cursor-pointer">
-        <div class="cc:flex cc:items-center cc:justify-between cc:items-center">
-            <div class="cc:flex">
+<div class="cc-rounded-md cc-bg-gray-100 cc-text-slate-700 cc-text-blugraye-800">
+    <div @onclick="() => Collapsed = !Collapsed" class="cc-w-full cc-p-3 cc-rounded-md hover:cc-bg-gray-200 cc-cursor-pointer">
+        <div class="cc-flex cc-items-center cc-justify-between cc-items-center">
+            <div class="cc-flex">
                 @if (Collapsed)
                 {
-                    <svg xmlns="http://www.w3.org/2000/svg" class="cc:h-5 cc:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="cc-h-5 cc-w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
                 }
                 else
                 {
-                    <svg xmlns="http://www.w3.org/2000/svg" class="cc:h-5 cc:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="cc-h-5 cc-w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
                     </svg>
                 }
 
-                <h5 class="cc:font-semibold cc:text-sm cc:ml-3">@Category.TitleText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)</h5>
+                <h5 class="cc-font-semibold cc-text-sm cc-ml-3">@Category.TitleText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)</h5>
             </div>
             <div>
                 @if (!Category.IsRequired)
                 {
-                    <div class="cc:flex cc:items-center cc:justify-center cc:w-full">
+                    <div class="cc-flex cc-items-center cc-justify-center cc-w-full">
 
-                        <label class="cc:flex cc:items-center cc:cursor-pointer disabled:cc:opacity-50 disabled:cc:bg-red-100">
+                        <label class="cc-flex cc-items-center cc-cursor-pointer disabled:cc-opacity-50 disabled:cc-bg-red-100">
                             <!-- toggle -->
-                        <div class="cc:relative cc:w-12">
+                        <div class="cc-relative cc-w-12">
                                 <!-- input -->
-                            <input type="checkbox" class="cc:sr-only cc:switch" checked="@(Selected ? "checked" : null)" disabled="@(Category.IsRequired ? "disabled" : null)" @onchange="OnChangedAsync">
+                            <input type="checkbox" class="cc-sr-only cc-switch" checked="@(Selected ? "checked" : null)" disabled="@(Category.IsRequired ? "disabled" : null)" @onchange="OnChangedAsync">
                                 <!-- line -->
-                            <div class="cc:block cc:bg-coolgray-300 @(Category.IsRequired ? "cc:opacity-25" : "") cc:dot-background cc:w-full cc:h-6 cc:rounded-full cc:transition"></div>
+                            <div class="cc-block cc-bg-gray-300 @(Category.IsRequired ? "cc-opacity-25" : "") cc-dot-background cc-w-full cc-h-6 cc-rounded-full cc-transition"></div>
                                 <!-- dot -->
-                            <div class="cc:dot cc:absolute cc:left-1 cc:top-1 cc:bg-white cc:w-4 cc:h-4 cc:rounded-full cc:transition"></div>
+                            <div class="cc-dot cc-absolute cc-left-1 cc-top-1 cc-bg-white cc-w-4 cc-h-4 cc-rounded-full cc-transition"></div>
                             </div>
                         </label>
 
@@ -46,28 +46,28 @@
 
     @if (!Collapsed)
     {
-        <div class="cc:text-sm">
-            <div class="cc:p-3 cc:px-4">
+        <div class="cc-text-sm">
+            <div class="cc-p-3 cc-px-4">
                 <p>
                     @Category.DescriptionText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)
                 </p>
 
                 @if (Category.Services != null && Category.Services.Count > 0)
                 {
-                    <h6 class="cc:mt-4 cc:font-bold">@Options.Value.SettingsUsedServicesText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)</h6>
+                    <h6 class="cc-mt-4 cc-font-bold">@Options.Value.SettingsUsedServicesText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)</h6>
 
-                    <div class="cc:mt-2 cc:space-y-1">
+                    <div class="cc-mt-2 cc-space-y-1">
                         @foreach (var service in Category.Services)
                         {
-                            <div class="cc:flex cc:justify-between cc:space-x-3">
+                            <div class="cc-flex cc-justify-between cc-space-x-3">
                                 <div>@service.TitleText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)</div>
                                 <div>
                                     @if (!string.IsNullOrEmpty(service.PolicyUrl))
                                     {
-                                        <a class="cc:text-sm cc:text-bluegray-400 hover:cc:text-blue-500 cc:transition-all cc:duration-100 cc:ease-in-out cc:flex cc:items-center" href="@service.PolicyUrl" target="_blank">
+                                        <a class="cc-text-sm cc-text-slate-400 hover:cc-text-blue-500 cc-transition-all cc-duration-100 cc-ease-in-out cc-flex cc-items-center" href="@service.PolicyUrl" target="_blank">
                                             @service.ShowPolicyText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)
 
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="cc:h-4 cc:w-4 cc:ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="cc-h-4 cc-w-4 cc-ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                             </svg>
                                         </a>

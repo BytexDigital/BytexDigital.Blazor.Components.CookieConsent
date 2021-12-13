@@ -27,11 +27,11 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             {
                 if (new[] { ConsentModalPosition.BottomCenter, ConsentModalPosition.BottomLeft, ConsentModalPosition.BottomRight }.Contains(Options.Value.ConsentModalPosition))
                 {
-                    return "cc:bottom-0 css:left-0";
+                    return "cc-bottom-0 css:left-0";
                 }
                 else
                 {
-                    return "cc:top-0 css:left-0";
+                    return "cc-top-0 css:left-0";
                 }
             }
         }
@@ -42,15 +42,15 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             {
                 if (new[] { ConsentModalPosition.BottomLeft, ConsentModalPosition.TopLeft }.Contains(Options.Value.ConsentModalPosition))
                 {
-                    return "cc:justify-start";
+                    return "cc-justify-start";
                 }
 
                 if (new[] { ConsentModalPosition.BottomRight, ConsentModalPosition.TopRight }.Contains(Options.Value.ConsentModalPosition))
                 {
-                    return "cc:justify-end";
+                    return "cc-justify-end";
                 }
 
-                return "cc:justify-center";
+                return "cc-justify-center";
             }
         }
 
