@@ -2,20 +2,16 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 const colors = require('tailwindcss/colors')
 
 module.exports = {
-    prefix: 'cc:',
-    purge: [
+    prefix: 'cc-',
+    content: [
         './**/*.html',
-        './**/*.razor'
+        './**/*.razor',
+        './**/*.razor.cs'
     ],
-    darkMode: false, // or 'media' or 'class'
     theme: {
         extend: {
             fontFamily: {
                 sans: ['Inter var', ...defaultTheme.fontFamily.sans],
-            },
-            colors: {
-                bluegray: colors.blueGray,
-                coolgray: colors.coolGray
             },
             keyframes: {
                 'fade-out': {

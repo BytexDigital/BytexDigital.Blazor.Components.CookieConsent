@@ -8,6 +8,6 @@
     }
 
     input:checked.cc\:switch ~ .cc\:dot-background {
-        @apply cc:bg-coolgray-700;
+        @apply cc-bg-gray-700;
     }
 }
