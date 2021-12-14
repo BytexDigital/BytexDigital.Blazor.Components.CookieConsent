@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 @layer components {
-    input:checked.cc\:switch ~ .cc\:dot {
+    input:checked.cc-switch ~ .cc-dot {
         transform: translateX(150%);
     }
 
-    input:checked.cc\:switch ~ .cc\:dot-background {
+    input:checked.cc-switch ~ .cc-dot-background {
         @apply cc-bg-gray-700;
     }
 }
