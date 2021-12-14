@@ -93,7 +93,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         };
 
         /// <summary>
-        /// "Managep preferences" text. Used in multiple places.
+        /// "Manage preferences" text. Used in multiple places.
         /// </summary>
         public Dictionary<string, string> ConsentOpenPreferencesText { get; set; } = new()
         {
