@@ -1,5 +1,4 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
-const colors = require('tailwindcss/colors')
+const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
     prefix: 'cc-',
@@ -59,18 +58,7 @@ module.exports = {
             }
         },
     },
-    variants: {
-        extend: {
-            opacity: ['disabled'],
-            backgroundColor: ['disabled'],
-            border: ['hover']
-        }
-    },
     corePlugins: {
         preflight: false,
-    },
-    plugins: [
-        //require('@tailwindcss/forms'),
-        //require('@tailwindcss/typography')
-    ],
+    }
 }
