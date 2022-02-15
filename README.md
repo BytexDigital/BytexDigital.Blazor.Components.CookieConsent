@@ -208,3 +208,15 @@ Call the following method to show the preferences menu. This could be done from 
 ```csharp
 CookieConsentService.ShowSettingsModalAsync();
 ```
+
+# Changelog
+
+## 1.0.6
+
+<details>
+  <summary>Click to expand!</summary>
+  
+   <br /> 
+
+  - Improved support for overwriting of font used
+</details>
