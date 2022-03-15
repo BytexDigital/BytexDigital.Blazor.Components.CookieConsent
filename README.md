@@ -45,7 +45,22 @@ Add the `CookieConsentHandler` your App.razor, wrapping around the `Router` comp
 
 Add the following css include to your index.html/_Host.cshtml file.
 ```html
-<link href="_content/BytexDigital.Blazor.Components.CookieConsent/styles.min.css" rel="stylesheet"  />
+<link rel="stylesheet" href="_content/BytexDigital.Blazor.Components.CookieConsent/styles.min.css" />
+```
+
+<br />
+
+**Installing the font**  
+By default, the components use the following order of fonts
+
+```css
+Inter var, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"
+```
+
+`Inter` is the font used in the screenshots. If you wish the components to use this font, import the inter font by additionally adding the following CSS link:
+
+```html
+<link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
 ```
 
 <br />
@@ -119,6 +134,15 @@ For now, localization is done entirely inside the configuration of the services 
 
 The library uses the current `CurrentCulture` by default. Blazor's `.AddLocalization(..)` will automatically set the current culture. We aim at adding proper support for `IStringLocalizer` aswell, so that all localization can be done inside resource files instead.
 
+## Customizing the font
+To overwrite which font to use, set the following CSS rule:
+
+```css
+.cc-font-overwrite {
+    font-family: "your-font";
+}
+```
+
 <br />
 
 ## Available ways to hide/show content based on cookie preferences
@@ -189,3 +213,16 @@ Call the following method to show the preferences menu. This could be done from 
 ```csharp
 CookieConsentService.ShowSettingsModalAsync();
 ```
+
+# Changelog
+
+## 1.0.6
+
+<details>
+  <summary>Click to expand!</summary>
+  
+   <br /> 
+
+  - Improved support for overwriting of font used
+</details>
+
