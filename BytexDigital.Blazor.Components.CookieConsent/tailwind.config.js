@@ -2,6 +2,7 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
     prefix: 'cc-',
+    important: true,
     content: [
         './**/*.html',
         './**/*.razor',
