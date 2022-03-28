@@ -16,6 +16,11 @@ Install-Package BytexDigital.Blazor.Components.CookieConsent
 
 <br />
 
+### Requirements
+.NET >= 5.0
+
+<br />
+
 ### Configure in your project
 Add the `CookieConsentHandler` your App.razor, wrapping around the `Router` component, like so:
 
@@ -230,3 +235,4 @@ CookieConsentService.ShowSettingsModalAsync();
 
   - Improved support for overwriting of font used
 </details>
+
