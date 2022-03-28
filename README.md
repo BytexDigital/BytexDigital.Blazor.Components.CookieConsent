@@ -2,6 +2,8 @@
     This library offers a simple way to handle GDPR compliant cookie consent concerns in your Blazor WASM/Serverside app.
 </div>
 
+<br />
+
 <div align="center" style="padding-top: 3rem; padding-bottom: 5rem;">
 <img src=".github/resources/1.png">
 <img src=".github/resources/2.png">
@@ -216,7 +218,7 @@ CookieConsentService.ShowSettingsModalAsync();
 
 # Changelog
 
-## 1.0.7
+## 1.0.8
 
 <details>
   <summary>Click to expand!</summary>
