@@ -216,6 +216,16 @@ CookieConsentService.ShowSettingsModalAsync();
 
 # Changelog
 
+## 1.0.7
+
+<details>
+  <summary>Click to expand!</summary>
+  
+   <br /> 
+
+  - Implemented CSS reset to isolate the components of this library from any other CSS influence
+</details>
+
 ## 1.0.6
 
 <details>

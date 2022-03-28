@@ -10,7 +10,7 @@
 
             <button @onclick="async () => await Close.InvokeAsync(false)" class="cc-block cc-p-2 cc-rounded-md cc-bg-gray-100 cc-text-slate-700 cc-text-sm cc-font-semibold hover:cc-bg-gray-200 hover:cc-text-slate-900 cc-transition-all cc-duration-100 cc-ease-in-out">
                 <svg xmlns="http://www.w3.org/2000/svg" class="cc-h-5 cc-w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
             </button>
         </div>
@@ -27,7 +27,7 @@
             <div class="cc-mt-5 cc-space-y-2">
                 @foreach (var category in Options.Value.Categories)
                 {
-                    <CookieConsentSettingsCategory Category="category" Selected="AcceptedCategories.Contains(category.Identifier)" SelectedChanged="(val) => SelectedChanged(category, val)" />
+                    <CookieConsentSettingsCategory @key="category.Identifier" Category="category" Selected="AcceptedCategories.Contains(category.Identifier)" SelectedChanged="(val) => SelectedChanged(category, val)"/>
                 }
             </div>
         </div>
