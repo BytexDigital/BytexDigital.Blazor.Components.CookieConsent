@@ -19,7 +19,7 @@
                     </svg>
                 }
 
-                <h5 class="cc-font-semibold cc-text-sm cc-ml-3">@Category.TitleText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)</h5>
+                <h5 class="cc-font-semibold cc-text-slate-700 cc-text-sm cc-ml-3">@Category.TitleText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)</h5>
             </div>
             <div>
                 @if (!Category.IsRequired)
@@ -54,7 +54,7 @@
 
                 @if (Category.Services != null && Category.Services.Count > 0)
                 {
-                    <h6 class="cc-mt-4 cc-font-bold">@Options.Value.SettingsUsedServicesText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)</h6>
+                    <h6 class="cc-mt-4 cc-text-slate-700 cc-font-bold">@Options.Value.SettingsUsedServicesText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)</h6>
 
                     <div class="cc-mt-2 cc-space-y-1">
                         @foreach (var service in Category.Services)
