@@ -1,9 +1,8 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Options;
-
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Options;
 
 namespace BytexDigital.Blazor.Components.CookieConsent
 {
@@ -25,7 +24,11 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         {
             get
             {
-                if (new[] { ConsentModalPosition.BottomCenter, ConsentModalPosition.BottomLeft, ConsentModalPosition.BottomRight }.Contains(Options.Value.ConsentModalPosition))
+                if (new[]
+                    {
+                        ConsentModalPosition.BottomCenter, ConsentModalPosition.BottomLeft,
+                        ConsentModalPosition.BottomRight
+                    }.Contains(Options.Value.ConsentModalPosition))
                 {
                     return "cc-bottom-0 css:left-0";
                 }
@@ -40,12 +43,14 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         {
             get
             {
-                if (new[] { ConsentModalPosition.BottomLeft, ConsentModalPosition.TopLeft }.Contains(Options.Value.ConsentModalPosition))
+                if (new[] { ConsentModalPosition.BottomLeft, ConsentModalPosition.TopLeft }.Contains(
+                        Options.Value.ConsentModalPosition))
                 {
                     return "cc-justify-start";
                 }
 
-                if (new[] { ConsentModalPosition.BottomRight, ConsentModalPosition.TopRight }.Contains(Options.Value.ConsentModalPosition))
+                if (new[] { ConsentModalPosition.BottomRight, ConsentModalPosition.TopRight }.Contains(
+                        Options.Value.ConsentModalPosition))
                 {
                     return "cc-justify-end";
                 }
@@ -58,6 +63,12 @@ namespace BytexDigital.Blazor.Components.CookieConsent
 
         private bool IsConsentModalLayoutBar => Options.Value.ConsentModalLayout == ConsentModalLayout.Bar;
         private string CultureCode => System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+
+        public void Dispose()
+        {
+            CookieConsentService.OnShowConsentModal -= CookieConsentService_OnShowCookieConsentModal;
+            CookieConsentService.OnShowSettingsModal -= CookieConsentService_OnShowSettingsModal;
+        }
 
         protected override void OnInitialized()
         {
@@ -118,26 +129,22 @@ namespace BytexDigital.Blazor.Components.CookieConsent
 
         private async void CookieConsentService_OnShowSettingsModal(object sender, EventArgs e)
         {
-            await InvokeAsync(() =>
-            {
-                IsShowingSettingsModal = true;
-                StateHasChanged();
-            });
+            await InvokeAsync(
+                () =>
+                {
+                    IsShowingSettingsModal = true;
+                    StateHasChanged();
+                });
         }
 
         private async void CookieConsentService_OnShowCookieConsentModal(object sender, EventArgs e)
         {
-            await InvokeAsync(() =>
-            {
-                IsShowingConsentModal = true;
-                StateHasChanged();
-            });
-        }
-
-        public void Dispose()
-        {
-            CookieConsentService.OnShowConsentModal -= CookieConsentService_OnShowCookieConsentModal;
-            CookieConsentService.OnShowSettingsModal -= CookieConsentService_OnShowSettingsModal;
+            await InvokeAsync(
+                () =>
+                {
+                    IsShowingConsentModal = true;
+                    StateHasChanged();
+                });
         }
     }
 }

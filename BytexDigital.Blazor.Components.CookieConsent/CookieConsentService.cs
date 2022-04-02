@@ -1,24 +1,23 @@
-﻿using Microsoft.Extensions.Options;
-using Microsoft.JSInterop;
-
-using System;
+﻿using System;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
+using Microsoft.JSInterop;
 
 namespace BytexDigital.Blazor.Components.CookieConsent
 {
     public class CookieConsentService
     {
-        private readonly IOptions<CookieConsentOptions> _options;
         private readonly IJSRuntime _jsRuntime;
-
-        public event EventHandler<CookiePreferences> CookiePreferencesChanged;
-        public event EventHandler<EventArgs> OnShowConsentModal;
-        public event EventHandler<EventArgs> OnShowSettingsModal;
+        private readonly IOptions<CookieConsentOptions> _options;
 
         private Task<IJSObjectReference> _module;
-        private Task<IJSObjectReference> Module => _module ??= _jsRuntime.InvokeAsync<IJSObjectReference>("import", new[] { "./_content/BytexDigital.Blazor.Components.CookieConsent/cookieconsent.js" }).AsTask();
+
+        private Task<IJSObjectReference> Module => _module ??= _jsRuntime.InvokeAsync<IJSObjectReference>(
+                "import",
+                new[] { "./_content/BytexDigital.Blazor.Components.CookieConsent/cookieconsent.js" })
+            .AsTask();
 
         public CookieConsentService(IOptions<CookieConsentOptions> options, IJSRuntime jsRuntime)
         {
@@ -26,16 +25,23 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             _jsRuntime = jsRuntime;
         }
 
+        public event EventHandler<CookiePreferences> CookiePreferencesChanged;
+        public event EventHandler<EventArgs> OnShowConsentModal;
+        public event EventHandler<EventArgs> OnShowSettingsModal;
+
         public async Task ShowConsentModalAsync(bool showOnlyIfNecessary)
         {
-            if (showOnlyIfNecessary && await IsCurrentRevisionAcceptedAsync()) return;
+            if (showOnlyIfNecessary && await IsCurrentRevisionAcceptedAsync())
+            {
+                return;
+            }
 
-            await Task.Run(() => OnShowConsentModal?.Invoke(this, new EventArgs()));
+            await Task.Run(() => OnShowConsentModal?.Invoke(this, EventArgs.Empty));
         }
 
         public async Task ShowSettingsModalAsync()
         {
-            await Task.Run(() => OnShowSettingsModal?.Invoke(this, new EventArgs()));
+            await Task.Run(() => OnShowSettingsModal?.Invoke(this, EventArgs.Empty));
         }
 
         public async Task SavePreferencesAsync(CookiePreferences cookiePreferences)
@@ -43,8 +49,15 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             var existingPreferences = await GetPreferencesAsync();
 
             var module = await Module;
-            await module.InvokeVoidAsync("CookieConsent.SetCookie", CreateCookieString(JsonSerializer.Serialize(cookiePreferences)));
-            await module.InvokeVoidAsync("CookieConsent.ApplyPreferences", cookiePreferences.AllowedCategories, cookiePreferences.AllowedServices);
+
+            await module.InvokeVoidAsync(
+                "CookieConsent.SetCookie",
+                CreateCookieString(JsonSerializer.Serialize(cookiePreferences)));
+
+            await module.InvokeVoidAsync(
+                "CookieConsent.ApplyPreferences",
+                cookiePreferences.AllowedCategories,
+                cookiePreferences.AllowedServices);
 
             if (!existingPreferences.Equals(cookiePreferences))
             {
@@ -54,22 +67,31 @@ namespace BytexDigital.Blazor.Components.CookieConsent
 
         public async Task SavePreferencesNecessaryOnlyAsync()
         {
-            await SavePreferencesAsync(new CookiePreferences
-            {
-                AcceptedRevision = _options.Value.Revision,
-                AllowedCategories = _options.Value.Categories.Where(x => x.IsRequired).Select(x => x.Identifier).ToArray(),
-                AllowedServices = _options.Value.Categories.Where(x => x.IsRequired).SelectMany(x => x.Services).Select(x => x.Identifier).ToArray()
-            });
+            await SavePreferencesAsync(
+                new CookiePreferences
+                {
+                    AcceptedRevision = _options.Value.Revision,
+                    AllowedCategories = _options.Value.Categories.Where(x => x.IsRequired)
+                        .Select(x => x.Identifier)
+                        .ToArray(),
+                    AllowedServices = _options.Value.Categories.Where(x => x.IsRequired)
+                        .SelectMany(x => x.Services)
+                        .Select(x => x.Identifier)
+                        .ToArray()
+                });
         }
 
         public async Task SavePreferencesAcceptAllAsync()
         {
-            await SavePreferencesAsync(new CookiePreferences
-            {
-                AcceptedRevision = _options.Value.Revision,
-                AllowedCategories = _options.Value.Categories.Select(x => x.Identifier).ToArray(),
-                AllowedServices = _options.Value.Categories.SelectMany(x => x.Services).Select(x => x.Identifier).ToArray()
-            });
+            await SavePreferencesAsync(
+                new CookiePreferences
+                {
+                    AcceptedRevision = _options.Value.Revision,
+                    AllowedCategories = _options.Value.Categories.Select(x => x.Identifier).ToArray(),
+                    AllowedServices = _options.Value.Categories.SelectMany(x => x.Services)
+                        .Select(x => x.Identifier)
+                        .ToArray()
+                });
         }
 
         public async Task<CookiePreferences> GetPreferencesAsync()
@@ -77,7 +99,9 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             try
             {
                 var module = await Module;
-                var cookieValue = await module.InvokeAsync<string>("CookieConsent.ReadCookie", _options.Value.CookieOptions.CookieName);
+                var cookieValue = await module.InvokeAsync<string>(
+                    "CookieConsent.ReadCookie",
+                    _options.Value.CookieOptions.CookieName);
 
                 return JsonSerializer.Deserialize<CookiePreferences>(cookieValue);
             }
@@ -126,7 +150,10 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             await SavePreferencesAsync(preferences);
         }
 
-        public async Task<bool> IsCurrentRevisionAcceptedAsync() => (await GetPreferencesAsync()).AcceptedRevision == _options.Value.Revision;
+        public async Task<bool> IsCurrentRevisionAcceptedAsync()
+        {
+            return (await GetPreferencesAsync()).AcceptedRevision == _options.Value.Revision;
+        }
 
         public async Task NotifyPageLoadedAsync()
         {
@@ -137,21 +164,48 @@ namespace BytexDigital.Blazor.Components.CookieConsent
                 await Task.Run(() => CookiePreferencesChanged?.Invoke(this, preferences));
 
                 var module = await Module;
-                await module.InvokeVoidAsync("CookieConsent.ApplyPreferences", preferences.AllowedCategories, preferences.AllowedServices);
+
+                await module.InvokeVoidAsync(
+                    "CookieConsent.ApplyPreferences",
+                    preferences.AllowedCategories,
+                    preferences.AllowedServices);
             }
         }
 
         protected virtual string CreateCookieString(string value)
         {
-            string cookieString = $"{_options.Value.CookieOptions.CookieName}={value}";
+            var cookieString = $"{_options.Value.CookieOptions.CookieName}={value}";
             cookieString += $"; samesite={_options.Value.CookieOptions.CookieSameSite}";
 
-            if (_options.Value.CookieOptions.CookieMaxAge != default) cookieString += $"; max-age={(int)_options.Value.CookieOptions.CookieMaxAge.Value.TotalSeconds}";
-            if (!string.IsNullOrEmpty(_options.Value.CookieOptions.CookieDomain)) cookieString += $"; domain={_options.Value.CookieOptions.CookieDomain}";
-            if (!string.IsNullOrEmpty(_options.Value.CookieOptions.CookiePath)) cookieString += $"; path={_options.Value.CookieOptions.CookiePath}";
-            if (_options.Value.CookieOptions.CookieHttpOnly) cookieString += "; HttpOnly";
-            if (_options.Value.CookieOptions.CookieSecure) cookieString += "; Secure";
-            if (_options.Value.CookieOptions.CookieExpires != default) cookieString += $"; expires={_options.Value.CookieOptions.CookieExpires.Value:r}";
+            if (_options.Value.CookieOptions.CookieMaxAge != default)
+            {
+                cookieString += $"; max-age={(int) _options.Value.CookieOptions.CookieMaxAge.Value.TotalSeconds}";
+            }
+
+            if (!string.IsNullOrEmpty(_options.Value.CookieOptions.CookieDomain))
+            {
+                cookieString += $"; domain={_options.Value.CookieOptions.CookieDomain}";
+            }
+
+            if (!string.IsNullOrEmpty(_options.Value.CookieOptions.CookiePath))
+            {
+                cookieString += $"; path={_options.Value.CookieOptions.CookiePath}";
+            }
+
+            if (_options.Value.CookieOptions.CookieHttpOnly)
+            {
+                cookieString += "; HttpOnly";
+            }
+
+            if (_options.Value.CookieOptions.CookieSecure)
+            {
+                cookieString += "; Secure";
+            }
+
+            if (_options.Value.CookieOptions.CookieExpires != default)
+            {
+                cookieString += $"; expires={_options.Value.CookieOptions.CookieExpires.Value:r}";
+            }
 
             return cookieString;
         }

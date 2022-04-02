@@ -1,9 +1,8 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Options;
-
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Options;
 
 namespace BytexDigital.Blazor.Components.CookieConsent
 {
@@ -54,16 +53,30 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         /// </summary>
         public bool IsAllowed { get; private set; }
 
+        public void Dispose()
+        {
+            CookieConsentService.CookiePreferencesChanged -= CookieConsentService_CookiePreferencesChanged;
+        }
+
         protected override async Task OnInitializedAsync()
         {
-            if (Allowed == null) throw new InvalidOperationException($"The '{nameof(Allowed)}' parameter has to be specified.");
-            if (RequiredCategory == null && RequiredService == null) throw new InvalidOperationException($"Either '{nameof(RequiredCategory)}' or '{nameof(RequiredService)}' has to be specified.");
+            if (Allowed == null)
+            {
+                throw new InvalidOperationException($"The '{nameof(Allowed)}' parameter has to be specified.");
+            }
+
+            if (RequiredCategory == null && RequiredService == null)
+            {
+                throw new InvalidOperationException(
+                    $"Either '{nameof(RequiredCategory)}' or '{nameof(RequiredService)}' has to be specified.");
+            }
 
             CookieConsentService.CookiePreferencesChanged += CookieConsentService_CookiePreferencesChanged;
 
             if (RequiredService != null)
             {
-                Category = Options.Value.Categories.FirstOrDefault(x => x.Services.Any(x => x.Identifier == RequiredService));
+                Category = Options.Value.Categories.FirstOrDefault(
+                    x => x.Services.Any(x => x.Identifier == RequiredService));
                 Service = Category?.Services.First(x => x.Identifier == RequiredService);
             }
             else if (RequiredCategory != null)
@@ -71,7 +84,11 @@ namespace BytexDigital.Blazor.Components.CookieConsent
                 Category = Options.Value.Categories.FirstOrDefault(x => x.Identifier == RequiredCategory);
             }
 
-            if (Category == null) throw new Exception($"The required service or category '{RequiredService ?? RequiredCategory}' was not configured.");
+            if (Category == null)
+            {
+                throw new Exception(
+                    $"The required service or category '{RequiredService ?? RequiredCategory}' was not configured.");
+            }
 
             await EvaluateStateAsync();
         }
@@ -104,11 +121,6 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             IsAllowed = preferences.AllowedCategories.Contains(RequiredCategory);
 
             StateHasChanged();
-        }
-
-        public void Dispose()
-        {
-            CookieConsentService.CookiePreferencesChanged -= CookieConsentService_CookiePreferencesChanged;
         }
     }
 }
