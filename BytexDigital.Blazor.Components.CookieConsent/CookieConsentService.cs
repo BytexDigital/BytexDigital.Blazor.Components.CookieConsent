@@ -145,6 +145,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             newCategories.RemoveAll(x => x == category.Identifier);
             newServices.RemoveAll(x => category.Services.Select(x => x.Identifier).Contains(x));
 
+            preferences.AcceptedRevision = _options.Value.Revision;
             preferences.AllowedCategories = newCategories.ToArray();
             preferences.AllowedServices = newServices.ToArray();
 
