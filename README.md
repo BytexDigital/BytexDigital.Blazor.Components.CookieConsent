@@ -218,7 +218,17 @@ CookieConsentService.ShowSettingsModalAsync();
 
 # Changelog
 
-## 1.0.8
+## 1.0.10
+
+<details>
+  <summary>Click to expand!</summary>
+  
+   <br /> 
+
+  - Applied fix from PR #8
+</details>
+
+## 1.0.9
 
 <details>
   <summary>Click to expand!</summary>
