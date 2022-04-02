@@ -103,6 +103,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             newCategories.Add(category.Identifier);
             newServices.AddRange(category.Services.Select(x => x.Identifier));
 
+            preferences.AcceptedRevision = _options.Value.Revision;
             preferences.AllowedCategories = newCategories.Distinct().ToArray();
             preferences.AllowedServices = newServices.Distinct().ToArray();
 
