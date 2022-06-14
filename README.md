@@ -155,6 +155,9 @@ If you wish to use services like Google Analytics, you can integrate them with t
 2. Add the attribute `data-consent-category="IDENTIFIER"`.
 3. Replace `IDENTIFIER` with the Identifier given to a configured category. In the example given earlier, this could be `google`.
 
+> ***Blazor Server* Important note:**
+> It appears as though when using Blazor Server, Javascript-tags require the `defer="true"` attribute to be set so that the script tag is not removed by Blazor upon load ([view issue](https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent/issues/9#issue-1269307707)).
+
 The result should look like so:
 ```html
 <script type="text/plain" data-consent-category="google">
