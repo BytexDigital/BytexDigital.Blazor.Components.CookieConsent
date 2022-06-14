@@ -13,26 +13,41 @@
     },
 
     ApplyPreferences: function (categories, services) {
-        let activatableScriptTags = document.querySelectorAll("script[type='text/plain']");
+        const activatableScriptTags = document.querySelectorAll("script[type='text/plain']");
 
-        activatableScriptTags.forEach(element => {
-            let requiredCategory = element.getAttribute("data-consent-category");
+        activatableScriptTags.forEach(originalScriptElement => {
+            const requiredCategory = originalScriptElement.getAttribute("data-consent-category");
 
             if (!requiredCategory) return;
 
             if (categories.includes(requiredCategory)) {
-                let clonedElement = element.cloneNode(true);
+                originalScriptElement.type = "text/javascript";
+                originalScriptElement.removeAttribute("data-consent-category");
 
-                let targetType = element.getAttribute("data-consent-targetType");
+                const sourceUri = originalScriptElement.getAttribute("data-src");
 
-                if (!targetType) {
-                    clonedElement.setAttribute("type", "text/javascript");
-                } else {
-                    clonedElement.setAttribute("type", targetType);
+                if (sourceUri) {
+                    originalScriptElement.removeAttribute("data-src");
                 }
 
-                element.parentElement.insertBefore(clonedElement, element.nextSibling);
-                element.remove();
+                const newScriptElement = document.createElement("script");
+                newScriptElement.textContent = originalScriptElement.innerHTML;
+
+                const sourceAttributes = originalScriptElement.attributes;
+
+                for (let i = 0; i < sourceAttributes.length; i++) {
+                    const attributeName = sourceAttributes[i].nodeName;
+
+                    newScriptElement.setAttribute(
+                        attributeName,
+                        originalScriptElement[attributeName] || originalScriptElement.getAttribute(attributeName));
+                }
+
+                if (sourceUri) {
+                    newScriptElement.src = sourceUri;
+                }
+
+                originalScriptElement.parentNode.replaceChild(newScriptElement, originalScriptElement);
             }
         });
     }
