@@ -24,10 +24,12 @@
                 originalScriptElement.type = "text/javascript";
                 originalScriptElement.removeAttribute("data-consent-category");
 
-                const sourceUri = originalScriptElement.getAttribute("data-src");
+                let sourceUri = originalScriptElement.getAttribute("data-src");
 
                 if (sourceUri) {
                     originalScriptElement.removeAttribute("data-src");
+                } else {
+                    sourceUri = originalScriptElement.src;
                 }
 
                 const newScriptElement = document.createElement("script");
