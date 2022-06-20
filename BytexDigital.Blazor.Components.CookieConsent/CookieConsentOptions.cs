@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace BytexDigital.Blazor.Components.CookieConsent
@@ -53,7 +53,8 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         public Dictionary<string, string> ConsentTitleText { get; set; } = new()
         {
             ["en"] = "We use cookies",
-            ["de"] = "Wir verwenden Cookies"
+            ["de"] = "Wir verwenden Cookies",
+            ["nl"] = "We gebruiken cookies"
         };
 
         /// <summary>
@@ -62,7 +63,8 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         public Dictionary<string, string> ConsentDescriptionText { get; set; } = new()
         {
             ["en"] = "This website uses cookies to improve your experience.",
-            ["de"] = "Diese Webseite verwendet Cookies, um Ihre Erfahrung zu verbessern."
+            ["de"] = "Diese Webseite verwendet Cookies, um Ihre Erfahrung zu verbessern.",
+            ["nl"] = "Deze website maakt gebruik van cookies om uw ervaring te verbeteren."
         };
 
         /// <summary>
@@ -71,7 +73,8 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         public Dictionary<string, string> ConsentAcceptAllText { get; set; } = new()
         {
             ["en"] = "Accept all",
-            ["de"] = "Alle akzeptieren"
+            ["de"] = "Alle akzeptieren",
+            ["nl"] = "Alles accepteren."
         };
 
         /// <summary>
@@ -80,7 +83,8 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         public Dictionary<string, string> ConsentAcknowledgeText { get; set; } = new()
         {
             ["en"] = "I understand!",
-            ["de"] = "Alles klar!"
+            ["de"] = "Alles klar!",
+            ["nl"] = "Ik begrijp het!"
         };
 
         /// <summary>
@@ -89,7 +93,8 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         public Dictionary<string, string> ConsentNecessaryOnlyText { get; set; } = new()
         {
             ["en"] = "Decline",
-            ["de"] = "Ablehnen"
+            ["de"] = "Ablehnen",
+            ["nl"] = "Afwijzen"
         };
 
         /// <summary>
@@ -98,7 +103,8 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         public Dictionary<string, string> ConsentOpenPreferencesText { get; set; } = new()
         {
             ["en"] = "Manage preferences",
-            ["de"] = "Präferenzen ändern"
+            ["de"] = "Präferenzen ändern",
+            ["nl"] = "Voorkeuren wijzigen"
         };
 
         /// <summary>
@@ -112,7 +118,8 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         public Dictionary<string, string> SettingsTitleText { get; set; } = new()
         {
             ["en"] = "Your cookie preferences",
-            ["de"] = "Ihre Cookie Präferenzen"
+            ["de"] = "Ihre Cookie Präferenzen",
+            ["nl"] = "Uw cookie instellingen"
         };
 
         /// <summary>
@@ -121,7 +128,8 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         public Dictionary<string, string> SettingsDescriptionText { get; set; } = new()
         {
             ["en"] = "We use cookies to ensure basic functionality of the website and to enhance your online experience. For each category, you may choose to opt-in/out whenever you want.",
-            ["de"] = "Wir nutzen Cookies für grundlegende Funktionalitäten unserer Webseite und zum Verbessern Ihrer Nutzererfahrung. Für jede Kategorie können Sie individuell Ihre Zustimmung erteilen."
+            ["de"] = "Wir nutzen Cookies für grundlegende Funktionalitäten unserer Webseite und zum Verbessern Ihrer Nutzererfahrung. Für jede Kategorie können Sie individuell Ihre Zustimmung erteilen.",
+            ["nl"] = "We gebruiken cookies om de basisfunctionaliteit van de website te garanderen en om uw online ervaring te verbeteren. Voor elke categorie kunt u ervoor kiezen om u aan/uit te melden wanneer u maar wilt."
         };
 
         /// <summary>
@@ -130,7 +138,8 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         public Dictionary<string, string> SettingsContinueWithSelectedPreferencesText { get; set; } = new()
         {
             ["en"] = "Save preferences",
-            ["de"] = "Präferenzen anwenden"
+            ["de"] = "Präferenzen anwenden",
+            ["nl"] = "Voorkeuren opslaan"
         };
 
         /// <summary>
@@ -139,7 +148,8 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         public Dictionary<string, string> SettingsUsedServicesText { get; set; } = new()
         {
             ["en"] = "Used services",
-            ["de"] = "Verwendete Dienste"
+            ["de"] = "Verwendete Dienste",
+            ["nl"] = "Gebruikte diensten"
         };
 
         /// <summary>
@@ -148,7 +158,8 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         public Dictionary<string, string> ShowPolicyText { get; set; } = new()
         {
             ["en"] = "Show cookie policy",
-            ["de"] = "Cookie-Richtline anzeigen"
+            ["de"] = "Cookie-Richtline anzeigen",
+            ["nl"] = "Toon cookie beleid"
         };
 
         /// <summary>
@@ -162,26 +173,31 @@ namespace BytexDigital.Blazor.Components.CookieConsent
                 TitleText = new()
                 {
                     ["en"] = "Strictly necessary cookies",
-                    ["de"] = "Umbedingt notwendige Cookies"
+                    ["de"] = "Umbedingt notwendige Cookies",
+                    ["nl"] = "Strict noodzakelijke cookies"
                 },
                 DescriptionText = new()
                 {
                     ["en"] = "These cookies are essential for the proper functioning of this website. They do not contain personal data and are not used to track you.",
-                    ["de"] = "Diese Cookies sind umbedingt notwendig für die Nutzung dieser Webseite. Sie enthalten keine personenbezogenen Daten und werden nicht für Tracking verwendet."
+                    ["de"] = "Diese Cookies sind umbedingt notwendig für die Nutzung dieser Webseite. Sie enthalten keine personenbezogenen Daten und werden nicht für Tracking verwendet.",
+                    ["nl"] = "Deze cookies zijn essentieel voor het goed functioneren van deze website. Ze bevatten geen persoonlijke gegevens en worden niet gebruikt om u te volgen."
+
                 },
                 IsRequired = true
             }
         };
     }
 
-    public class CookieConsentCheckOptions {
+    public class CookieConsentCheckOptions
+    {
         /// <summary>
         /// Text that describes why the content cannot be displayed.
         /// </summary>
         public Dictionary<string, string> Text { get; set; } = new()
         {
             ["en"] = "This content uses cookies that are disallowed by your settings. To show it, we need to adjust your cookie settings for our website. We require your consent for:",
-            ["de"] = "Dieser Inhalt nutzt Cookies, die aktuell nicht erlaubt sind. Um ihn anzuzeigen, müssen Sie Ihre Cookie-Präferenzen auf unserer Webseite aktualisieren. Wir benötigen Ihre Zustimmung für:"
+            ["de"] = "Dieser Inhalt nutzt Cookies, die aktuell nicht erlaubt sind. Um ihn anzuzeigen, müssen Sie Ihre Cookie-Präferenzen auf unserer Webseite aktualisieren. Wir benötigen Ihre Zustimmung für:",
+            ["nl"] = "Deze inhoud maakt gebruik van cookies die niet zijn toegestaan door uw instellingen. Om het te tonen, moeten we uw cookie-instellingen voor onze website aanpassen. Wij hebben uw toestemming nodig voor:"
         };
 
         /// <summary>
@@ -190,7 +206,8 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         public Dictionary<string, string> AcceptText { get; set; } = new()
         {
             ["en"] = "Accept",
-            ["de"] = "Akzeptieren"
+            ["de"] = "Akzeptieren",
+            ["nl"] = "Accepteren"
         };
     }
 
