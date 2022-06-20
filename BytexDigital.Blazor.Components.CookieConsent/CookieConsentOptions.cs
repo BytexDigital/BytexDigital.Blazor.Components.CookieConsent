@@ -54,7 +54,9 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         {
             ["en"] = "We use cookies",
             ["de"] = "Wir verwenden Cookies",
-            ["nl"] = "We gebruiken cookies"
+            ["nl"] = "We gebruiken cookies",
+            ["es"] = "Nosotras usamos cookies",
+            ["fr"] = "On utilises des cookies"
         };
 
         /// <summary>
@@ -64,7 +66,9 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         {
             ["en"] = "This website uses cookies to improve your experience.",
             ["de"] = "Diese Webseite verwendet Cookies, um Ihre Erfahrung zu verbessern.",
-            ["nl"] = "Deze website maakt gebruik van cookies om uw ervaring te verbeteren."
+            ["nl"] = "Deze website maakt gebruik van cookies om uw ervaring te verbeteren.",
+            ["es"] = "Este sitio web utiliza cookies para una mejor experiencia.",
+            ["fr"] = "Ce site web utilice des cookies pour améliorer votre visite."
         };
 
         /// <summary>
@@ -74,7 +78,9 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         {
             ["en"] = "Accept all",
             ["de"] = "Alle akzeptieren",
-            ["nl"] = "Alles accepteren."
+            ["nl"] = "Alles accepteren.",
+            ["es"] = "Aceptar todas.",
+            ["fr"] = "Tout accepter."
         };
 
         /// <summary>
@@ -84,7 +90,9 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         {
             ["en"] = "I understand!",
             ["de"] = "Alles klar!",
-            ["nl"] = "Ik begrijp het!"
+            ["nl"] = "Ik begrijp het!",
+            ["es"] = "Entiendo!",
+            ["fr"] = "Je comprends!"
         };
 
         /// <summary>
@@ -94,7 +102,9 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         {
             ["en"] = "Decline",
             ["de"] = "Ablehnen",
-            ["nl"] = "Afwijzen"
+            ["nl"] = "Afwijzen",
+            ["es"] = "Rechazar",
+            ["fr"] = "Refuser"
         };
 
         /// <summary>
@@ -104,7 +114,9 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         {
             ["en"] = "Manage preferences",
             ["de"] = "Präferenzen ändern",
-            ["nl"] = "Voorkeuren wijzigen"
+            ["nl"] = "Voorkeuren wijzigen",
+            ["es"] = "Administrar preferencias",
+            ["fr"] = "Gérer les préférences"
         };
 
         /// <summary>
@@ -119,7 +131,9 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         {
             ["en"] = "Your cookie preferences",
             ["de"] = "Ihre Cookie Präferenzen",
-            ["nl"] = "Uw cookie instellingen"
+            ["nl"] = "Uw cookie instellingen",
+            ["es"] = "Sus preferencias de cookies",
+            ["fr"] = "Vos préférences de cookies"
         };
 
         /// <summary>
@@ -129,7 +143,9 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         {
             ["en"] = "We use cookies to ensure basic functionality of the website and to enhance your online experience. For each category, you may choose to opt-in/out whenever you want.",
             ["de"] = "Wir nutzen Cookies für grundlegende Funktionalitäten unserer Webseite und zum Verbessern Ihrer Nutzererfahrung. Für jede Kategorie können Sie individuell Ihre Zustimmung erteilen.",
-            ["nl"] = "We gebruiken cookies om de basisfunctionaliteit van de website te garanderen en om uw online ervaring te verbeteren. Voor elke categorie kunt u ervoor kiezen om u aan/uit te melden wanneer u maar wilt."
+            ["nl"] = "We gebruiken cookies om de basisfunctionaliteit van de website te garanderen en om uw online ervaring te verbeteren. Voor elke categorie kunt u ervoor kiezen om u aan/uit te melden wanneer u maar wilt.",
+            ["es"] = "Utilizamos cookies para garantizar la funcionalidad básica del sitio web y mejorar su experiencia en línea.Para cada categoría, puede optar por participar o excluirse cuando lo desee.",
+            ["fr"] = "Nous utilisons des cookies pour garantir les fonctionnalités de base du site Web et pour améliorer votre expérience en ligne. Pour chaque catégorie, vous pouvez choisir de vous inscrire ou de vous désinscrire quand vous le souhaitez."
         };
 
         /// <summary>
@@ -139,7 +155,9 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         {
             ["en"] = "Save preferences",
             ["de"] = "Präferenzen anwenden",
-            ["nl"] = "Voorkeuren opslaan"
+            ["nl"] = "Voorkeuren opslaan",
+            ["es"] = "Guardar preferencias",
+            ["fr"] = "Sauvegarder mes préférences"
         };
 
         /// <summary>
@@ -149,7 +167,9 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         {
             ["en"] = "Used services",
             ["de"] = "Verwendete Dienste",
-            ["nl"] = "Gebruikte diensten"
+            ["nl"] = "Gebruikte diensten",
+            ["es"] = "Servicios utilizados",
+            ["fr"] = "Services utilisés"
         };
 
         /// <summary>
@@ -159,7 +179,9 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         {
             ["en"] = "Show cookie policy",
             ["de"] = "Cookie-Richtline anzeigen",
-            ["nl"] = "Toon cookie beleid"
+            ["nl"] = "Toon cookie beleid",
+            ["es"] = "Abrir la poliza de cookies",
+            ["fr"] = "Afficher la politique des cookies"
         };
 
         /// <summary>
@@ -174,13 +196,17 @@ namespace BytexDigital.Blazor.Components.CookieConsent
                 {
                     ["en"] = "Strictly necessary cookies",
                     ["de"] = "Umbedingt notwendige Cookies",
-                    ["nl"] = "Strict noodzakelijke cookies"
+                    ["nl"] = "Strict noodzakelijke cookies",
+                    ["es"] = "Cookies estrictamente necesarias",
+                    ["fr"] = "Cookies strictement nécessaires"
                 },
                 DescriptionText = new()
                 {
                     ["en"] = "These cookies are essential for the proper functioning of this website. They do not contain personal data and are not used to track you.",
                     ["de"] = "Diese Cookies sind umbedingt notwendig für die Nutzung dieser Webseite. Sie enthalten keine personenbezogenen Daten und werden nicht für Tracking verwendet.",
-                    ["nl"] = "Deze cookies zijn essentieel voor het goed functioneren van deze website. Ze bevatten geen persoonlijke gegevens en worden niet gebruikt om u te volgen."
+                    ["nl"] = "Deze cookies zijn essentieel voor het goed functioneren van deze website. Ze bevatten geen persoonlijke gegevens en worden niet gebruikt om u te volgen.",
+                    ["es"] = "Estas cookies son esenciales para el correcto funcionamiento de este sitio web. No contienen datos personales y no se utilizan para rastrearlo.",
+                    ["fr"] = "Ces cookies sont indispensables au bon fonctionnement de ce site. Ils ne contiennent pas de données personnelles et ne sont pas utilisés pour vous suivre."
 
                 },
                 IsRequired = true
@@ -197,7 +223,9 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         {
             ["en"] = "This content uses cookies that are disallowed by your settings. To show it, we need to adjust your cookie settings for our website. We require your consent for:",
             ["de"] = "Dieser Inhalt nutzt Cookies, die aktuell nicht erlaubt sind. Um ihn anzuzeigen, müssen Sie Ihre Cookie-Präferenzen auf unserer Webseite aktualisieren. Wir benötigen Ihre Zustimmung für:",
-            ["nl"] = "Deze inhoud maakt gebruik van cookies die niet zijn toegestaan door uw instellingen. Om het te tonen, moeten we uw cookie-instellingen voor onze website aanpassen. Wij hebben uw toestemming nodig voor:"
+            ["nl"] = "Deze inhoud maakt gebruik van cookies die niet zijn toegestaan door uw instellingen. Om het te tonen, moeten we uw cookie-instellingen voor onze website aanpassen. Wij hebben uw toestemming nodig voor:",
+            ["es"] = "Este contenido utiliza cookies que no están permitidas por su configuración. Para mostrarlo, necesitamos ajustar la configuración de cookies para nuestro sitio web. Requerimos su consentimiento para:",
+            ["fr"] = "Ce contenu utilise des cookies qui sont interdits par vos paramètres.Pour l'afficher, nous devons ajuster vos paramètres de cookies pour notre site Web. Nous avons besoin de votre consentement pour :"
         };
 
         /// <summary>
@@ -207,7 +235,9 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         {
             ["en"] = "Accept",
             ["de"] = "Akzeptieren",
-            ["nl"] = "Accepteren"
+            ["nl"] = "Accepteren",
+            ["es"] = "Aceptar",
+            ["fr"] = "Accepter"
         };
     }
 
