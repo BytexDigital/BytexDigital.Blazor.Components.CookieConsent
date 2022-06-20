@@ -221,6 +221,26 @@ CookieConsentService.ShowSettingsModalAsync();
 
 # Changelog
 
+## 1.0.12
+
+<details>
+  <summary>Click to expand!</summary>
+  
+   <br /> 
+
+  - (https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent/pull/10) Added language NL
+</details>
+
+## 1.0.11
+
+<details>
+  <summary>Click to expand!</summary>
+  
+   <br /> 
+
+  - Fixed conditional script tags not being executed after activation in Firefox (see https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent/issues/9)
+</details>
+
 ## 1.0.10
 
 <details>
@@ -228,7 +248,7 @@ CookieConsentService.ShowSettingsModalAsync();
   
    <br /> 
 
-  - Applied fix from PR #8
+  - (https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent/issues/8) Fixed preferences being saved with revision set to -1
 </details>
 
 ## 1.0.9
