@@ -180,7 +180,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
                 {
                     ["en"] = "These cookies are essential for the proper functioning of this website. They do not contain personal data and are not used to track you.",
                     ["de"] = "Diese Cookies sind umbedingt notwendig für die Nutzung dieser Webseite. Sie enthalten keine personenbezogenen Daten und werden nicht für Tracking verwendet.",
-                    ["nl"] = "deze cookies zijn essentieel voor het goed functioneren van deze website. Ze bevatten geen persoonlijke gegevens en worden niet gebruikt om u te volgen."
+                    ["nl"] = "Deze cookies zijn essentieel voor het goed functioneren van deze website. Ze bevatten geen persoonlijke gegevens en worden niet gebruikt om u te volgen."
 
                 },
                 IsRequired = true
