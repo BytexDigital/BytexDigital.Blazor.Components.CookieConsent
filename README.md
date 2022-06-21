@@ -221,6 +221,16 @@ CookieConsentService.ShowSettingsModalAsync();
 
 # Changelog
 
+## 1.0.13
+
+<details>
+  <summary>Click to expand!</summary>
+  
+   <br /> 
+
+  - (https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent/pull/11) Added languages ES, FR
+</details>
+
 ## 1.0.12
 
 <details>
