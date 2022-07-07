@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
 
@@ -10,19 +11,33 @@ namespace BytexDigital.Blazor.Components.CookieConsent
     public class CookieConsentService
     {
         private readonly IJSRuntime _jsRuntime;
+        private readonly ILogger<CookieConsentService> _logger;
         private readonly IOptions<CookieConsentOptions> _options;
 
         private Task<IJSObjectReference> _module;
+        private CookiePreferences _cookiePreferencesCached = default;
 
         private Task<IJSObjectReference> Module => _module ??= _jsRuntime.InvokeAsync<IJSObjectReference>(
                 "import",
                 new[] { "./_content/BytexDigital.Blazor.Components.CookieConsent/cookieconsent.js" })
             .AsTask();
 
-        public CookieConsentService(IOptions<CookieConsentOptions> options, IJSRuntime jsRuntime)
+        public CookieConsentService(
+            IOptions<CookieConsentOptions> options,
+            IJSRuntime jsRuntime,
+            ILogger<CookieConsentService> logger)
         {
             _options = options;
             _jsRuntime = jsRuntime;
+            _logger = logger;
+
+            // Create a default cookie preferences object that is returned when Javascript turns out to be unavailable
+            // and no call to SavePreferences has been made yet.
+            _cookiePreferencesCached = new CookiePreferences
+            {
+                AcceptedRevision = -1,
+                AllowedCategories = new[] { CookieCategory.NecessaryCategoryIdentifier }
+            };
         }
 
         public event EventHandler<CookiePreferences> CookiePreferencesChanged;
@@ -31,10 +46,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
 
         public async Task ShowConsentModalAsync(bool showOnlyIfNecessary)
         {
-            if (showOnlyIfNecessary && await IsCurrentRevisionAcceptedAsync())
-            {
-                return;
-            }
+            if (showOnlyIfNecessary && await IsCurrentRevisionAcceptedAsync()) return;
 
             await Task.Run(() => OnShowConsentModal?.Invoke(this, EventArgs.Empty));
         }
@@ -46,22 +58,45 @@ namespace BytexDigital.Blazor.Components.CookieConsent
 
         public async Task SavePreferencesAsync(CookiePreferences cookiePreferences)
         {
+            // Fetch the currently valid settings.
+            // If JS is unavailable, this will return default settings or the last written settings from memory cache.
             var existingPreferences = await GetPreferencesAsync();
-
-            var module = await Module;
-
-            await module.InvokeVoidAsync(
-                "CookieConsent.SetCookie",
-                CreateCookieString(JsonSerializer.Serialize(cookiePreferences)));
-
-            await module.InvokeVoidAsync(
-                "CookieConsent.ApplyPreferences",
-                cookiePreferences.AllowedCategories,
-                cookiePreferences.AllowedServices);
-
-            if (!existingPreferences.Equals(cookiePreferences))
+            
+            // Attempt to write the new settings object to our cookie if possible.
+            try
             {
-                await Task.Run(() => CookiePreferencesChanged?.Invoke(this, cookiePreferences));
+                var module = await Module;
+
+                await module.InvokeVoidAsync(
+                    "CookieConsent.SetCookie",
+                    CreateCookieString(JsonSerializer.Serialize(cookiePreferences)));
+
+                await module.InvokeVoidAsync(
+                    "CookieConsent.ApplyPreferences",
+                    cookiePreferences.AllowedCategories,
+                    cookiePreferences.AllowedServices);
+            }
+            catch (JSException ex)
+            {
+                // Ignore exceptions on purpose.
+                // We might get here because JS is blocked or disabled.
+                _logger.LogTrace(ex, "Exception raised attempting to call into JavaScript");
+            }
+            
+            // In either case, we always save the instance that is supposed to be valid in our memory cache.
+            // We don't want to "forget" written things even if JS was unavailable to actually permanently save them!
+            // This solution will at least allow us to remember written settings until our tab is closed.
+            _cookiePreferencesCached = cookiePreferences;
+
+            try
+            {
+                if (!existingPreferences.Equals(cookiePreferences))
+                    await Task.Run(() => CookiePreferencesChanged?.Invoke(this, cookiePreferences));
+            }
+            catch (Exception ex)
+            {
+                // Ignore most likely user caused exception and log it as we don't want to interrupt program flow.
+                _logger.LogError(ex, "Exception raised trying to run CookiePreferencesChanged event handler");
             }
         }
 
@@ -94,6 +129,12 @@ namespace BytexDigital.Blazor.Components.CookieConsent
                 });
         }
 
+        /// <summary>
+        /// Returns the currently valid <see cref="CookiePreferences"/> instance. If JavaScript is unavailable, will return
+        /// either an instance with only the necessary category enabled or the last written settings object given to
+        /// <see cref="SavePreferencesAsync"/>.
+        /// </summary>
+        /// <returns></returns>
         public async Task<CookiePreferences> GetPreferencesAsync()
         {
             try
@@ -105,14 +146,13 @@ namespace BytexDigital.Blazor.Components.CookieConsent
 
                 return JsonSerializer.Deserialize<CookiePreferences>(cookieValue);
             }
-            catch (Exception)
+            catch (JSException ex)
             {
-                // During prerendering, we will not be able to access JS interop. Thus we must assume we have no preferences set except the necessary ones.
-                return new CookiePreferences
-                {
-                    AcceptedRevision = -1,
-                    AllowedCategories = new[] { CookieCategory.NecessaryCategoryIdentifier }
-                };
+                // We might get here because JS is unavailable (blocked, prerendering, etc.).
+                // Return default/cached data instead.
+                _logger.LogTrace(ex, "Exception raised attempting to call into JavaScript");
+
+                return _cookiePreferencesCached;
             }
         }
 
@@ -159,18 +199,36 @@ namespace BytexDigital.Blazor.Components.CookieConsent
 
         public async Task NotifyPageLoadedAsync()
         {
-            if (await IsCurrentRevisionAcceptedAsync())
+            var preferences = await GetPreferencesAsync();
+            
+            try
             {
-                var preferences = await GetPreferencesAsync();
+                if (await IsCurrentRevisionAcceptedAsync())
+                {
+                     var module = await Module;
 
+                    await module.InvokeVoidAsync(
+                        "CookieConsent.ApplyPreferences",
+                        preferences.AllowedCategories,
+                        preferences.AllowedServices);
+                }
+            }
+            catch (JSException ex)
+            {
+                // Ignore exceptions due to blocked or unavailable JS.
+                // In this case, we aren't able to activate JS tags, but there seems to be nothing
+                // we can do in this situation!
+                _logger.LogTrace(ex, "Exception raised attempting to call into JavaScript");
+            }
+
+            try
+            {
                 await Task.Run(() => CookiePreferencesChanged?.Invoke(this, preferences));
-
-                var module = await Module;
-
-                await module.InvokeVoidAsync(
-                    "CookieConsent.ApplyPreferences",
-                    preferences.AllowedCategories,
-                    preferences.AllowedServices);
+            }
+            catch (Exception ex)
+            {
+                // Ignore most likely user caused exception and log it as we don't want to interrupt program flow.
+                _logger.LogError(ex, "Exception raised trying to run CookiePreferencesChanged event handler");
             }
         }
 
@@ -180,34 +238,20 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             cookieString += $"; samesite={_options.Value.CookieOptions.CookieSameSite}";
 
             if (_options.Value.CookieOptions.CookieMaxAge != default)
-            {
                 cookieString += $"; max-age={(int) _options.Value.CookieOptions.CookieMaxAge.Value.TotalSeconds}";
-            }
 
             if (!string.IsNullOrEmpty(_options.Value.CookieOptions.CookieDomain))
-            {
                 cookieString += $"; domain={_options.Value.CookieOptions.CookieDomain}";
-            }
 
             if (!string.IsNullOrEmpty(_options.Value.CookieOptions.CookiePath))
-            {
                 cookieString += $"; path={_options.Value.CookieOptions.CookiePath}";
-            }
 
-            if (_options.Value.CookieOptions.CookieHttpOnly)
-            {
-                cookieString += "; HttpOnly";
-            }
+            if (_options.Value.CookieOptions.CookieHttpOnly) cookieString += "; HttpOnly";
 
-            if (_options.Value.CookieOptions.CookieSecure)
-            {
-                cookieString += "; Secure";
-            }
+            if (_options.Value.CookieOptions.CookieSecure) cookieString += "; Secure";
 
             if (_options.Value.CookieOptions.CookieExpires != default)
-            {
                 cookieString += $"; expires={_options.Value.CookieOptions.CookieExpires.Value:r}";
-            }
 
             return cookieString;
         }
