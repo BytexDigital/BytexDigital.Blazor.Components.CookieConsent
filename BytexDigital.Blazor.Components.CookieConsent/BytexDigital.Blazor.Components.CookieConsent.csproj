@@ -18,7 +18,7 @@
 		<SignAssembly>False</SignAssembly>
 		<PackageProjectUrl>https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent</PackageProjectUrl>
 		<PackageIcon>logo_squared_128.png</PackageIcon>
-		<PackageVersion>1.0.13</PackageVersion>
+		<PackageVersion>1.0.14</PackageVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
