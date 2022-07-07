@@ -3,8 +3,8 @@
 		<TargetFramework>net5.0</TargetFramework>
 
 		<VersionSuffix>$(VersionSuffix)</VersionSuffix>
-		<Version>1.0.13</Version>
-		<Version Condition=" '$(VersionSuffix)' != '' ">$(Version)-$(VersionSuffix)</Version>
+<!--		<Version>1.0.13</Version>-->
+<!--		<Version Condition=" '$(VersionSuffix)' != '' ">$(Version)-$(VersionSuffix)</Version>-->
 
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Copyright>Bytex Digital UG (haftungsbeschränkt)</Copyright>
@@ -19,6 +19,7 @@
 		<PackageProjectUrl>https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent</PackageProjectUrl>
 		<PackageIcon>logo_squared_128.png</PackageIcon>
 		<PackageVersion>1.0.15</PackageVersion>
+		<PackageVersion Condition=" '$(VersionSuffix)' != '' ">$(PackageVersion)-$(VersionSuffix)</PackageVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
