@@ -13,9 +13,9 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         private readonly IJSRuntime _jsRuntime;
         private readonly ILogger<CookieConsentService> _logger;
         private readonly IOptions<CookieConsentOptions> _options;
+        private CookiePreferences _cookiePreferencesCached;
 
         private Task<IJSObjectReference> _module;
-        private CookiePreferences _cookiePreferencesCached = default;
 
         private Task<IJSObjectReference> Module => _module ??= _jsRuntime.InvokeAsync<IJSObjectReference>(
                 "import",
@@ -61,7 +61,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             // Fetch the currently valid settings.
             // If JS is unavailable, this will return default settings or the last written settings from memory cache.
             var existingPreferences = await GetPreferencesAsync();
-            
+
             // Attempt to write the new settings object to our cookie if possible.
             try
             {
@@ -82,7 +82,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
                 // We might get here because JS is blocked or disabled.
                 _logger.LogTrace(ex, "Exception raised attempting to call into JavaScript");
             }
-            
+
             // In either case, we always save the instance that is supposed to be valid in our memory cache.
             // We don't want to "forget" written things even if JS was unavailable to actually permanently save them!
             // This solution will at least allow us to remember written settings until our tab is closed.
@@ -130,9 +130,9 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         }
 
         /// <summary>
-        /// Returns the currently valid <see cref="CookiePreferences"/> instance. If JavaScript is unavailable, will return
-        /// either an instance with only the necessary category enabled or the last written settings object given to
-        /// <see cref="SavePreferencesAsync"/>.
+        ///     Returns the currently valid <see cref="CookiePreferences" /> instance. If JavaScript is unavailable, will return
+        ///     either an instance with only the necessary category enabled or the last written settings object given to
+        ///     <see cref="SavePreferencesAsync" />.
         /// </summary>
         /// <returns></returns>
         public async Task<CookiePreferences> GetPreferencesAsync()
@@ -144,7 +144,11 @@ namespace BytexDigital.Blazor.Components.CookieConsent
                     "CookieConsent.ReadCookie",
                     _options.Value.CookieOptions.CookieName);
 
-                return JsonSerializer.Deserialize<CookiePreferences>(cookieValue);
+                // If the cookie value is empty, no cookie is set yet. In this case
+                // return default data.
+                return string.IsNullOrWhiteSpace(cookieValue)
+                    ? _cookiePreferencesCached
+                    : JsonSerializer.Deserialize<CookiePreferences>(cookieValue);
             }
             catch (JSException ex)
             {
@@ -200,12 +204,12 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         public async Task NotifyPageLoadedAsync()
         {
             var preferences = await GetPreferencesAsync();
-            
+
             try
             {
                 if (await IsCurrentRevisionAcceptedAsync())
                 {
-                     var module = await Module;
+                    var module = await Module;
 
                     await module.InvokeVoidAsync(
                         "CookieConsent.ApplyPreferences",
