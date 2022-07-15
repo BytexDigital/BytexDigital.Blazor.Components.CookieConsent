@@ -146,6 +146,9 @@ For now, localization is done entirely inside the configuration of the services 
 
 The library uses the current `CurrentCulture` by default. Blazor's `.AddLocalization(..)` will automatically set the current culture. We aim at adding proper support for `IStringLocalizer` aswell, so that all localization can be done inside resource files instead.
 
+## Disabled or blocked JavaScript
+The library depends on JavaScript to save and load preferences and to enable HTML script tags. If JavaScript is blocked or not enabled by a browser, the library will **not be able to dynamically enable JavaScript tags like `<script type="text/plain" data-consent-category="myCategoryName">`**; They will remain disabled even if given permission by the user. **Saving and loading preferences will also not be possible**, which means any permissions the user has given will be forgotten if the browser tab is closed and are only valid within the browser tab they were given in.
+
 ## Customizing the font
 To overwrite which font to use, set the following CSS rule:
 
@@ -159,7 +162,7 @@ To overwrite which font to use, set the following CSS rule:
 
 ## Available ways to hide/show content based on cookie preferences
 
-### Javascript tags
+### JavaScript tags
 If you wish to use services like Google Analytics, you can integrate them with this library the following way. This will make it so the script tags do not get run unless allowed to do so by the user.
 1. Change the script tags type attribute from `type="text/javascript"` to `type"text/plain"`.
 2. Add the attribute `data-consent-category="IDENTIFIER"`.
@@ -231,7 +234,17 @@ CookieConsentService.ShowSettingsModalAsync();
 
 # Changelog
 
-## 1.0.13
+### 1.0.15
+
+<details>
+  <summary>Click to expand!</summary>
+  
+   <br /> 
+
+  - Fixed crashes related to JavaScript being not enabled or blocked by browsers (see https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent/issues/12)
+</details>
+
+### 1.0.13
 
 <details>
   <summary>Click to expand!</summary>
@@ -241,7 +254,7 @@ CookieConsentService.ShowSettingsModalAsync();
   - (https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent/pull/11) Added languages ES, FR
 </details>
 
-## 1.0.12
+### 1.0.12
 
 <details>
   <summary>Click to expand!</summary>
@@ -251,7 +264,7 @@ CookieConsentService.ShowSettingsModalAsync();
   - (https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent/pull/10) Added language NL
 </details>
 
-## 1.0.11
+### 1.0.11
 
 <details>
   <summary>Click to expand!</summary>
@@ -261,7 +274,7 @@ CookieConsentService.ShowSettingsModalAsync();
   - Fixed conditional script tags not being executed after activation in Firefox (see https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent/issues/9)
 </details>
 
-## 1.0.10
+### 1.0.10
 
 <details>
   <summary>Click to expand!</summary>
@@ -271,7 +284,7 @@ CookieConsentService.ShowSettingsModalAsync();
   - (https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent/issues/8) Fixed preferences being saved with revision set to -1
 </details>
 
-## 1.0.9
+### 1.0.9
 
 <details>
   <summary>Click to expand!</summary>
@@ -281,7 +294,7 @@ CookieConsentService.ShowSettingsModalAsync();
   - Implemented CSS reset to isolate the components of this library from any other CSS influence
 </details>
 
-## 1.0.6
+### 1.0.6
 
 <details>
   <summary>Click to expand!</summary>
