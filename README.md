@@ -24,6 +24,8 @@ Install-Package BytexDigital.Blazor.Components.CookieConsent
 <br />
 
 ### Configure in your project
+
+#### 1. Configure your App.razor
 Add the `CookieConsentHandler` your App.razor, wrapping around the `Router` component, like so:
 
 ```html
@@ -45,12 +47,15 @@ Add the `CookieConsentHandler` your App.razor, wrapping around the `Router` comp
 
 <br />
 
+#### 2. Add the required CSS
 Add the following css include to your index.html/_Host.cshtml file.
 ```html
 <link rel="stylesheet" href="_content/BytexDigital.Blazor.Components.CookieConsent/styles.min.css" />
 ```
 
 <br />
+
+#### 3. (Optional) Add the default font used
 
 **Installing the font**  
 By default, the components use the following order of fonts
@@ -67,6 +72,8 @@ Inter var, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe U
 
 <br />
 
+
+#### 4. Register and configure the services in your dependency container
 Add the required services in your Program.cs/Startup.cs and configure cookie categories present in your application. The library implicitly adds a `necessary` (value of constant `CookieCategory.NecessaryCategoryIdentifier`) category. For example:
 
 ```cs
@@ -129,10 +136,13 @@ builder.Services.AddCookieConsent(o =>
 });
 ```
 
+#### 5. The library is ready to be used!
+Scroll further down to see how you can use the library to conditionally enable/disable Javascript tags in your HTML or show/hide specific content. 
+
 <br />
 
 ## Localization
-For now, localization is done entirely inside the configuration of the services as seen in the example above. The library ships with default texts in English and German.
+For now, localization is done entirely inside the configuration of the services as seen in the example above. The library ships with default texts in English, German Dutch, French and Spanish.
 
 The library uses the current `CurrentCulture` by default. Blazor's `.AddLocalization(..)` will automatically set the current culture. We aim at adding proper support for `IStringLocalizer` aswell, so that all localization can be done inside resource files instead.
 
