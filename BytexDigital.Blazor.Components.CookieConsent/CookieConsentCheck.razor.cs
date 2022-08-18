@@ -89,8 +89,15 @@ namespace BytexDigital.Blazor.Components.CookieConsent
                 throw new Exception(
                     $"The required service or category '{RequiredService ?? RequiredCategory}' was not configured.");
             }
+        }
 
-            await EvaluateStateAsync();
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                await EvaluateStateAsync();
+            }
+            await base.OnAfterRenderAsync(firstRender);
         }
 
         /// <summary>
