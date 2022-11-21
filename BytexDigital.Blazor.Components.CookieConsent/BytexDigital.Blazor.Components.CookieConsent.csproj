@@ -38,7 +38,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0" />
 	</ItemGroup>
 
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="npm run all" />
-	</Target>
+<!--	<Target Name="PostBuild" AfterTargets="PostBuildEvent">-->
+<!--		<Exec Command="npm run all" />-->
+<!--	</Target>-->
 </Project>

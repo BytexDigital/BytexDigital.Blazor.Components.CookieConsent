@@ -149,12 +149,38 @@ The library uses the current `CurrentCulture` by default. Blazor's `.AddLocaliza
 ## Disabled or blocked JavaScript
 The library depends on JavaScript to save and load preferences and to enable HTML script tags. If JavaScript is blocked or not enabled by a browser, the library will **not be able to dynamically enable JavaScript tags like `<script type="text/plain" data-consent-category="myCategoryName">`**; They will remain disabled even if given permission by the user. **Saving and loading preferences will also not be possible**, which means any permissions the user has given will be forgotten if the browser tab is closed and are only valid within the browser tab they were given in.
 
-## Customizing the font
-To overwrite which font to use, set the following CSS rule:
+## Customizing colors and font
+Use a CSS rule as follows to overwrite colors and font used.
+The values shown are the current default values as shown in the screenshots using Tailwind's theme function.
 
 ```css
-.cc-font-overwrite {
-    font-family: "your-font";
+.cc-isolation-container * {
+    /* Font used */
+    --cc-font-family: Inter var, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+    /* Accent color for primary button */
+    --cc-color-accent: theme(colors.slate.800);
+
+    /* Accent color for primary button when hovered */
+    --cc-color-accent-dark: theme(colors.slate.900);
+
+    /* Color for secondary button */
+    --cc-color-secondary: theme(colors.gray.200);
+
+    /* Color for secondary button when hovered */
+    --cc-color-secondary-dark: theme(colors.gray.300);
+
+    /* Color for link when hovered */
+    --cc-color-link-highlight: theme(colors.blue.500);
+
+    /* Default color for text */
+    --cc-color-text: theme(colors.slate.700);
+
+    /* Background color for active category switch */
+    --cc-color-switch-active: theme(colors.slate.800);
+
+    /* (Transparent) Color for background when any modal is opened */
+    --cc-color-modal-background: theme(colors.gray.800 / 75%);
 }
 ```
 
@@ -226,13 +252,23 @@ Defining something custom to render can be done the following way. It's a good i
 
 ## Manually open the preferences modal
 
-Call the following method to show the preferences menu. This could be done from an element inside your footer for example.
+Call the following metho[BytexDigital.Blazor.Components.CookieConsent.csproj](BytexDigital.Blazor.Components.CookieConsent%2FBytexDigital.Blazor.Components.CookieConsent.csproj)d to show the preferences menu. This could be done from an element inside your footer for example.
 
 ```csharp
 CookieConsentService.ShowSettingsModalAsync();
 ```
 
 # Changelog
+
+### 1.0.16
+
+<details>
+  <summary>Click to expand!</summary>
+
+   <br /> 
+
+- Implemented way to customize some colors aswell as the font using CSS variables
+</details>
 
 ### 1.0.15
 

@@ -2,7 +2,7 @@
 @using System.Globalization
 @namespace BytexDigital.Blazor.Components.CookieConsent.Internal
 
-<div class="cc-rounded-md cc-bg-gray-100 cc-text-slate-700 cc-text-blugraye-800" @key="MainKey">
+<div class="cc-rounded-md cc-bg-gray-100 cc-text-brand-text" @key="MainKey">
     <div @onclick="() => Collapsed = !Collapsed" class="cc-w-full cc-p-3 cc-rounded-md hover:cc-bg-gray-200 cc-cursor-pointer">
         <div class="cc-flex cc-items-center cc-justify-between cc-items-center">
             <div class="cc-flex">
@@ -19,7 +19,7 @@
                     </svg>
                 }
 
-                <h5 class="cc-font-semibold cc-text-slate-700 cc-text-sm cc-ml-3">@Category.TitleText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)</h5>
+                <h5 class="cc-font-semibold cc-text-brand-text cc-text-sm cc-ml-3">@Category.TitleText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)</h5>
             </div>
             <div>
                 @if (!Category.IsRequired)
@@ -54,7 +54,7 @@
 
                 @if (Category.Services != null && Category.Services.Count > 0)
                 {
-                    <h6 class="cc-mt-4 cc-text-slate-700 cc-font-bold">@Options.Value.SettingsUsedServicesText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)</h6>
+                    <h6 class="cc-mt-4 cc-text-brand-text cc-font-bold">@Options.Value.SettingsUsedServicesText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)</h6>
 
                     <div class="cc-mt-2 cc-space-y-1">
                         @foreach (var service in Category.Services)
@@ -64,7 +64,7 @@
                                 <div>
                                     @if (!string.IsNullOrEmpty(service.PolicyUrl))
                                     {
-                                        <a class="cc-text-sm cc-text-slate-400 hover:cc-text-blue-500 cc-transition-all cc-duration-100 cc-ease-in-out cc-flex cc-items-center" href="@service.PolicyUrl" target="_blank">
+                                        <a class="cc-text-sm cc-text-slate-400 hover:cc-text-brand-link-highlight cc-transition-all cc-duration-100 cc-ease-in-out cc-flex cc-items-center" href="@service.PolicyUrl" target="_blank">
                                             @service.ShowPolicyText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)
 
                                             <svg xmlns="http://www.w3.org/2000/svg" class="cc-h-4 cc-w-4 cc-ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">

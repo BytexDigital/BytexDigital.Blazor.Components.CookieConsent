@@ -27,7 +27,7 @@ else
                         @Options.Value.CheckOptions.AcceptText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)
                     </button>
 
-                    <button @onclick="async () => await CookieConsentService.ShowSettingsModalAsync()" class="cc-text-sm cc-text-slate-700 hover:cc-text-blue-500 cc-transition-all cc-duration-100 cc-ease-in-out cc-flex cc-items-center">
+                    <button @onclick="async () => await CookieConsentService.ShowSettingsModalAsync()" class="cc-text-sm cc-text-brand-text hover:cc-text-brand-link-highlight cc-transition-all cc-duration-100 cc-ease-in-out cc-flex cc-items-center">
                         @Options.Value.ConsentOpenPreferencesText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)
                     </button>
                 </div>
