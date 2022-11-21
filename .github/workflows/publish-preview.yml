@@ -26,7 +26,7 @@ jobs:
         working-directory: ./BytexDigital.Blazor.Components.CookieConsent
         run: npm install
 
-        - name: Build CSS
+      - name: Build CSS
         working-directory: ./BytexDigital.Blazor.Components.CookieConsent
         run: npm run build
 
