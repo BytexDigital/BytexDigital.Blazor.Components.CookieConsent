@@ -170,6 +170,9 @@ The values shown are the current default values as shown in the screenshots usin
     /* Color for secondary button when hovered */
     --cc-color-secondary-dark: theme(colors.gray.300);
 
+    /* Color for links ("Display policy" links within preferences dialogue) */
+    --cc-color-link: theme(colors.slate.400);
+    
     /* Color for link when hovered */
     --cc-color-link-highlight: theme(colors.blue.500);
 
