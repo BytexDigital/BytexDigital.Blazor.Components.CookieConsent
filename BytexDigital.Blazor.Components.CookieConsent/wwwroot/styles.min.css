@@ -578,16 +578,16 @@
   margin-top: 1.25rem !important;
 }
 
+.cc-ml-1 {
+  margin-left: 0.25rem !important;
+}
+
 .cc-ml-3 {
   margin-left: 0.75rem !important;
 }
 
 .cc-mt-4 {
   margin-top: 1rem !important;
-}
-
-.cc-ml-1 {
-  margin-left: 0.25rem !important;
 }
 
 .cc-block {
@@ -604,6 +604,14 @@
 
 .cc-h-full {
   height: 100% !important;
+}
+
+.cc-h-3\.5 {
+  height: 0.875rem !important;
+}
+
+.cc-h-3 {
+  height: 0.75rem !important;
 }
 
 .cc-h-screen {
@@ -628,6 +636,14 @@
 
 .cc-w-full {
   width: 100% !important;
+}
+
+.cc-w-3\.5 {
+  width: 0.875rem !important;
+}
+
+.cc-w-3 {
+  width: 0.75rem !important;
 }
 
 .cc-w-5 {
@@ -785,9 +801,8 @@
   border-top-width: 1px !important;
 }
 
-.cc-border-slate-700 {
-  --tw-border-opacity: 1 !important;
-  border-color: rgb(51 65 85 / var(--tw-border-opacity)) !important;
+.cc-border-brand-text {
+  border-color: var(--cc-color-text) !important;
 }
 
 .cc-border-gray-100 {
@@ -904,9 +919,24 @@
   color: var(--cc-color-text) !important;
 }
 
-.cc-text-slate-400 {
-  --tw-text-opacity: 1 !important;
-  color: rgb(148 163 184 / var(--tw-text-opacity)) !important;
+.cc-text-brand-link {
+  color: var(--cc-color-link) !important;
+}
+
+.cc-underline {
+  text-decoration-line: underline !important;
+}
+
+.cc-decoration-brand-text {
+  text-decoration-color: var(--cc-color-text) !important;
+}
+
+.cc-underline-offset-4 {
+  text-underline-offset: 4px !important;
+}
+
+.cc-underline-offset-8 {
+  text-underline-offset: 8px !important;
 }
 
 .cc-opacity-25 {
@@ -963,8 +993,10 @@ input:checked.cc-switch ~ .cc-dot-background {
   --cc-color-secondary: #e5e7eb !important;
   /* Color for secondary button when hovered */
   --cc-color-secondary-dark: #d1d5db !important;
-  /* Color for link when hovered */
+  /* Color for links when hovered */
   --cc-color-link-highlight: #3b82f6 !important;
+  /* Color for links ("Display policy" links within preferences dialogue) */
+  --cc-color-link: #94a3b8 !important;
   /* Default color for text */
   --cc-color-text: #334155 !important;
   /* Background color for active category switch */
@@ -1001,6 +1033,10 @@ input:checked.cc-switch ~ .cc-dot-background {
 
 .hover\:cc-text-brand-link-highlight:hover {
   color: var(--cc-color-link-highlight) !important;
+}
+
+.hover\:cc-no-underline:hover {
+  text-decoration-line: none !important;
 }
 
 .disabled\:cc-bg-red-100:disabled {

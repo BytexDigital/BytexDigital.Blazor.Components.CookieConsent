@@ -49,6 +49,7 @@ module.exports = {
                 'brand-accent-dark': "var(--cc-color-accent-dark)",
                 'brand-secondary': "var(--cc-color-secondary)",
                 'brand-secondary-dark': "var(--cc-color-secondary-dark)",
+                'brand-link': "var(--cc-color-link)",
                 'brand-link-highlight': "var(--cc-color-link-highlight)",
                 'brand-text': "var(--cc-color-text)",
                 'brand-switch-active': "var(--cc-color-switch-active)",

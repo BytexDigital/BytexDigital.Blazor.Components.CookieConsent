@@ -431,8 +431,11 @@
     /* Color for secondary button when hovered */
     --cc-color-secondary-dark: theme(colors.gray.300);
 
-    /* Color for link when hovered */
+    /* Color for links when hovered */
     --cc-color-link-highlight: theme(colors.blue.500);
+
+    /* Color for links ("Display policy" links within preferences dialogue) */
+    --cc-color-link: theme(colors.slate.400);
 
     /* Default color for text */
     --cc-color-text: theme(colors.slate.700);

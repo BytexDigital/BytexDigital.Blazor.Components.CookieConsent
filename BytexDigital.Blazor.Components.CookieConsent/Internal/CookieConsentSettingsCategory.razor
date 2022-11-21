@@ -64,7 +64,7 @@
                                 <div>
                                     @if (!string.IsNullOrEmpty(service.PolicyUrl))
                                     {
-                                        <a class="cc-text-sm cc-text-slate-400 hover:cc-text-brand-link-highlight cc-transition-all cc-duration-100 cc-ease-in-out cc-flex cc-items-center" href="@service.PolicyUrl" target="_blank">
+                                        <a class="cc-text-sm cc-text-brand-link hover:cc-text-brand-link-highlight cc-transition-all cc-duration-100 cc-ease-in-out cc-flex cc-items-center" href="@service.PolicyUrl" target="_blank">
                                             @service.ShowPolicyText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)
 
                                             <svg xmlns="http://www.w3.org/2000/svg" class="cc-h-4 cc-w-4 cc-ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
