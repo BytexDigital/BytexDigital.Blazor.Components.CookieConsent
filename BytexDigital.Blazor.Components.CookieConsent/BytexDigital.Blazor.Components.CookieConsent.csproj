@@ -24,6 +24,10 @@
 			<Pack>True</Pack>
 			<PackagePath></PackagePath>
 		</None>
+		<None Include="..\README.md">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
 		<None Include="..\logo_squared_128.png">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
@@ -36,6 +40,12 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="..\README.md">
+	    <Link>README.md</Link>
+	  </Content>
 	</ItemGroup>
 
 <!--	<Target Name="PostBuild" AfterTargets="PostBuildEvent">-->

@@ -263,6 +263,18 @@ CookieConsentService.ShowSettingsModalAsync();
 
 # Changelog
 
+### 1.0.17
+
+<details>
+  <summary>Click to expand!</summary>
+
+   <br /> 
+
+- Implemented way to use custom consent prompts components instead of the default one
+- Improved default consent prompt behavior on mobile devices
+- Smaller overall css improvements
+</details>
+
 ### 1.0.16
 
 <details>
