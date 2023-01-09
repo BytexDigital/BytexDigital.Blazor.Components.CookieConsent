@@ -1,4 +1,7 @@
 ﻿@using BytexDigital.Blazor.Components.CookieConsent.Internal
+@using BytexDigital.Blazor.Components.CookieConsent.Dialogs.Preferences
+@using BytexDigital.Blazor.Components.CookieConsent.Dialogs.Prompts.Default
+
 <CascadingValue Value="this">
     @ChildContent
 </CascadingValue>
@@ -6,83 +9,11 @@
 <div class="cc-isolation-container">
     @if (IsShowingSettingsModal)
     {
-        <CookieConsentPreferences Close="SettingsClosed"/>
+        <CookieConsentPreferences Close="SettingsClosed" />
     }
 
     @if (IsShowingConsentModal)
     {
-        <div class="cc-font cc-fixed cc-pointer-events-none cc-text-brand-text cc-w-full cc-mh-48 cc-flex @ConsentModalYPositionCss @ConsentModalXPositionCss" style="z-index: 1000;">
-            <div class="cc-bg-white cc-pointer-events-auto cc-filter cc-drop-shadow-2xl cc-animate-fade-move-in @(!IsConsentModalLayoutBar ? "cc-w-full md:cc-w-max md:cc-rounded-md md:cc-m-5" : "cc-w-full") cc-flex cc-justify-center">
-                <div class="cc-max-w-3xl cc-px-7 cc-py-5">
-                    <div class="cc-grid cc-grid-cols-10 cc-gap-x-10 cc-gap-y-5">
-                        <div class="cc-col-span-10 md:cc-col-span-7 cc-cc-self-center cc-flex cc-flex-col cc-justify-between">
-                            <div>
-                                <h1 class="cc-text-xl cc-text-brand-text cc-font-bold">
-                                    @Options.Value.ConsentTitleText.GetLocalization(CultureCode,
-                                        Options.Value.DefaultLocalizationCode)
-                                </h1>
-                                <p class="cc-text-sm cc-mt-2">
-                                    @Options.Value.ConsentDescriptionText.GetLocalization(CultureCode,
-                                        Options.Value.DefaultLocalizationCode)
-                                </p>
-                            </div>
-
-                            <div class="cc-flex cc-space-x-2 cc-mt-2">
-                                @if (!Options.Value.ConsentSecondaryActionOpensSettings && !OnlyRequiredCategoriesExist)
-                                {
-                                    <button @onclick=OpenSettings class="cc-text-xs cc-underline cc-decoration-brand-text cc-underline-offset-8 hover:cc-no-underline cc-font-semibold hover:cc-text-brand-link-highlight cc-transition-all cc-duration-100 cc-ease-in-out">
-                                        @Options.Value.ConsentOpenPreferencesText.GetLocalization(CultureCode,
-                                            Options.Value.DefaultLocalizationCode)
-                                    </button>
-                                }
-                                <a class="cc-text-xs cc-underline cc-decoration-brand-text cc-underline-offset-8 hover:cc-no-underline cc-border-brand-text hover:cc-text-brand-link-highlight cc-transition-all cc-duration-100 cc-ease-in-out cc-flex cc-items-center underline-offset-2" href="@Options.Value.PolicyUrl" target="_blank">
-                                    @Options.Value.ShowPolicyText.GetLocalization(CultureCode,
-                                        Options.Value.DefaultLocalizationCode)
-
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="cc-h-3.5 cc-w-3.5 cc-ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="cc-col-span-10 md:cc-col-span-3 @(OnlyRequiredCategoriesExist ? "cc-self-end" : "cc-self-center")">
-                            <div class="cc-space-y-2">
-                                @if (!OnlyRequiredCategoriesExist)
-                                {
-                                    @if (Options.Value.ConsentSecondaryActionOpensSettings)
-                                    {
-                                        <button @onclick=OpenSettings class="cc-block cc-w-full cc-p-3 cc-px-5  cc-rounded-md cc-bg-brand-secondary cc-text-brand-text cc-text-sm cc-font-semibold hover:cc-bg-brand-secondary-dark  cc-transition-all cc-duration-100 cc-ease-in-out">
-                                            @Options.Value.ConsentOpenPreferencesText.GetLocalization(CultureCode,
-                                                Options.Value.DefaultLocalizationCode)
-                                        </button>
-                                    }
-                                    else
-                                    {
-                                        <button @onclick="async () => await AcceptAsync(false)" class="cc-block cc-w-full cc-p-3 cc-px-5  cc-rounded-md cc-bg-brand-secondary cc-text-brand-text cc-text-sm cc-font-semibold hover:cc-bg-brand-secondary-dark cc-transition-all cc-duration-100 cc-ease-in-out">
-                                            @Options.Value.ConsentNecessaryOnlyText.GetLocalization(CultureCode,
-                                                Options.Value.DefaultLocalizationCode)
-                                        </button>
-                                    }
-                                }
-
-                                <button @onclick="async () => await AcceptAsync(true)" class="cc-block cc-w-full cc-p-3 cc-px-5  cc-rounded-md cc-bg-brand-accent cc-text-white cc-text-sm cc-font-semibold hover:cc-bg-brand-accent-dark cc-transition-all cc-duration-100 cc-ease-in-out">
-                                    @if (!OnlyRequiredCategoriesExist)
-                                    {
-                                        @Options.Value.ConsentAcceptAllText.GetLocalization(CultureCode,
-                                            Options.Value.DefaultLocalizationCode)
-                                    }
-                                    else
-                                    {
-                                        @Options.Value.ConsentAcknowledgeText.GetLocalization(CultureCode,
-                                            Options.Value.DefaultLocalizationCode)
-                                    }
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @PromptFragment
     }
 </div>

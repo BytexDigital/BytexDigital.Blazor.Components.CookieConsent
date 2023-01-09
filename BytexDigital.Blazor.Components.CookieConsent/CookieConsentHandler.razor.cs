@@ -1,7 +1,9 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using BytexDigital.Blazor.Components.CookieConsent.Dialogs.Prompts;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.Options;
 
 namespace BytexDigital.Blazor.Components.CookieConsent
@@ -17,51 +19,12 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         [Parameter]
         public RenderFragment ChildContent { get; set; }
 
+        public RenderFragment PromptFragment { get; set; }
+        
         public bool IsShowingConsentModal { get; private set; }
         public bool IsShowingSettingsModal { get; private set; }
+        
 
-        private string ConsentModalYPositionCss
-        {
-            get
-            {
-                if (new[]
-                    {
-                        ConsentModalPosition.BottomCenter, ConsentModalPosition.BottomLeft,
-                        ConsentModalPosition.BottomRight
-                    }.Contains(Options.Value.ConsentModalPosition))
-                {
-                    return "cc-bottom-0 css:left-0";
-                }
-                else
-                {
-                    return "cc-top-0 css:left-0";
-                }
-            }
-        }
-
-        private string ConsentModalXPositionCss
-        {
-            get
-            {
-                if (new[] { ConsentModalPosition.BottomLeft, ConsentModalPosition.TopLeft }.Contains(
-                        Options.Value.ConsentModalPosition))
-                {
-                    return "cc-justify-start";
-                }
-
-                if (new[] { ConsentModalPosition.BottomRight, ConsentModalPosition.TopRight }.Contains(
-                        Options.Value.ConsentModalPosition))
-                {
-                    return "cc-justify-end";
-                }
-
-                return "cc-justify-center";
-            }
-        }
-
-        private bool OnlyRequiredCategoriesExist => Options.Value.Categories.All(x => x.IsRequired);
-
-        private bool IsConsentModalLayoutBar => Options.Value.ConsentModalLayout == ConsentModalLayout.Bar;
         private string CultureCode => System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
 
         public void Dispose()
@@ -74,6 +37,26 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         {
             CookieConsentService.OnShowConsentModal += CookieConsentService_OnShowCookieConsentModal;
             CookieConsentService.OnShowSettingsModal += CookieConsentService_OnShowSettingsModal;
+        }
+
+        protected override void OnParametersSet()
+        {
+            if (!Options.Value.PromptComponentType.IsAssignableTo(typeof(CookieConsentPromptBase)))
+            {
+                throw new InvalidOperationException(
+                    $"{nameof(CookieConsentOptions)}.{nameof(CookieConsentOptions.PromptComponentType)} must inherit from {nameof(CookieConsentPromptBase)}");
+            }
+
+            PromptFragment = builder =>
+            {
+                int seq = 0;
+
+                builder.OpenComponent(seq++, Options.Value.PromptComponentType);
+                builder.AddAttribute(seq++,
+                    nameof(CookieConsentPromptBase.OnClosePrompt),
+                    EventCallback.Factory.Create(this, OnPromptClose));
+                builder.CloseComponent();
+            };
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -112,21 +95,13 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             StateHasChanged();
         }
 
-        private async Task AcceptAsync(bool all)
+        private async Task OnPromptClose()
         {
-            if (all)
-            {
-                await CookieConsentService.SavePreferencesAcceptAllAsync();
-            }
-            else
-            {
-                await CookieConsentService.SavePreferencesNecessaryOnlyAsync();
-            }
-
             IsShowingConsentModal = false;
             StateHasChanged();
         }
-
+        
+        
         private async void CookieConsentService_OnShowSettingsModal(object sender, EventArgs e)
         {
             await InvokeAsync(

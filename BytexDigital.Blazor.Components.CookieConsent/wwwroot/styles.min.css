@@ -566,8 +566,8 @@
   top: 0.25rem !important;
 }
 
-.cc-col-span-10 {
-  grid-column: span 10 / span 10 !important;
+.cc-m-1 {
+  margin: 0.25rem !important;
 }
 
 .cc-mt-2 {
@@ -598,8 +598,8 @@
   display: flex !important;
 }
 
-.cc-grid {
-  display: grid !important;
+.cc-hidden {
+  display: none !important;
 }
 
 .cc-h-full {
@@ -658,12 +658,24 @@
   width: 1rem !important;
 }
 
+.cc-max-w-4xl {
+  max-width: 56rem !important;
+}
+
 .cc-max-w-3xl {
   max-width: 48rem !important;
 }
 
 .cc-max-w-xl {
   max-width: 36rem !important;
+}
+
+.cc-shrink-0 {
+  flex-shrink: 0 !important;
+}
+
+.cc-grow {
+  flex-grow: 1 !important;
 }
 
 @keyframes cc-fade-move-in {
@@ -700,16 +712,16 @@
   cursor: pointer !important;
 }
 
-.cc-grid-cols-10 {
-  grid-template-columns: repeat(10, minmax(0, 1fr)) !important;
-}
-
 .cc-flex-col {
   flex-direction: column !important;
 }
 
 .cc-flex-wrap {
   flex-wrap: wrap !important;
+}
+
+.cc-items-start {
+  align-items: flex-start !important;
 }
 
 .cc-items-center {
@@ -736,23 +748,16 @@
   gap: 1.25rem !important;
 }
 
+.cc-gap-6 {
+  gap: 1.5rem !important;
+}
+
 .cc-gap-2 {
   gap: 0.5rem !important;
 }
 
-.cc-gap-x-10 {
-  -moz-column-gap: 2.5rem !important;
-       column-gap: 2.5rem !important;
-}
-
-.cc-gap-y-5 {
-  row-gap: 1.25rem !important;
-}
-
-.cc-space-x-2 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-x-reverse: 0 !important;
-  margin-right: calc(0.5rem * var(--tw-space-x-reverse)) !important;
-  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse))) !important;
+.cc-gap-1 {
+  gap: 0.25rem !important;
 }
 
 .cc-space-y-2 > :not([hidden]) ~ :not([hidden]) {
@@ -761,24 +766,14 @@
   margin-bottom: calc(0.5rem * var(--tw-space-y-reverse)) !important;
 }
 
-.cc-space-y-1 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-y-reverse: 0 !important;
-  margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse))) !important;
-  margin-bottom: calc(0.25rem * var(--tw-space-y-reverse)) !important;
-}
-
-.cc-space-x-3 > :not([hidden]) ~ :not([hidden]) {
+.cc-space-x-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0 !important;
-  margin-right: calc(0.75rem * var(--tw-space-x-reverse)) !important;
-  margin-left: calc(0.75rem * calc(1 - var(--tw-space-x-reverse))) !important;
+  margin-right: calc(0.5rem * var(--tw-space-x-reverse)) !important;
+  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse))) !important;
 }
 
-.cc-self-end {
-  align-self: flex-end !important;
-}
-
-.cc-self-center {
-  align-self: center !important;
+.cc-self-stretch {
+  align-self: stretch !important;
 }
 
 .cc-overflow-y-auto {
@@ -879,6 +874,19 @@
   padding-right: 1rem !important;
 }
 
+.cc-py-3 {
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
+}
+
+.cc-pr-3 {
+  padding-right: 0.75rem !important;
+}
+
+.cc-text-left {
+  text-align: left !important;
+}
+
 .cc-text-center {
   text-align: center !important;
 }
@@ -929,10 +937,6 @@
 
 .cc-decoration-brand-text {
   text-decoration-color: var(--cc-color-text) !important;
-}
-
-.cc-underline-offset-4 {
-  text-underline-offset: 4px !important;
 }
 
 .cc-underline-offset-8 {
@@ -993,10 +997,10 @@ input:checked.cc-switch ~ .cc-dot-background {
   --cc-color-secondary: #e5e7eb !important;
   /* Color for secondary button when hovered */
   --cc-color-secondary-dark: #d1d5db !important;
-  /* Color for links when hovered */
-  --cc-color-link-highlight: #3b82f6 !important;
   /* Color for links ("Display policy" links within preferences dialogue) */
   --cc-color-link: #94a3b8 !important;
+  /* Color for links when hovered */
+  --cc-color-link-highlight: #3b82f6 !important;
   /* Default color for text */
   --cc-color-text: #334155 !important;
   /* Background color for active category switch */
@@ -1007,10 +1011,6 @@ input:checked.cc-switch ~ .cc-dot-background {
 
 .cc-isolation-container .cc-font  {
   font-family: var(--cc-font-family) !important;
-}
-
-.hover\:cc-border-transparent:hover {
-  border-color: transparent !important;
 }
 
 .hover\:cc-bg-slate-900:hover {
@@ -1049,24 +1049,45 @@ input:checked.cc-switch ~ .cc-dot-background {
 }
 
 @media (min-width: 768px) {
-  .md\:cc-col-span-7 {
-    grid-column: span 7 / span 7 !important;
+  .md\:cc-flex-row {
+    flex-direction: row !important;
   }
 
-  .md\:cc-col-span-3 {
-    grid-column: span 3 / span 3 !important;
+  .md\:cc-space-y-1 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-y-reverse: 0 !important;
+    margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse))) !important;
+    margin-bottom: calc(0.25rem * var(--tw-space-y-reverse)) !important;
   }
 
-  .md\:cc-m-5 {
+  .md\:cc-text-sm {
+    font-size: 0.875rem !important;
+    line-height: 1.25rem !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:cc-m-5 {
     margin: 1.25rem !important;
   }
 
-  .md\:cc-w-max {
+  .lg\:cc-w-max {
     width: -moz-max-content !important;
     width: max-content !important;
   }
 
-  .md\:cc-rounded-md {
+  .lg\:cc-w-60 {
+    width: 15rem !important;
+  }
+
+  .lg\:cc-flex-row {
+    flex-direction: row !important;
+  }
+
+  .lg\:cc-self-end {
+    align-self: flex-end !important;
+  }
+
+  .lg\:cc-rounded-md {
     border-radius: 0.375rem !important;
   }
 }

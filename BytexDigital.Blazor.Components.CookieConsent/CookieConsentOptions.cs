@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using BytexDigital.Blazor.Components.CookieConsent.Dialogs.Prompts;
 
 namespace BytexDigital.Blazor.Components.CookieConsent
 {
@@ -45,6 +46,12 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         /// Layout of the consent modal.
         /// </summary>
         public ConsentModalLayout ConsentModalLayout { get; set; } = ConsentModalLayout.Cloud;
+
+        /// <summary>
+        /// Component that is shown to the user when the library asks for consent.
+        /// <remarks>Must inherit from <see cref="BytexDigital.Blazor.Components.CookieConsent.Dialogs.Prompts.CookieConsentPromptBase"/>. Defaults to <see cref="BytexDigital.Blazor.Components.CookieConsent.Dialogs.Prompts.Default.CookieConsentDefaultPrompt"/>.</remarks>
+        /// </summary>
+        public Type PromptComponentType { get; set; } = typeof(Dialogs.Prompts.Default.CookieConsentDefaultPrompt);
 
 
         /// <summary>

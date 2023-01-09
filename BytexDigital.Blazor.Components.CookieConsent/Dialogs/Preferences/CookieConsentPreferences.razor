@@ -1,7 +1,8 @@
-﻿@namespace BytexDigital.Blazor.Components.CookieConsent.Internal
+﻿@using BytexDigital.Blazor.Components.CookieConsent.Internal
+@namespace BytexDigital.Blazor.Components.CookieConsent.Dialogs.Preferences
 
 <div class="cc-font cc-fixed cc-top-0 cc-left-0 cc-w-full cc-h-screen cc-text-brand-text cc-animate-fade-in cc-flex cc-items-center cc-justify-center cc-bg-brand-modal-background" style="z-index: 1001;">
-    <div class="cc-max-w-xl cc-bg-white cc-rounded-md cc-filter cc-drop-shadow-2xl cc-animate-fade-move-in">
+    <div class="cc-max-w-xl cc-bg-white cc-m-1  cc-rounded-md cc-filter cc-drop-shadow-2xl cc-animate-fade-move-in">
 
         <div class="cc-px-7 cc-py-4 cc-border-b cc-border-gray-100 cc-flex cc-justify-between cc-items-center">
             <h1 class="cc-text-xl cc-font-bold">
@@ -32,17 +33,14 @@
             </div>
         </div>
 
-        <div class="cc-px-7 cc-py-4 cc-flex cc-justify-between cc-border-t cc-border-gray-100 cc-gap-2">
+        <div class="cc-px-7 cc-py-4 cc-flex cc-flex-col md:cc-flex-row cc-justify-between cc-border-t cc-border-gray-100 cc-gap-2">
             <button @onclick="AllowSelectedAsync" class="cc-block cc-p-3 cc-px-5  cc-rounded-md cc-bg-brand-secondary cc-text-brand-text cc-text-sm cc-font-semibold hover:cc-bg-brand-secondary-dark  cc-transition-all cc-duration-100 cc-ease-in-out">
                 @Options.Value.SettingsContinueWithSelectedPreferencesText.GetLocalization(CultureCode, Options.Value.DefaultLocalizationCode)
             </button>
 
-            <div class="cc-flex cc-space-x-2">
-                <button @onclick="AllowAllAsync" class="cc-block cc-p-3 cc-px-5 cc-rounded-md cc-bg-brand-accent cc-text-white cc-text-sm cc-font-semibold hover:cc-bg-brand-accent-dark cc-transition-all cc-duration-100 cc-ease-in-out">
-                    @Options.Value.ConsentAcceptAllText.GetLocalization(CultureCode, Options.Value.DefaultLocalizationCode)
-                </button>
-            </div>
+            <button @onclick="AllowAllAsync" class="cc-block cc-p-3 cc-px-5 cc-rounded-md cc-bg-brand-accent cc-text-white cc-text-sm cc-font-semibold hover:cc-bg-brand-accent-dark cc-transition-all cc-duration-100 cc-ease-in-out">
+                @Options.Value.ConsentAcceptAllText.GetLocalization(CultureCode, Options.Value.DefaultLocalizationCode)
+            </button>
         </div>
     </div>
 </div>
-

@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Options;
 
@@ -5,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BytexDigital.Blazor.Components.CookieConsent.Internal
+namespace BytexDigital.Blazor.Components.CookieConsent.Dialogs.Preferences
 {
     public partial class CookieConsentPreferences
     {
@@ -72,23 +73,29 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Internal
 
         private void SelectedChanged(CookieCategory category, bool isAllowed)
         {
-            if (isAllowed)
+            switch (isAllowed)
             {
-                if (!AcceptedCategories.Contains(category.Identifier)) AcceptedCategories.Add(category.Identifier);
-
-                foreach (var service in category.Services)
+                case true:
                 {
-                    if (!AcceptedServices.Contains(service.Identifier)) AcceptedServices.Add(service.Identifier);
+                    if (!AcceptedCategories.Contains(category.Identifier)) AcceptedCategories.Add(category.Identifier);
+
+                    foreach (var service in category.Services.Where(service => !AcceptedServices.Contains(service.Identifier)))
+                    {
+                        AcceptedServices.Add(service.Identifier);
+                    }
+
+                    break;
                 }
-            }
-
-            if (!isAllowed)
-            {
-                if (AcceptedCategories.Contains(category.Identifier)) AcceptedCategories.Remove(category.Identifier);
-
-                foreach (var service in category.Services)
+                case false:
                 {
-                    if (AcceptedServices.Contains(service.Identifier)) AcceptedServices.Remove(service.Identifier);
+                    if (AcceptedCategories.Contains(category.Identifier)) AcceptedCategories.Remove(category.Identifier);
+
+                    foreach (var service in category.Services.Where(service => AcceptedServices.Contains(service.Identifier)))
+                    {
+                        AcceptedServices.Remove(service.Identifier);
+                    }
+
+                    break;
                 }
             }
         }
