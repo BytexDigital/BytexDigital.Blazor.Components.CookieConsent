@@ -80,9 +80,16 @@ Add the required services in your Program.cs/Startup.cs and configure cookie cat
 builder.Services.AddCookieConsent(o =>
 {
     o.Revision = 1;
-    o.ConsentModalPosition = ConsentModalPosition.BottomRight;
-    o.ConsentModalLayout = ConsentModalLayout.Cloud;
-    o.ConsentSecondaryActionOpensSettings = false;
+    o.PolicyUrl = "/cookie-policy";
+    
+    // Call optional
+    o.UseDefaultConsentPrompt(prompt =>
+    {
+        prompt.Position = ConsentModalPosition.BottomRight;
+        prompt.Layout = ConsentModalLayout.Bar;
+        prompt.SecondaryActionOpensSettings = false;
+        prompt.AcceptAllButtonDisplaysFirst = false;
+    });
 
     o.Categories.Add(new CookieCategory
     {
@@ -272,7 +279,7 @@ CookieConsentService.ShowSettingsModalAsync();
 
 - Implemented way to use custom consent prompts components instead of the default one
 - Improved default consent prompt behavior on mobile devices
-- Smaller overall css improvements
+- Overall css improvements
 </details>
 
 ### 1.0.16
