@@ -6,14 +6,13 @@
     @ChildContent
 </CascadingValue>
 
-<div class="cc-isolation-container">
-    @if (IsShowingSettingsModal)
-    {
-        <CookieConsentPreferences Close="SettingsClosed" />
-    }
 
-    @if (IsShowingConsentModal)
-    {
-        @PromptFragment
-    }
-</div>
+@if (IsShowingSettingsModal)
+{
+    <CookieConsentPreferences Close="SettingsClosed"/>
+}
+
+@if (IsShowingConsentModal)
+{
+    @PromptFragment
+}
