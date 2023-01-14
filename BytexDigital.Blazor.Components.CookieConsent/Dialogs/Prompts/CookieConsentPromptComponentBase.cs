@@ -2,7 +2,7 @@
 
 namespace BytexDigital.Blazor.Components.CookieConsent.Dialogs.Prompts
 {
-    public abstract class CookieConsentPromptBase : ComponentBase
+    public abstract class CookieConsentPromptComponentBase : ComponentBase
     {
         [Parameter]
         public EventCallback OnClosePrompt { get; set; }

@@ -1,9 +1,8 @@
 using System;
-using System.Linq;
+using System.Globalization;
 using System.Threading.Tasks;
 using BytexDigital.Blazor.Components.CookieConsent.Dialogs.Prompts;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.Options;
 
 namespace BytexDigital.Blazor.Components.CookieConsent
@@ -20,12 +19,12 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         public RenderFragment ChildContent { get; set; }
 
         public RenderFragment PromptFragment { get; set; }
-        
+
         public bool IsShowingConsentModal { get; private set; }
         public bool IsShowingSettingsModal { get; private set; }
-        
 
-        private string CultureCode => System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+
+        private string CultureCode => CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
 
         public void Dispose()
         {
@@ -41,19 +40,20 @@ namespace BytexDigital.Blazor.Components.CookieConsent
 
         protected override void OnParametersSet()
         {
-            if (!Options.Value.PromptComponentType.IsAssignableTo(typeof(CookieConsentPromptBase)))
+            if (!Options.Value.ConsentPromptVariant.ComponentType.IsAssignableTo(
+                    typeof(CookieConsentPromptComponentBase)))
             {
                 throw new InvalidOperationException(
-                    $"{nameof(CookieConsentOptions)}.{nameof(CookieConsentOptions.PromptComponentType)} must inherit from {nameof(CookieConsentPromptBase)}");
+                    $"{nameof(CookieConsentOptions)}.{nameof(CookieConsentOptions.ConsentPromptVariant)}.{nameof(CookieConsentPromptVariantBase.ComponentType)} must inherit from {nameof(CookieConsentPromptComponentBase)}");
             }
 
             PromptFragment = builder =>
             {
-                int seq = 0;
+                var seq = 0;
 
-                builder.OpenComponent(seq++, Options.Value.PromptComponentType);
+                builder.OpenComponent(seq++, Options.Value.ConsentPromptVariant.ComponentType);
                 builder.AddAttribute(seq++,
-                    nameof(CookieConsentPromptBase.OnClosePrompt),
+                    nameof(CookieConsentPromptComponentBase.OnClosePrompt),
                     EventCallback.Factory.Create(this, OnPromptClose));
                 builder.CloseComponent();
             };
@@ -100,8 +100,8 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             IsShowingConsentModal = false;
             StateHasChanged();
         }
-        
-        
+
+
         private async void CookieConsentService_OnShowSettingsModal(object sender, EventArgs e)
         {
             await InvokeAsync(

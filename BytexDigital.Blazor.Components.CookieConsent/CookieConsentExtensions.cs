@@ -6,12 +6,23 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class CookieConsentExtensions
     {
-        public static IServiceCollection AddCookieConsent(this IServiceCollection services, Action<CookieConsentOptions> configure)
+        public static IServiceCollection AddCookieConsent(this IServiceCollection services, Action<CookieConsentOptions> configure = default)
         {
             services.AddScoped<CookieConsentService>();
-            services.Configure<CookieConsentOptions>(configure);
+            
+            if (configure != null) services.Configure(configure);
 
             return services;
+        }
+
+        public static void UseDefaultConsentPrompt(
+            this CookieConsentOptions options,
+            Action<CookieConsentDefaultPromptVariant> promptOptions = default)
+        {
+            var variant = new CookieConsentDefaultPromptVariant();
+            options.ConsentPromptVariant = variant;
+
+            promptOptions?.Invoke(variant);
         }
     }
 }

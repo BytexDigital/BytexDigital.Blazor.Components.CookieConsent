@@ -1,7 +1,7 @@
 ﻿@using System.Globalization
 @using BytexDigital.Blazor.Components.CookieConsent.Internal
 @using Microsoft.Extensions.Options
-@inherits CookieConsentPromptBase
+@inherits CookieConsentPromptComponentBase
 
 <div class="cc-font cc-fixed cc-pointer-events-none cc-text-brand-text cc-w-full cc-mh-48 cc-flex @ConsentModalYPositionCss @ConsentModalXPositionCss" style="z-index: 1000;">
     <div class="cc-bg-white cc-pointer-events-auto cc-filter cc-drop-shadow-2xl cc-animate-fade-move-in @(!IsConsentModalLayoutBar ? "cc-w-full lg:cc-w-max lg:cc-rounded-md lg:cc-m-5" : "cc-w-full") cc-flex cc-justify-center">
@@ -20,10 +20,10 @@
                     </div>
 
                     <div class="cc-flex cc-flex-col lg:cc-flex-row cc-gap-2 cc-mt-5 cc-items-start">
-                        @if (!Options.Value.ConsentSecondaryActionOpensSettings && !OnlyRequiredCategoriesExist)
+                        @if (!VariantOptions.SecondaryActionOpensSettings && !OnlyRequiredCategoriesExist)
                         {
                             <button @onclick=OpenSettingsAsync class="cc-text-xs cc-text-left cc-decoration-brand-text cc-font-semibold hover:cc-text-brand-link-highlight cc-transition-all cc-duration-100 cc-ease-in-out">
-                                @Options.Value.ConsentOpenPreferencesText.GetLocalization(CultureCode,
+                                @Options.Value.OpenPreferencesText.GetLocalization(CultureCode,
                                     Options.Value.DefaultLocalizationCode)
                             </button>
                         }
@@ -38,26 +38,26 @@
                     </div>
                 </div>
 
-                <div class="cc-self-stretch cc-shrink-0 lg:cc-self-end cc-w-full lg:cc-w-60 cc-space-y-2">
+                <div class="cc-self-stretch cc-shrink-0 lg:cc-self-end cc-w-full lg:cc-w-60 cc-flex cc-flex-col cc-gap-y-2">
                     @if (!OnlyRequiredCategoriesExist)
                     {
-                        @if (Options.Value.ConsentSecondaryActionOpensSettings)
+                        @if (VariantOptions.SecondaryActionOpensSettings)
                         {
-                            <button @onclick=OpenSettingsAsync class="cc-block cc-w-full cc-p-3 cc-px-5  cc-rounded-md cc-bg-brand-secondary cc-text-brand-text cc-text-sm cc-font-semibold hover:cc-bg-brand-secondary-dark  cc-transition-all cc-duration-100 cc-ease-in-out">
-                                @Options.Value.ConsentOpenPreferencesText.GetLocalization(CultureCode,
+                            <button @onclick=OpenSettingsAsync class="cc-order-2 cc-block cc-w-full cc-p-3 cc-px-5 cc-rounded-md cc-bg-brand-secondary cc-text-brand-text cc-text-sm cc-font-semibold hover:cc-bg-brand-secondary-dark  cc-transition-all cc-duration-100 cc-ease-in-out">
+                                @Options.Value.OpenPreferencesText.GetLocalization(CultureCode,
                                     Options.Value.DefaultLocalizationCode)
                             </button>
                         }
                         else
                         {
-                            <button @onclick="async () => await AcceptAsync(false)" class="cc-block cc-w-full cc-p-3 cc-px-5  cc-rounded-md cc-bg-brand-secondary cc-text-brand-text cc-text-sm cc-font-semibold hover:cc-bg-brand-secondary-dark cc-transition-all cc-duration-100 cc-ease-in-out">
+                            <button @onclick="async () => await AcceptAsync(false)" class="cc-order-2 cc-block cc-w-full cc-p-3 cc-px-5  cc-rounded-md cc-bg-brand-secondary cc-text-brand-text cc-text-sm cc-font-semibold hover:cc-bg-brand-secondary-dark cc-transition-all cc-duration-100 cc-ease-in-out">
                                 @Options.Value.ConsentNecessaryOnlyText.GetLocalization(CultureCode,
                                     Options.Value.DefaultLocalizationCode)
                             </button>
                         }
                     }
 
-                    <button @onclick="async () => await AcceptAsync(true)" class="cc-block cc-w-full cc-p-3 cc-px-5  cc-rounded-md cc-bg-brand-accent cc-text-white cc-text-sm cc-font-semibold hover:cc-bg-brand-accent-dark cc-transition-all cc-duration-100 cc-ease-in-out">
+                    <button @onclick="async () => await AcceptAsync(true)" class="cc-block cc-w-full cc-p-3 cc-px-5  cc-rounded-md cc-bg-brand-accent cc-text-white cc-text-sm cc-font-semibold hover:cc-bg-brand-accent-dark cc-transition-all cc-duration-100 cc-ease-in-out @(VariantOptions.AcceptAllButtonDisplaysFirst ? "cc-order-1" : "cc-order-3")">
                         @if (!OnlyRequiredCategoriesExist)
                         {
                             @Options.Value.ConsentAcceptAllText.GetLocalization(CultureCode,
@@ -80,6 +80,8 @@
     [Inject]
     protected IOptions<CookieConsentOptions> Options { get; set; }
 
+    protected CookieConsentDefaultPromptVariant VariantOptions => Options.Value.ConsentPromptVariant as CookieConsentDefaultPromptVariant;
+
     [Inject]
     protected CookieConsentService CookieConsentService { get; set; }
 
@@ -91,7 +93,7 @@
             {
                 ConsentModalPosition.BottomCenter, ConsentModalPosition.BottomLeft,
                 ConsentModalPosition.BottomRight
-            }.Contains(Options.Value.ConsentModalPosition))
+            }.Contains(VariantOptions.Position))
             {
                 return "cc-bottom-0 css:left-0";
             }
@@ -104,13 +106,13 @@
         get
         {
             if (new[] { ConsentModalPosition.BottomLeft, ConsentModalPosition.TopLeft }.Contains(
-                Options.Value.ConsentModalPosition))
+                VariantOptions.Position))
             {
                 return "cc-justify-start";
             }
 
             if (new[] { ConsentModalPosition.BottomRight, ConsentModalPosition.TopRight }.Contains(
-                Options.Value.ConsentModalPosition))
+                VariantOptions.Position))
             {
                 return "cc-justify-end";
             }
@@ -120,9 +122,16 @@
     }
 
     private bool OnlyRequiredCategoriesExist => Options.Value.Categories.All(x => x.IsRequired);
-
-    private bool IsConsentModalLayoutBar => Options.Value.ConsentModalLayout == ConsentModalLayout.Bar;
+    private bool IsConsentModalLayoutBar => VariantOptions.Layout == ConsentModalLayout.Bar;
     private string CultureCode => CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+
+    protected override void OnInitialized()
+    {
+        if (Options.Value.ConsentPromptVariant.GetType() != typeof(CookieConsentDefaultPromptVariant))
+        {
+            throw new InvalidOperationException($"{nameof(CookieConsentOptions)}.{nameof(CookieConsentOptions.ConsentPromptVariant)} must be of type {nameof(CookieConsentDefaultPromptVariant)}");
+        }
+    }
 
     private async Task OpenSettingsAsync()
     {
@@ -141,7 +150,7 @@
             await CookieConsentService.SavePreferencesNecessaryOnlyAsync();
         }
 
-        await OnClosePrompt.InvokeAsync(); 
+        await OnClosePrompt.InvokeAsync();
 
         StateHasChanged();
     }

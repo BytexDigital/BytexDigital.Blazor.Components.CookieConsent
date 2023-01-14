@@ -38,21 +38,10 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         public CookieConsentCheckOptions CheckOptions { get; set; } = new CookieConsentCheckOptions();
 
         /// <summary>
-        /// Positioning of the consent modal.
+        /// Cookie consent prompt variant to use. Defaults to <see cref="BytexDigital.Blazor.Components.CookieConsent.CookieConsentDefaultPromptVariant"/>.
         /// </summary>
-        public ConsentModalPosition ConsentModalPosition { get; set; } = ConsentModalPosition.BottomCenter;
-
-        /// <summary>
-        /// Layout of the consent modal.
-        /// </summary>
-        public ConsentModalLayout ConsentModalLayout { get; set; } = ConsentModalLayout.Cloud;
-
-        /// <summary>
-        /// Component that is shown to the user when the library asks for consent.
-        /// <remarks>Must inherit from <see cref="BytexDigital.Blazor.Components.CookieConsent.Dialogs.Prompts.CookieConsentPromptBase"/>. Defaults to <see cref="BytexDigital.Blazor.Components.CookieConsent.Dialogs.Prompts.Default.CookieConsentDefaultPrompt"/>.</remarks>
-        /// </summary>
-        public Type PromptComponentType { get; set; } = typeof(Dialogs.Prompts.Default.CookieConsentDefaultPrompt);
-
+        public CookieConsentPromptVariantBase ConsentPromptVariant { get; set; } =
+            new CookieConsentDefaultPromptVariant();
 
         /// <summary>
         /// Title text of the consent modal.
@@ -113,11 +102,11 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             ["es"] = "Rechazar",
             ["fr"] = "Refuser"
         };
-
+        
         /// <summary>
         /// "Manage preferences" text. Used in multiple places.
         /// </summary>
-        public Dictionary<string, string> ConsentOpenPreferencesText { get; set; } = new()
+        public Dictionary<string, string> OpenPreferencesText { get; set; } = new()
         {
             ["en"] = "Manage preferences",
             ["de"] = "Präferenzen ändern",
@@ -125,12 +114,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             ["es"] = "Administrar preferencias",
             ["fr"] = "Gérer les préférences"
         };
-
-        /// <summary>
-        /// If there are preferences to manage, a second button will appear inside the consent modal. If this setting is true, then the secondary button will show "Manage preferences". If false, it will display "Decline"/"Necessary only".
-        /// </summary>
-        public bool ConsentSecondaryActionOpensSettings { get; set; } = false;
-
+        
         /// <summary>
         /// Title text of the settings modal.
         /// </summary>

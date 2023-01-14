@@ -9,6 +9,16 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         public string[] AllowedCategories { get; set; } = Array.Empty<string>();
         public string[] AllowedServices { get; set; } = Array.Empty<string>();
 
+        public bool IsCategoryAllowed(string category)
+        {
+            return AllowedCategories != null && AllowedCategories.Contains(category);
+        }
+        
+        public bool IsServiceAllowed(string service)
+        {
+            return AllowedServices != null && AllowedServices.Contains(service);
+        }
+        
         public bool Equals(CookiePreferences other)
         {
             if (AcceptedRevision != other.AcceptedRevision)

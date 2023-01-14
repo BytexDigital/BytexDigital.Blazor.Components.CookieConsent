@@ -28,7 +28,7 @@ else
                     </button>
 
                     <button @onclick="async () => await CookieConsentService.ShowSettingsModalAsync()" class="cc-text-sm cc-text-brand-text hover:cc-text-brand-link-highlight cc-transition-all cc-duration-100 cc-ease-in-out cc-flex cc-items-center">
-                        @Options.Value.ConsentOpenPreferencesText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)
+                        @Options.Value.OpenPreferencesText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)
                     </button>
                 </div>
             </div>
