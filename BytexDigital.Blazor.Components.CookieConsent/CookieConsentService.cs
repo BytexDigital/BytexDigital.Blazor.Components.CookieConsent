@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
@@ -14,6 +15,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         private readonly ILogger<CookieConsentService> _logger;
         private readonly IOptions<CookieConsentOptions> _options;
         private CookiePreferences _cookiePreferencesCached;
+        private CookiePreferences _previousCookiePreferences;
 
         private Task<IJSObjectReference> _module;
 
@@ -38,9 +40,13 @@ namespace BytexDigital.Blazor.Components.CookieConsent
                 AcceptedRevision = -1,
                 AllowedCategories = new[] { CookieCategory.NecessaryCategoryIdentifier }
             };
+
+            // Listen to own pref changed event to 
+            CookiePreferencesChanged += OnCookiePreferencesChanged;
         }
 
         public event EventHandler<CookiePreferences> CookiePreferencesChanged;
+        public event EventHandler<ConsentChangedArgs> CategoryConsentChanged;
         public event EventHandler<EventArgs> OnShowConsentModal;
         public event EventHandler<EventArgs> OnShowSettingsModal;
 
@@ -258,6 +264,49 @@ namespace BytexDigital.Blazor.Components.CookieConsent
                 cookieString += $"; expires={_options.Value.CookieOptions.CookieExpires.Value:r}";
 
             return cookieString;
+        }
+
+        protected void OnCookiePreferencesChanged(object sender, CookiePreferences newPreferences)
+        {
+            var isInitialChange = _previousCookiePreferences == default;
+
+            try
+            {
+                foreach (var category in _options.Value.Categories)
+                {
+                    // Revoked -> Granted
+                    if (isInitialChange ? newPreferences.IsCategoryAllowed(category.Identifier) : !_previousCookiePreferences.IsCategoryAllowed(category.Identifier) &&
+                            newPreferences.IsCategoryAllowed(category.Identifier))
+                    {
+                        BroadcastGranted(category.Identifier, ConsentChangedArgs.ConsentChangeType.Granted);
+                    }
+                    else
+                        // Granted -> Revoked
+                    if (isInitialChange ? !newPreferences.IsCategoryAllowed(category.Identifier) : _previousCookiePreferences.IsCategoryAllowed(category.Identifier) &&
+                            !newPreferences.IsCategoryAllowed(category.Identifier))
+                    {
+                        BroadcastGranted(category.Identifier, ConsentChangedArgs.ConsentChangeType.Revoked);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Ignore most likely user caused exception and log it as we don't want to interrupt program flow.
+                _logger.LogError(ex, "Exception raised trying to run CategoryConsentChanged event handler");
+            }
+
+            _previousCookiePreferences = newPreferences;
+
+            void BroadcastGranted(string identifier, ConsentChangedArgs.ConsentChangeType type)
+            {
+                _ = Task.Run(() => CategoryConsentChanged?.Invoke(this,
+                    new ConsentChangedArgs
+                    {
+                        CategoryIdentifier = identifier,
+                        ChangedTo = type,
+                        IsInitialChange = isInitialChange
+                    }));
+            }
         }
     }
 }
