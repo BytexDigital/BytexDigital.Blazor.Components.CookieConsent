@@ -270,7 +270,7 @@ CookieConsentService.ShowSettingsModalAsync();
 
 ## Stop scripts (like Google Analytics) from running if consent is revoked
 
-If you integrate services such as Google Analytics and the user grants consent, scripts might start running in the background. To stop these scripts from executing once the user revokes consent, it is necessary to refresh the page~~~~.
+If you integrate services such as Google Analytics and the user grants consent, scripts might start running in the background. To stop these scripts from executing once the user revokes consent, it is necessary to refresh the page
 
 To achieve this, you can subscribe to the following event and evaluate whether a specific category consent has been revoked that requires action such as refreshing the page to stop aforementioned scripts:
 
@@ -281,13 +281,17 @@ CookieConsentService.CategoryConsentChanged += (sender, args) =>
         args.ChangedTo == ConsentChangedArgs.ConsentChangeType.Revoked &&
         !args.IsInitialChange)
     {
-        // Reload the current page with a hard refresh (restart Blazor app).~~~~
+        // Reload the current page with a hard refresh (restart Blazor app).
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 };
 ```
 
 # Changelog
+
+### 1.0.18
+
+- Easier to use API to react to specific categories being given consent or consent being revoked during the lifetime of the application.
 
 ### 1.0.17
 
