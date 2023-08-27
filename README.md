@@ -103,7 +103,7 @@ The library implicitly adds a `necessary` (value of constant `CookieCategory.Nec
 
 <br>
 
-##### 🅰️ If you're rendering the UI with Blazor WebAssembly, the call with have to be made as follows:
+##### 🅰️ If you're rendering the UI with Blazor WebAssembly, the call will have to be made as follows:
 
 *In the WebAssembly client project*
 ```csharp
@@ -123,7 +123,7 @@ builder.Services.AddCookieConsent(o =>
 
 <br>
 
-##### 🅱️️ If you're rendering the UI with Blazor Server, the call with have to be made as follows:
+##### 🅱️️ If you're rendering the UI with Blazor Server, the call will have to be made as follows:
 
 *In the WebAssembly client project*
 ```csharp
