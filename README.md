@@ -14,11 +14,11 @@
 ## How to install
 
 <details>
-  <summary> 🔧 Installation .NET 8 and higher, Blazor United</summary>
+  <summary> 🔧 Installation .NET 8 and higher, Blazor Web App</summary>
 
 <br>
 
-> ℹ️ This library is compatible with Blazor WebAssembly and Server within one Blazor United project.
+> ℹ️ This library is compatible with Blazor WebAssembly and Server within one Blazor Web App project.
 > This means that the UI can be rendered in WebAssembly or Server and changes will propagate to all other interactive components regardless of whether they are running on WebAssembly or the Server. Usage of the `CookieConsentService` is also possible in all interactive components regardless of whether they are running on the server or in WebAssembly. Interactive means they are fully interactive either through Blazor Server or Blazor WebAssembly.
 
 ```ps1
@@ -31,7 +31,7 @@ Install-Package BytexDigital.Blazor.Components.CookieConsent
 
 - Library version 1.1.0 or higher
 - .NET >= 8.0
-- You're using Blazor United (this is the case if your `<Router>` is inside your App.razor directly inside the `<body>` tag)
+- You're using Blazor Web App (this is the case if your `<Router>` is inside your App.razor directly inside the `<body>` tag)
 
 <br />
 
@@ -102,7 +102,7 @@ Add the required services in your Program.cs/Startup.cs and configure cookie cat
 
 The library implicitly adds a `necessary` (value of constant `CookieCategory.NecessaryCategoryIdentifier`) category.
 
-> ⚠️ When using Blazor United, the `AddCookieConsent` call must be made on both the server project AND the client project, regardless of where the user interface is rendered.
+> ⚠️ When using Blazor Web App, the `AddCookieConsent` call must be made on both the server project AND the client project, regardless of where the user interface is rendered.
 > This is to ensure that all components work as expected, regardless of whether you're using them in Blazor Server or Blazor WebAssembly.
 
 <br>
@@ -643,7 +643,7 @@ example the `Component.Category` property to access the display name of the requ
 
 Call the following method to show the preferences menu. This could be done from an element inside your footer for example.
 
-ℹ️ *In Blazor United, this can be done from both WASM and the Server.*
+ℹ️ *In Blazor Web App, this can be done from both WASM and the Server.*
 
 ```csharp
 CookieConsentService.ShowSettingsModalAsync();
@@ -700,7 +700,7 @@ bool isAllowed = preferences.IsCategoryAllowed("google");
 
 ### 1.1.0
 
-- Support for .NET 8 Blazor United with mixed WebAssembly and Server usage
+- Support for .NET 8 Blazor Web Apps with mixed WebAssembly and Server usage
 - Various internal improvements
 
 ### 1.0.18
