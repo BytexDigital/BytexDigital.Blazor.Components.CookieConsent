@@ -710,7 +710,7 @@ CookieConsentService.ShowSettingsModalAsync();
 
 ## Stop scripts (like Google Analytics) from running if consent is revoked
 
-If you integrate services such as Google Analytics and the user grants consent, scripts might start running in the background. To stop these scripts from executing once the user revokes consent, it is necessary to refresh the page~~~~.
+If you integrate services such as Google Analytics and the user grants consent, scripts might start running in the background. To stop these scripts from executing once the user revokes consent, it is necessary to refresh the page.
 
 To achieve this, you can subscribe to the following event and evaluate whether a specific category consent has been
 revoked that requires action such as refreshing the page to stop aforementioned scripts:
