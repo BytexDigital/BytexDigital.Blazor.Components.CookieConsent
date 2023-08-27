@@ -513,6 +513,8 @@ The library uses the current `CurrentCulture` by default. Blazor's `.AddLocaliza
 current culture. We aim at adding proper support for `IStringLocalizer` aswell, so that all localization can be done
 inside resource files instead.
 
+<br />
+
 ## Disabled or blocked JavaScript
 
 The library depends on JavaScript to save and load preferences and to enable HTML script tags. If JavaScript is blocked
@@ -521,6 +523,8 @@ like `<script type="text/plain" data-consent-category="myCategoryName">`**; They
 permission by the user. **Saving and loading preferences will also not be possible**, which means any permissions the
 user has given will be forgotten if the browser tab is closed and are only valid within the browser tab they were given
 in.
+
+<br />
 
 ## Customizing colors and font
 
