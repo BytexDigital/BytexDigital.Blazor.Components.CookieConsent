@@ -19,7 +19,7 @@
 <br>
 
 > ℹ️ This library is compatible with Blazor WebAssembly and Server within one Blazor Web App project.
-> This means that the UI can be rendered in WebAssembly or Server and changes will propagate to all other interactive components regardless of whether they are running on WebAssembly or the Server. Usage of the `CookieConsentService` is also possible in all interactive components regardless of whether they are running on the server or in WebAssembly. Interactive means they are fully interactive either through Blazor Server or Blazor WebAssembly.
+> This means that the UI can be rendered in WebAssembly or Server and changes will propagate to all other interactive components regardless of whether they are running on WebAssembly or the Server. Usage of the `CookieConsentService` is also possible in all interactive components regardless of whether they are running on the server or in WebAssembly. Interactive means they are fully interactive either through Blazor Server or Blazor WebAssembly and NOT statically rendered Blazor components.
 
 ```ps1
 Install-Package BytexDigital.Blazor.Components.CookieConsent
