@@ -701,6 +701,7 @@ bool isAllowed = preferences.IsCategoryAllowed("google");
 ### 1.1.0
 
 - Support for .NET 8 Blazor Web Apps with mixed WebAssembly and Server usage
+- The settings/preferences modal is now replaceable just like the consent prompt is
 - Various internal improvements
 
 ### 1.0.18
