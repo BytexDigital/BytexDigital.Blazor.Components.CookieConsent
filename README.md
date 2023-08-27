@@ -139,7 +139,7 @@ builder.Services.AddCookieConsent(o =>
 {
     // Your configuration
 });
-```
+```[BytexDigital.Blazor.Components.CookieConsent.AspNetCore.csproj](BytexDigital.Blazor.Components.CookieConsent.AspNetCore%2FBytexDigital.Blazor.Components.CookieConsent.AspNetCore.csproj)
 
 <br>
 
@@ -666,6 +666,22 @@ CookieConsentService.CategoryConsentChanged += (sender, args) =>
 ```
 
 # Changelog
+
+### 1.1.0
+
+- Support for .NET 8 Blazor United with mixed WebAssembly and Server usage
+- Various internal improvements
+
+### 1.0.18
+
+<details>
+  <summary>Click to expand!</summary>
+
+   <br /> 
+
+- Bug fixes
+
+</details>
 
 ### 1.0.17
 
