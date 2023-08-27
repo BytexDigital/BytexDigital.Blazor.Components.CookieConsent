@@ -143,7 +143,7 @@ builder.Services.AddCookieConsent(o =>
 {
     // Your configuration
 });
-```[BytexDigital.Blazor.Components.CookieConsent.AspNetCore.csproj](BytexDigital.Blazor.Components.CookieConsent.AspNetCore%2FBytexDigital.Blazor.Components.CookieConsent.AspNetCore.csproj)
+```
 
 <br>
 
