@@ -524,6 +524,8 @@ in.
 
 ## Customizing colors and font
 
+The default consent prompt and settings modal are customizable to some degree with CSS variables.
+
 Use a CSS rule as follows to overwrite colors and font used.
 The values shown are the current default values as shown in the screenshots using Tailwind's theme function.
 
@@ -559,6 +561,39 @@ The values shown are the current default values as shown in the screenshots usin
     /* (Transparent) Color for background when any modal is opened */
     --cc-color-modal-background: theme(colors.gray.800 / 75%);
 }
+```
+
+<br />
+
+## Custom consent prompt and settings modal
+
+You can entirely replace the components that display to ask the user for consent and the settings modal.
+
+First, create a component that inherits from `CookieConsentSettingsModalComponentBase`/`CookieConsentPromptComponentBase`.
+
+Then, you must register this component type in the cookie library by creating a custom variant that inherits from `CookieConsentPromptVariantBase`/`CookieConsentPreferencesVariantBase`.
+For example
+
+```csharp
+public class CustomSettingsModalVariant : CookieConsentDefaultSettingsModalVariant
+{
+    public override Type ComponentType { get; set; } = typeof(YOUR_CUSTOM_COMPONENT);
+}
+```
+
+Lastly, you need to register this variant in the `AddCookieConsent` call.
+
+```csharp
+builder.Services.AddCookieConsent(options =>
+{
+    // To replace the consent prompt
+    options.ConsentPromptVariant = new CustomConsentPromptVariant();
+        
+    // To replace the settings modal
+    options.SettingsModalVariant = new CustomSettingsModalVariant();
+    
+    // ...
+});
 ```
 
 <br />
