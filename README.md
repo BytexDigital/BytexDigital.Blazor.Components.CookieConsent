@@ -18,6 +18,9 @@
 
 <br>
 
+> ℹ️ This library is compatible with Blazor WebAssembly and Server within one Blazor United project.
+> This means that the UI can be rendered in WebAssembly or Server and changes will propagate to all other interactive components regardless of whether they are running on WebAssembly or the Server. Usage of the `CookieConsentService` is also possible in all interactive components regardless of whether they are running on the server or in WebAssembly. Interactive means they are fully interactive either through Blazor Server or Blazor WebAssembly.
+
 ```ps1
 Install-Package BytexDigital.Blazor.Components.CookieConsent
 ```
@@ -26,6 +29,7 @@ Install-Package BytexDigital.Blazor.Components.CookieConsent
 
 ### Requirements
 
+- Library version 1.1.0 or higher
 - .NET >= 8.0
 - You're using Blazor United (this is the case if your `<Router>` is inside your App.razor directly inside the `<body>` tag)
 
@@ -637,9 +641,9 @@ example the `Component.Category` property to access the display name of the requ
 
 ## Manually open the preferences modal
 
-Call the following
-metho[BytexDigital.Blazor.Components.CookieConsent.csproj](BytexDigital.Blazor.Components.CookieConsent%2FBytexDigital.Blazor.Components.CookieConsent.csproj)
-d to show the preferences menu. This could be done from an element inside your footer for example.
+Call the following method to show the preferences menu. This could be done from an element inside your footer for example.
+
+ℹ️ *In Blazor United, this can be done from both WASM and the Server.*
 
 ```csharp
 CookieConsentService.ShowSettingsModalAsync();
@@ -663,6 +667,33 @@ CookieConsentService.CategoryConsentChanged += (sender, args) =>
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 };
+```
+
+## Check for the cookie consent state in non-interactive Blazor components such as statically rendered Blazor components, Razor pages or controllers
+
+To accomplish this, you need to read the contents of the cookie which contains the cookie consent preferences encoded in Base64.
+
+The easiest way to achieve this is to use the helper package:
+```ps1
+Install-Package BytexDigital.Blazor.Components.CookieConsent
+```
+
+After installation, add the following service registration:
+```csharp
+builder.Services.AddCookieConsentHttpContextServices();
+```
+
+Then request the service from the service container, e.g. in a static Blazor component:
+```csharp
+[Inject]
+public HttpContextCookieConsent CookieConsent { get; set; }
+```
+
+You can then use the service to fetch the `CookiePreferences` object.
+```csharp
+var preferences = CookieConsent.GetCookieConsentPreferences();
+
+bool isAllowed = preferences.IsCategoryAllowed("google");
 ```
 
 # Changelog
