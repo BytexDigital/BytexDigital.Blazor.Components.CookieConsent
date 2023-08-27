@@ -1,18 +1,15 @@
-﻿@using BytexDigital.Blazor.Components.CookieConsent.Internal
-@using BytexDigital.Blazor.Components.CookieConsent.Dialogs.Preferences
-@using BytexDigital.Blazor.Components.CookieConsent.Dialogs.Prompts.Default
+﻿@using BytexDigital.Blazor.Components.CookieConsent.Broadcasting
 
-<CascadingValue Value="this">
-    @ChildContent
-</CascadingValue>
-
-
-@if (IsShowingSettingsModal)
+@if (RuntimeContext is { RendersUserInterface: true })
 {
-    <CookieConsentPreferences Close="SettingsClosed"/>
+    <CookieConsentInterface />
 }
 
-@if (IsShowingConsentModal)
-{
-    @PromptFragment
+<CookieConsentInitializer />
+
+@code {
+
+    [Inject]
+    public CookieConsentRuntimeContext RuntimeContext { get; set; }
+
 }

@@ -25,6 +25,9 @@ namespace BytexDigital.Blazor.Components.CookieConsent
 
         [Inject]
         public IOptions<CookieConsentOptions> Options { get; set; }
+        
+        [Inject]
+        public CookieConsentLocalizer Localizer { get; set; }
 
         /// <summary>
         /// Identifier of the required category. Must be set OR <see cref="RequiredService"/>.

@@ -1,25 +1,27 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
+using BytexDigital.Blazor.Components.CookieConsent.Broadcasting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
 
 namespace BytexDigital.Blazor.Components.CookieConsent
 {
-    public class CookieConsentService
+    public abstract class CookieConsentService
     {
-        private readonly IJSRuntime _jsRuntime;
-        private readonly ILogger<CookieConsentService> _logger;
-        private readonly IOptions<CookieConsentOptions> _options;
-        private CookiePreferences _cookiePreferencesCached;
-        private CookiePreferences _previousCookiePreferences;
+        protected readonly CookieConsentEventHandler _eventHandler;
+        protected readonly IJSRuntime _jsRuntime;
+        protected readonly ILogger<CookieConsentService> _logger;
+        protected readonly IOptions<CookieConsentOptions> _options;
+        private readonly CookieConsentRuntimeContext _runtimeContext;
+        protected CookiePreferences _cookiePreferencesCached;
+        protected Task<IJSObjectReference> _module;
+        protected CookiePreferences _previousCookiePreferences;
 
-        private Task<IJSObjectReference> _module;
-
-        private Task<IJSObjectReference> Module => _module ??= _jsRuntime.InvokeAsync<IJSObjectReference>(
+        protected Task<IJSObjectReference> Module => _module ??= _jsRuntime.InvokeAsync<IJSObjectReference>(
                 "import",
                 new[] { "./_content/BytexDigital.Blazor.Components.CookieConsent/cookieconsent.js" })
             .AsTask();
@@ -27,10 +29,14 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         public CookieConsentService(
             IOptions<CookieConsentOptions> options,
             IJSRuntime jsRuntime,
+            CookieConsentEventHandler eventHandler,
+            CookieConsentRuntimeContext runtimeContext,
             ILogger<CookieConsentService> logger)
         {
             _options = options;
             _jsRuntime = jsRuntime;
+            _eventHandler = eventHandler;
+            _runtimeContext = runtimeContext;
             _logger = logger;
 
             // Create a default cookie preferences object that is returned when Javascript turns out to be unavailable
@@ -41,28 +47,54 @@ namespace BytexDigital.Blazor.Components.CookieConsent
                 AllowedCategories = new[] { CookieCategory.NecessaryCategoryIdentifier }
             };
 
-            // Listen to own pref changed event to 
-            CookiePreferencesChanged += OnCookiePreferencesChanged;
+            _eventHandler.CookiePreferencesChanged += EventHandlerOnCookiePreferencesChanged;
+            _eventHandler.ShowConsentModalRequested += EventHandlerOnShowConsentModalRequested;
+            _eventHandler.ShowPreferencesModalRequested += EventHandlerOnShowPreferencesModalRequested;
+        }
+
+        private void EventHandlerOnShowPreferencesModalRequested(object sender, EventArgs e)
+        {
+            _ = Task.Run(() => ShowPreferencesModalRequested?.Invoke(this, EventArgs.Empty));
+        }
+
+        private void EventHandlerOnShowConsentModalRequested(object sender, EventArgs e)
+        {
+            _ = Task.Run(() => ShowConsentModalRequested?.Invoke(this, EventArgs.Empty));
         }
 
         public event EventHandler<CookiePreferences> CookiePreferencesChanged;
         public event EventHandler<ConsentChangedArgs> CategoryConsentChanged;
-        public event EventHandler<EventArgs> OnShowConsentModal;
-        public event EventHandler<EventArgs> OnShowSettingsModal;
+        public event EventHandler<EventArgs> ShowConsentModalRequested;
+        public event EventHandler<EventArgs> ShowPreferencesModalRequested;
 
-        public async Task ShowConsentModalAsync(bool showOnlyIfNecessary)
+        protected virtual async Task PublishCookiePreferencesChanged(CookiePreferences preferences)
+        {
+            await _eventHandler.BroadcastCookiePreferencesChangedAsync(preferences);
+        }
+
+        protected virtual async Task PublishShowConsentModalRequested()
+        {
+            await _eventHandler.BroadcastShowConsentModalRequestedAsync();
+        }
+
+        protected virtual async Task PublishShowPreferencesModalRequested()
+        {
+            await _eventHandler.BroadcastShowPreferencesModalRequestedAsync();
+        }
+
+        public virtual async Task ShowConsentModalAsync(bool showOnlyIfNecessary)
         {
             if (showOnlyIfNecessary && await IsCurrentRevisionAcceptedAsync()) return;
 
-            await Task.Run(() => OnShowConsentModal?.Invoke(this, EventArgs.Empty));
+            await PublishShowConsentModalRequested();
         }
 
-        public async Task ShowSettingsModalAsync()
+        public virtual async Task ShowPreferencesModalAsync()
         {
-            await Task.Run(() => OnShowSettingsModal?.Invoke(this, EventArgs.Empty));
+            await PublishShowPreferencesModalRequested();
         }
 
-        public async Task SavePreferencesAsync(CookiePreferences cookiePreferences)
+        public virtual async Task SavePreferencesAsync(CookiePreferences cookiePreferences)
         {
             // Fetch the currently valid settings.
             // If JS is unavailable, this will return default settings or the last written settings from memory cache.
@@ -82,7 +114,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
                     cookiePreferences.AllowedCategories,
                     cookiePreferences.AllowedServices);
             }
-            catch (JSException ex)
+            catch (Exception ex)
             {
                 // Ignore exceptions on purpose.
                 // We might get here because JS is blocked or disabled.
@@ -97,7 +129,9 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             try
             {
                 if (!existingPreferences.Equals(cookiePreferences))
-                    await Task.Run(() => CookiePreferencesChanged?.Invoke(this, cookiePreferences));
+                {
+                    await PublishCookiePreferencesChanged(cookiePreferences);
+                }
             }
             catch (Exception ex)
             {
@@ -106,7 +140,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             }
         }
 
-        public async Task SavePreferencesNecessaryOnlyAsync()
+        public virtual async Task SavePreferencesNecessaryOnlyAsync()
         {
             await SavePreferencesAsync(
                 new CookiePreferences
@@ -122,7 +156,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
                 });
         }
 
-        public async Task SavePreferencesAcceptAllAsync()
+        public virtual async Task SavePreferencesAcceptAllAsync()
         {
             await SavePreferencesAsync(
                 new CookiePreferences
@@ -141,7 +175,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         ///     <see cref="SavePreferencesAsync" />.
         /// </summary>
         /// <returns></returns>
-        public async Task<CookiePreferences> GetPreferencesAsync()
+        public virtual async Task<CookiePreferences> GetPreferencesAsync()
         {
             try
             {
@@ -154,9 +188,12 @@ namespace BytexDigital.Blazor.Components.CookieConsent
                 // return default data.
                 return string.IsNullOrWhiteSpace(cookieValue)
                     ? _cookiePreferencesCached
-                    : JsonSerializer.Deserialize<CookiePreferences>(cookieValue);
+                    : cookieValue.StartsWith("{")
+                        ? JsonSerializer.Deserialize<CookiePreferences>(cookieValue)
+                        : JsonSerializer.Deserialize<CookiePreferences>(
+                            Encoding.UTF8.GetString(Convert.FromBase64String(cookieValue)));
             }
-            catch (JSException ex)
+            catch (Exception ex)
             {
                 // We might get here because JS is unavailable (blocked, prerendering, etc.).
                 // Return default/cached data instead.
@@ -166,7 +203,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             }
         }
 
-        public async Task AllowCategoryAsync(string categoryIdentifier)
+        public virtual async Task AllowCategoryAsync(string categoryIdentifier)
         {
             var category = _options.Value.Categories.First(x => x.Identifier == categoryIdentifier);
             var preferences = await GetPreferencesAsync();
@@ -184,7 +221,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             await SavePreferencesAsync(preferences);
         }
 
-        public async Task ForbidCategoryAsync(string categoryIdentifier)
+        public virtual async Task ForbidCategoryAsync(string categoryIdentifier)
         {
             var category = _options.Value.Categories.First(x => x.Identifier == categoryIdentifier);
             var preferences = await GetPreferencesAsync();
@@ -202,87 +239,77 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             await SavePreferencesAsync(preferences);
         }
 
-        public async Task<bool> IsCurrentRevisionAcceptedAsync()
+        public virtual async Task<bool> IsCurrentRevisionAcceptedAsync()
         {
             return (await GetPreferencesAsync()).AcceptedRevision == _options.Value.Revision;
         }
 
-        public async Task NotifyPageLoadedAsync()
+        public virtual async Task NotifyApplicationLoadedAsync()
         {
-            var preferences = await GetPreferencesAsync();
-
-            try
-            {
-                if (await IsCurrentRevisionAcceptedAsync())
-                {
-                    var module = await Module;
-
-                    await module.InvokeVoidAsync(
-                        "CookieConsent.ApplyPreferences",
-                        preferences.AllowedCategories,
-                        preferences.AllowedServices);
-                }
-            }
-            catch (JSException ex)
-            {
-                // Ignore exceptions due to blocked or unavailable JS.
-                // In this case, we aren't able to activate JS tags, but there seems to be nothing
-                // we can do in this situation!
-                _logger.LogTrace(ex, "Exception raised attempting to call into JavaScript");
-            }
-
-            try
-            {
-                await Task.Run(() => CookiePreferencesChanged?.Invoke(this, preferences));
-            }
-            catch (Exception ex)
-            {
-                // Ignore most likely user caused exception and log it as we don't want to interrupt program flow.
-                _logger.LogError(ex, "Exception raised trying to run CookiePreferencesChanged event handler");
-            }
         }
 
         protected virtual string CreateCookieString(string value)
         {
-            var cookieString = $"{_options.Value.CookieOptions.CookieName}={value}";
+            var cookieString =
+                $"{_options.Value.CookieOptions.CookieName}={Convert.ToBase64String(Encoding.UTF8.GetBytes(value))}";
             cookieString += $"; samesite={_options.Value.CookieOptions.CookieSameSite}";
 
             if (_options.Value.CookieOptions.CookieMaxAge != default)
+            {
                 cookieString += $"; max-age={(int) _options.Value.CookieOptions.CookieMaxAge.Value.TotalSeconds}";
+            }
 
             if (!string.IsNullOrEmpty(_options.Value.CookieOptions.CookieDomain))
+            {
                 cookieString += $"; domain={_options.Value.CookieOptions.CookieDomain}";
+            }
 
             if (!string.IsNullOrEmpty(_options.Value.CookieOptions.CookiePath))
+            {
                 cookieString += $"; path={_options.Value.CookieOptions.CookiePath}";
+            }
 
             if (_options.Value.CookieOptions.CookieHttpOnly) cookieString += "; HttpOnly";
 
             if (_options.Value.CookieOptions.CookieSecure) cookieString += "; Secure";
 
             if (_options.Value.CookieOptions.CookieExpires != default)
+            {
                 cookieString += $"; expires={_options.Value.CookieOptions.CookieExpires.Value:r}";
+            }
 
             return cookieString;
         }
 
-        protected void OnCookiePreferencesChanged(object sender, CookiePreferences newPreferences)
+        protected virtual void EventHandlerOnCookiePreferencesChanged(object sender, CookiePreferences newPreferences)
         {
             var isInitialChange = _previousCookiePreferences == default;
+
+            try
+            {
+                Task.Run(() => CookiePreferencesChanged?.Invoke(this, newPreferences));
+            }
+            catch (Exception ex)
+            {
+            }
 
             try
             {
                 foreach (var category in _options.Value.Categories)
                 {
                     // Revoked -> Granted
-                    if (isInitialChange ? newPreferences.IsCategoryAllowed(category.Identifier) : !_previousCookiePreferences.IsCategoryAllowed(category.Identifier) &&
+                    if (isInitialChange
+                            ? newPreferences.IsCategoryAllowed(category.Identifier)
+                            : !_previousCookiePreferences.IsCategoryAllowed(category.Identifier) &&
                             newPreferences.IsCategoryAllowed(category.Identifier))
                     {
                         BroadcastGranted(category.Identifier, ConsentChangedArgs.ConsentChangeType.Granted);
                     }
                     else
                         // Granted -> Revoked
-                    if (isInitialChange ? !newPreferences.IsCategoryAllowed(category.Identifier) : _previousCookiePreferences.IsCategoryAllowed(category.Identifier) &&
+                    if (isInitialChange
+                            ? !newPreferences.IsCategoryAllowed(category.Identifier)
+                            : _previousCookiePreferences.IsCategoryAllowed(category.Identifier) &&
                             !newPreferences.IsCategoryAllowed(category.Identifier))
                     {
                         BroadcastGranted(category.Identifier, ConsentChangedArgs.ConsentChangeType.Revoked);
@@ -296,6 +323,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             }
 
             _previousCookiePreferences = newPreferences;
+            return;
 
             void BroadcastGranted(string identifier, ConsentChangedArgs.ConsentChangeType type)
             {

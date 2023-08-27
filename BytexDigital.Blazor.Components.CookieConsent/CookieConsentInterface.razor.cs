@@ -1,13 +1,14 @@
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
-using BytexDigital.Blazor.Components.CookieConsent.Dialogs.Prompts;
+using BytexDigital.Blazor.Components.CookieConsent.Dialogs.Prompt;
+using BytexDigital.Blazor.Components.CookieConsent.Dialogs.Settings;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Options;
 
 namespace BytexDigital.Blazor.Components.CookieConsent
 {
-    public partial class CookieConsentHandler : IDisposable
+    public partial class CookieConsentInterface : IDisposable
     {
         [Inject]
         protected IOptions<CookieConsentOptions> Options { get; set; }
@@ -20,6 +21,8 @@ namespace BytexDigital.Blazor.Components.CookieConsent
 
         public RenderFragment PromptFragment { get; set; }
 
+        public RenderFragment SettingsFragment { get; set; }
+
         public bool IsShowingConsentModal { get; private set; }
         public bool IsShowingSettingsModal { get; private set; }
 
@@ -28,14 +31,14 @@ namespace BytexDigital.Blazor.Components.CookieConsent
 
         public void Dispose()
         {
-            CookieConsentService.OnShowConsentModal -= CookieConsentService_OnShowCookieConsentModal;
-            CookieConsentService.OnShowSettingsModal -= CookieConsentService_OnShowSettingsModal;
+            CookieConsentService.ShowConsentModalRequested -= CookieConsentServiceShowCookieConsentModalRequested;
+            CookieConsentService.ShowPreferencesModalRequested -= CookieConsentServiceShowPreferencesModalRequested;
         }
 
         protected override void OnInitialized()
         {
-            CookieConsentService.OnShowConsentModal += CookieConsentService_OnShowCookieConsentModal;
-            CookieConsentService.OnShowSettingsModal += CookieConsentService_OnShowSettingsModal;
+            CookieConsentService.ShowConsentModalRequested += CookieConsentServiceShowCookieConsentModalRequested;
+            CookieConsentService.ShowPreferencesModalRequested += CookieConsentServiceShowPreferencesModalRequested;
         }
 
         protected override void OnParametersSet()
@@ -45,6 +48,13 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             {
                 throw new InvalidOperationException(
                     $"{nameof(CookieConsentOptions)}.{nameof(CookieConsentOptions.ConsentPromptVariant)}.{nameof(CookieConsentPromptVariantBase.ComponentType)} must inherit from {nameof(CookieConsentPromptComponentBase)}");
+            }
+
+            if (!Options.Value.SettingsModalVariant.ComponentType.IsAssignableTo(
+                    typeof(CookieConsentSettingsModalComponentBase)))
+            {
+                throw new InvalidOperationException(
+                    $"{nameof(CookieConsentOptions)}.{nameof(CookieConsentOptions.SettingsModalVariant)}.{nameof(CookieConsentPromptVariantBase.ComponentType)} must inherit from {nameof(CookieConsentSettingsModalComponentBase)}");
             }
 
             PromptFragment = builder =>
@@ -57,14 +67,23 @@ namespace BytexDigital.Blazor.Components.CookieConsent
                     EventCallback.Factory.Create(this, OnPromptClose));
                 builder.CloseComponent();
             };
+
+            SettingsFragment = builder =>
+            {
+                var seq = 0;
+
+                builder.OpenComponent(seq++, Options.Value.SettingsModalVariant.ComponentType);
+                builder.AddAttribute(seq++,
+                    nameof(CookieConsentSettingsModalComponentBase.OnClosePreferences),
+                    EventCallback.Factory.Create<bool>(this, OnPreferencesClose));
+                builder.CloseComponent();
+            };
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                await CookieConsentService.NotifyPageLoadedAsync();
-
                 if (Options.Value.AutomaticallyShow)
                 {
                     if (!await CookieConsentService.IsCurrentRevisionAcceptedAsync())
@@ -81,13 +100,19 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             IsShowingSettingsModal = true;
             StateHasChanged();
         }
+        
+        private async Task OnPromptClose()
+        {
+            IsShowingConsentModal = false;
+            StateHasChanged();
+        }
 
-        private void SettingsClosed(bool selectionMade)
+        private async Task OnPreferencesClose(bool dismissPrompt)
         {
             IsShowingSettingsModal = false;
 
             // If a selection has been made inside the preferences dialog, we want to also hide the consent dialog in case it was showing, since the users preferences have been set
-            if (selectionMade)
+            if (dismissPrompt)
             {
                 IsShowingConsentModal = false;
             }
@@ -95,14 +120,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             StateHasChanged();
         }
 
-        private async Task OnPromptClose()
-        {
-            IsShowingConsentModal = false;
-            StateHasChanged();
-        }
-
-
-        private async void CookieConsentService_OnShowSettingsModal(object sender, EventArgs e)
+        private async void CookieConsentServiceShowPreferencesModalRequested(object sender, EventArgs e)
         {
             await InvokeAsync(
                 () =>
@@ -112,7 +130,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
                 });
         }
 
-        private async void CookieConsentService_OnShowCookieConsentModal(object sender, EventArgs e)
+        private async void CookieConsentServiceShowCookieConsentModalRequested(object sender, EventArgs e)
         {
             await InvokeAsync(
                 () =>

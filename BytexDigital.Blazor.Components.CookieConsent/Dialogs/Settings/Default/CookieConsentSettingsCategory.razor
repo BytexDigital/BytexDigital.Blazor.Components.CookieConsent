@@ -1,6 +1,5 @@
 ﻿@using Microsoft.Extensions.Options
-@using System.Globalization
-@namespace BytexDigital.Blazor.Components.CookieConsent.Internal
+@namespace BytexDigital.Blazor.Components.CookieConsent.Dialogs.Settings.Default
 
 <div class="cc-rounded-md cc-bg-gray-100 cc-text-brand-text" @key="@($"category_{Category.Identifier}")">
     <div class="cc-w-full cc-rounded-md hover:cc-bg-gray-200">
@@ -19,7 +18,7 @@
                     </svg>
                 }
 
-                <h5 class="cc-font-semibold cc-text-brand-text cc-text-sm cc-ml-3">@Category.TitleText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)</h5>
+                <h5 class="cc-font-semibold cc-text-brand-text cc-text-sm cc-ml-3">@Localizer.GetLocalization(Category.TitleText)</h5>
             </div>
 
             <div class="cc-pr-3 cc-shrink-0 cc-py-3">
@@ -48,23 +47,23 @@
     <div class="cc-text-sm @(Collapsed ? "cc-hidden" : "")" @key="@($"category_collapsible_{Category.Identifier}")">
         <div class="cc-p-3 cc-px-4">
             <p>
-                @Category.DescriptionText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)
+                @Localizer.GetLocalization(Category.DescriptionText)
             </p>
 
             @if (Category.Services != null && Category.Services.Count > 0)
             {
-                <h6 class="cc-mt-4 cc-text-brand-text cc-font-bold">@Options.Value.SettingsUsedServicesText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)</h6>
+                <h6 class="cc-mt-4 cc-text-brand-text cc-font-bold">@Localizer.GetLocalization(Options.Value.SettingsUsedServicesText)</h6>
 
                 <div class="cc-mt-2 cc-space-y-2 md:cc-space-y-1">
                     @foreach (var service in Category.Services)
                     {
                         <div class="cc-flex cc-flex-col md:cc-flex-row cc-justify-between cc-gap-1">
-                            <div>@service.TitleText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)</div>
+                            <div>@Localizer.GetLocalization(service.TitleText)</div>
                             <div>
                                 @if (!string.IsNullOrEmpty(service.PolicyUrl))
                                 {
                                     <a class="cc-text-xs md:cc-text-sm cc-text-brand-link hover:cc-text-brand-link-highlight cc-transition-all cc-duration-100 cc-ease-in-out cc-flex cc-items-center" href="@service.PolicyUrl" target="_blank">
-                                        @service.ShowPolicyText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)
+                                        @Localizer.GetLocalization(service.ShowPolicyText)
 
                                         <svg xmlns="http://www.w3.org/2000/svg" class="cc-h-4 cc-w-4 cc-ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
@@ -84,6 +83,9 @@
 
     [Inject]
     protected IOptions<CookieConsentOptions> Options { get; set; }
+    
+    [Inject]
+    public CookieConsentLocalizer Localizer { get; set; }
 
     [Parameter]
     public CookieCategory Category { get; set; }

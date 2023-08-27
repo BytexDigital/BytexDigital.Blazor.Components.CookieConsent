@@ -1,0 +1,22 @@
+﻿@using BytexDigital.Blazor.Components.CookieConsent.Broadcasting
+@code {
+
+    [Inject]
+    public CookieConsentEventHandler EventHandler { get; set; }
+
+    [Inject]
+    public CookieConsentService CookieConsentService { get; set; }
+
+    [Inject]
+    public CookieConsentRuntimeContext RuntimeContext { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return;
+
+        await EventHandler.InitializeAsync();
+        await CookieConsentService.NotifyApplicationLoadedAsync();
+    }
+
+}

@@ -1,14 +1,13 @@
-using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Options;
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BytexDigital.Blazor.Components.CookieConsent.Dialogs.Preferences
+namespace BytexDigital.Blazor.Components.CookieConsent.Dialogs.Settings.Default
 {
-    public partial class CookieConsentPreferences
+    public partial class CookieConsentDefaultSettingsModal : CookieConsentSettingsModalComponentBase
     {
         [Inject]
         protected IOptions<CookieConsentOptions> Options { get; set; }
@@ -16,14 +15,13 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Dialogs.Preferences
         [Inject]
         protected CookieConsentService CookieConsentService { get; set; }
 
-        [Parameter]
-        public EventCallback<bool> Close { get; set; }
+        [Inject]
+        public CookieConsentLocalizer Localizer { get; set; }
 
+        private string CultureCode => CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
 
-        private string CultureCode => System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
-
-        public List<string> AcceptedCategories { get; set; } = new List<string>();
-        public List<string> AcceptedServices { get; set; } = new List<string>();
+        public List<string> AcceptedCategories { get; set; } = new();
+        public List<string> AcceptedServices { get; set; } = new();
 
         protected override async Task OnInitializedAsync()
         {
@@ -56,7 +54,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Dialogs.Preferences
         private async Task AllowAllAsync()
         {
             await CookieConsentService.SavePreferencesAcceptAllAsync();
-            await Close.InvokeAsync(true);
+            await OnClosePreferences.InvokeAsync(true);
         }
 
         private async Task AllowSelectedAsync()
@@ -68,7 +66,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Dialogs.Preferences
                 AllowedServices = AcceptedServices.ToArray()
             });
 
-            await Close.InvokeAsync(true);
+            await OnClosePreferences.InvokeAsync(true);
         }
 
         private void SelectedChanged(CookieCategory category, bool isAllowed)
@@ -79,7 +77,8 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Dialogs.Preferences
                 {
                     if (!AcceptedCategories.Contains(category.Identifier)) AcceptedCategories.Add(category.Identifier);
 
-                    foreach (var service in category.Services.Where(service => !AcceptedServices.Contains(service.Identifier)))
+                    foreach (var service in category.Services.Where(service
+                                 => !AcceptedServices.Contains(service.Identifier)))
                     {
                         AcceptedServices.Add(service.Identifier);
                     }
@@ -88,9 +87,11 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Dialogs.Preferences
                 }
                 case false:
                 {
-                    if (AcceptedCategories.Contains(category.Identifier)) AcceptedCategories.Remove(category.Identifier);
+                    if (AcceptedCategories.Contains(category.Identifier))
+                        AcceptedCategories.Remove(category.Identifier);
 
-                    foreach (var service in category.Services.Where(service => AcceptedServices.Contains(service.Identifier)))
+                    foreach (var service in category.Services.Where(service
+                                 => AcceptedServices.Contains(service.Identifier)))
                     {
                         AcceptedServices.Remove(service.Identifier);
                     }

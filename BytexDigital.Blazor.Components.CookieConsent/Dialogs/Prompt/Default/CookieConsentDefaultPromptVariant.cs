@@ -1,7 +1,6 @@
 ﻿using System;
-using BytexDigital.Blazor.Components.CookieConsent.Dialogs.Prompts.Default;
 
-namespace BytexDigital.Blazor.Components.CookieConsent
+namespace BytexDigital.Blazor.Components.CookieConsent.Dialogs.Prompt.Default
 {
     public class CookieConsentDefaultPromptVariant : CookieConsentPromptVariantBase
     {

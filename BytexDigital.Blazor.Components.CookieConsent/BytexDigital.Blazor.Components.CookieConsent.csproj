@@ -15,9 +15,9 @@
 		<SignAssembly>False</SignAssembly>
 		<PackageProjectUrl>https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent</PackageProjectUrl>
 		<PackageIcon>logo_squared_128.png</PackageIcon>
-		<PackageVersion>1.0.18</PackageVersion>
+		<PackageVersion>1.1.0</PackageVersion>
 		<PackageVersion Condition=" '$(VersionSuffix)' != '' ">$(PackageVersion)-$(VersionSuffix)</PackageVersion>
-		<PackageReleaseNotes>Added an event that indicates when consent for a category has been granted or revoked.</PackageReleaseNotes>
+		<PackageReleaseNotes>See https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -48,6 +48,9 @@
 	    <Link>README.md</Link>
 	  </Content>
 	</ItemGroup>
+
+
+
 
 <!--	<Target Name="PostBuild" AfterTargets="PostBuildEvent">-->
 <!--		<Exec Command="npm run all" />-->

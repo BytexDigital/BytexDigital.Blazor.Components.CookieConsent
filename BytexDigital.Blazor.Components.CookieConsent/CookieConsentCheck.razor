@@ -1,6 +1,4 @@
-﻿@using System.Globalization
-@using BytexDigital.Blazor.Components.CookieConsent.Internal
-@if (IsAllowed)
+﻿@if (IsAllowed)
 {
     @Allowed
 }
@@ -15,20 +13,20 @@ else
         <div class="cc-isolation-container">
             <div class="cc-font-sans cc-font-overwrite cc-w-full cc-h-full cc-bg-gray-100 cc-flex cc-flex-col cc-items-center cc-justify-center cc-p-6">
                 <p class="cc-text-xs cc-text-center">
-                    @Options.Value.CheckOptions.Text.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)
+                    @Localizer.GetLocalization(Options.Value.CheckOptions.Text)
                 </p>
 
                 <p class="cc-text-sm cc-text-center cc-font-semibold cc-mt-2">
-                    @Category.TitleText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)
+                    @Localizer.GetLocalization(Category.TitleText)
                 </p>
 
                 <div class="cc-mt-5 cc-flex cc-flex-wrap cc-justify-center cc-gap-5">
                     <button @onclick="AcceptRequiredAsync" class="cc-block cc-p-3 cc-px-5  cc-rounded-md cc-bg-slate-800 cc-text-white cc-text-sm cc-font-semibold hover:cc-bg-slate-900 cc-transition-all cc-duration-100 cc-ease-in-out">
-                        @Options.Value.CheckOptions.AcceptText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)
+                        @Localizer.GetLocalization(Options.Value.CheckOptions.AcceptText)
                     </button>
 
-                    <button @onclick="async () => await CookieConsentService.ShowSettingsModalAsync()" class="cc-text-sm cc-text-brand-text hover:cc-text-brand-link-highlight cc-transition-all cc-duration-100 cc-ease-in-out cc-flex cc-items-center">
-                        @Options.Value.OpenPreferencesText.GetLocalization(CultureInfo.CurrentCulture.TwoLetterISOLanguageName, Options.Value.DefaultLocalizationCode)
+                    <button @onclick="async () => await CookieConsentService.ShowPreferencesModalAsync()" class="cc-text-sm cc-text-brand-text hover:cc-text-brand-link-highlight cc-transition-all cc-duration-100 cc-ease-in-out cc-flex cc-items-center">
+                        @Localizer.GetLocalization(Options.Value.OpenPreferencesText)
                     </button>
                 </div>
             </div>

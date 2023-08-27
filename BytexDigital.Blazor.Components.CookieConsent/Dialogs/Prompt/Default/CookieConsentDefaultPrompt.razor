@@ -11,12 +11,10 @@
                     <div class="cc-flex cc-flex-col cc-justify-between">
                         <div>
                             <h1 class="cc-text-xl cc-text-brand-text cc-font-bold">
-                                @Options.Value.ConsentTitleText.GetLocalization(CultureCode,
-                                    Options.Value.DefaultLocalizationCode)
+                                @Localizer.GetLocalization(Options.Value.ConsentTitleText)
                             </h1>
                             <p class="cc-text-sm cc-mt-2">
-                                @Options.Value.ConsentDescriptionText.GetLocalization(CultureCode,
-                                    Options.Value.DefaultLocalizationCode)
+                                @Localizer.GetLocalization(Options.Value.ConsentDescriptionText)
                             </p>
                         </div>
 
@@ -24,13 +22,11 @@
                             @if (!VariantOptions.SecondaryActionOpensSettings && !OnlyRequiredCategoriesExist)
                             {
                                 <button @onclick=OpenSettingsAsync class="cc-text-xs cc-text-left cc-decoration-brand-text cc-font-semibold hover:cc-text-brand-link-highlight cc-transition-all cc-duration-100 cc-ease-in-out">
-                                    @Options.Value.OpenPreferencesText.GetLocalization(CultureCode,
-                                        Options.Value.DefaultLocalizationCode)
+                                    @Localizer.GetLocalization(Options.Value.OpenPreferencesText)
                                 </button>
                             }
                             <a class="cc-text-xs cc-decoration-brand-text cc-border-brand-text hover:cc-text-brand-link-highlight cc-transition-all cc-duration-100 cc-ease-in-out cc-flex cc-items-center" href="@Options.Value.PolicyUrl" target="_blank">
-                                @Options.Value.ShowPolicyText.GetLocalization(CultureCode,
-                                    Options.Value.DefaultLocalizationCode)
+                                @Localizer.GetLocalization(Options.Value.ShowPolicyText)
 
                                 <svg xmlns="http://www.w3.org/2000/svg" class="cc-h-3.5 cc-w-3.5 cc-ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
@@ -45,15 +41,13 @@
                             @if (VariantOptions.SecondaryActionOpensSettings)
                             {
                                 <button @onclick=OpenSettingsAsync class="cc-order-2 cc-block cc-w-full cc-p-3 cc-px-5 cc-rounded-md cc-bg-brand-secondary cc-text-brand-text cc-text-sm cc-font-semibold hover:cc-bg-brand-secondary-dark  cc-transition-all cc-duration-100 cc-ease-in-out">
-                                    @Options.Value.OpenPreferencesText.GetLocalization(CultureCode,
-                                        Options.Value.DefaultLocalizationCode)
+                                    @Localizer.GetLocalization(Options.Value.OpenPreferencesText)
                                 </button>
                             }
                             else
                             {
                                 <button @onclick="async () => await AcceptAsync(false)" class="cc-order-2 cc-block cc-w-full cc-p-3 cc-px-5  cc-rounded-md cc-bg-brand-secondary cc-text-brand-text cc-text-sm cc-font-semibold hover:cc-bg-brand-secondary-dark cc-transition-all cc-duration-100 cc-ease-in-out">
-                                    @Options.Value.ConsentNecessaryOnlyText.GetLocalization(CultureCode,
-                                        Options.Value.DefaultLocalizationCode)
+                                    @Localizer.GetLocalization(Options.Value.ConsentNecessaryOnlyText)
                                 </button>
                             }
                         }
@@ -61,13 +55,11 @@
                         <button @onclick="async () => await AcceptAsync(true)" class="cc-block cc-w-full cc-p-3 cc-px-5  cc-rounded-md cc-bg-brand-accent cc-text-white cc-text-sm cc-font-semibold hover:cc-bg-brand-accent-dark cc-transition-all cc-duration-100 cc-ease-in-out @(VariantOptions.AcceptAllButtonDisplaysFirst ? "cc-order-1" : "cc-order-3")">
                             @if (!OnlyRequiredCategoriesExist)
                             {
-                                @Options.Value.ConsentAcceptAllText.GetLocalization(CultureCode,
-                                    Options.Value.DefaultLocalizationCode)
+                                @Localizer.GetLocalization(Options.Value.ConsentAcceptAllText)
                             }
                             else
                             {
-                                @Options.Value.ConsentAcknowledgeText.GetLocalization(CultureCode,
-                                    Options.Value.DefaultLocalizationCode)
+                                @Localizer.GetLocalization(Options.Value.ConsentAcknowledgeText)
                             }
                         </button>
                     </div>
@@ -86,6 +78,9 @@
 
     [Inject]
     protected CookieConsentService CookieConsentService { get; set; }
+    
+    [Inject]
+    public CookieConsentLocalizer Localizer { get; set; }
 
     private string ConsentModalYPositionCss
     {
@@ -137,7 +132,7 @@
 
     private async Task OpenSettingsAsync()
     {
-        await CookieConsentService.ShowSettingsModalAsync();
+        await CookieConsentService.ShowPreferencesModalAsync();
         StateHasChanged();
     }
 
