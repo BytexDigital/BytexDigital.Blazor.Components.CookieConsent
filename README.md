@@ -16,6 +16,8 @@
 <details>
   <summary> 🔧 Installation .NET 8 and higher, Blazor United</summary>
 
+<br>
+
 ```ps1
 Install-Package BytexDigital.Blazor.Components.CookieConsent
 ```
@@ -206,6 +208,8 @@ builder.Services.AddCookieConsent(o =>
 <details>
   <summary> 🔧 Installation .NET 8 and higher, Full WebAssembly or Server</summary>
 
+<br>
+
 ```ps1
 Install-Package BytexDigital.Blazor.Components.CookieConsent
 ```
@@ -345,6 +349,8 @@ show/hide specific content.
 
 <details>
   <summary> 🔧 Installation .NET 7 and prior</summary>
+
+<br>
 
 ```ps1
 Install-Package BytexDigital.Blazor.Components.CookieConsent
