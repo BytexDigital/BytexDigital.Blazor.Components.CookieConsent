@@ -129,7 +129,7 @@ builder.Services.AddCookieConsent(o =>
 ```csharp
 builder.Services.AddCookieConsent(o =>
 {
-    // The same configuration as on the client! Best to put this lambda in a shared project to reuse to reduce duplication.
+    // The same configuration as on the server! Best to put this lambda in a shared project to reuse to reduce duplication.
 }, withUserInterface: false);
 ```
 
