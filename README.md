@@ -684,6 +684,8 @@ Call the following method to show the preferences menu. This could be done from 
 CookieConsentService.ShowSettingsModalAsync();
 ```
 
+<br />
+
 ## Stop scripts (like Google Analytics) from running if consent is revoked
 
 If you integrate services such as Google Analytics and the user grants consent, scripts might start running in the background. To stop these scripts from executing once the user revokes consent, it is necessary to refresh the page~~~~.
@@ -703,6 +705,8 @@ CookieConsentService.CategoryConsentChanged += (sender, args) =>
     }
 };
 ```
+
+<br />
 
 ## Check for the cookie consent state in non-interactive Blazor components such as statically rendered Blazor components, Razor pages or controllers
 
@@ -730,6 +734,8 @@ var preferences = CookieConsent.GetCookieConsentPreferences();
 
 bool isAllowed = preferences.IsCategoryAllowed("google");
 ```
+
+<br />
 
 # Changelog
 
