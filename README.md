@@ -59,7 +59,7 @@ First you will have to determine which Blazor implementation should display the 
 <!-- Add this -->
 <BytexDigital.Blazor.Components.CookieConsent.CookieConsentHandler @rendermode="@RenderMode.WebAssembly" />
 
-<!-- Add this additionally, if you use interactive Blazor Server components aswell and wish to interact with the library from the server. -->
+<!-- Add this additionally, if you use interactive Blazor Server components aswell and wish to interact with the library on the server too. -->
 <BytexDigital.Blazor.Components.CookieConsent.CookieConsentInitializer @rendermode="@RenderMode.Server" />
 ```
 
@@ -73,7 +73,7 @@ First you will have to determine which Blazor implementation should display the 
 <!-- Add this -->
 <BytexDigital.Blazor.Components.CookieConsent.CookieConsentHandler @rendermode="@RenderMode.Server" />
 
-<!-- Add this additionally, if you use WebAssembly components aswell and wish to interact with the library from the client too. -->
+<!-- Add this additionally, if you use WebAssembly components aswell and wish to interact with the library on the client too. -->
 <BytexDigital.Blazor.Components.CookieConsent.CookieConsentInitializer @rendermode="@RenderMode.WebAssembly" />
 ```
 
