@@ -39,8 +39,15 @@ Install-Package BytexDigital.Blazor.Components.CookieConsent
 
 #### 1. Configure your App.razor
 
-First you will have to determine which Blazor implementation should display the Cookie Consent user interface.
-It can either be rendered with Blazor WebAssembly or Blazor Server.
+First you will have to determine which Blazor implementation should display the Cookie Consent user interface. It can either be rendered with Blazor WebAssembly or Blazor Server.
+
+> **Note**
+>
+> If you, for example, choose to render in Blazor WebAssembly, the main `CookieConsentHandler` will need to be configured to render in WebAssembly.
+> 
+> If you're running interactive Blazor Server components in the same project too and wish to be able to interact with the library there as well, for example to perform a `CookieConsentCheck`, you'll need to add a `CookieConsentInitializer` to render on the server which will hook everything up to communicate with the client project. If you're not running Blazor Server components or do not need to interact with them there, you can omit this initializer.
+>
+> The same applies the other way around if you're rendering the UI in Blazor Server and have WebAssembly components interacting with the cookie library, then the handler must be on the server and the initializer on the client.
 
 ##### 🅰️ If you choose to render it with Blazor WebAssembly, add the following beneath your router:
 
@@ -51,6 +58,8 @@ It can either be rendered with Blazor WebAssembly or Blazor Server.
 
 <!-- Add this -->
 <BytexDigital.Blazor.Components.CookieConsent.CookieConsentHandler @rendermode="@RenderMode.WebAssembly" />
+
+<!-- Add this additionally, if you use interactive Blazor Server components aswell and wish to interact with the library from the server. -->
 <BytexDigital.Blazor.Components.CookieConsent.CookieConsentInitializer @rendermode="@RenderMode.Server" />
 ```
 
@@ -63,6 +72,8 @@ It can either be rendered with Blazor WebAssembly or Blazor Server.
 
 <!-- Add this -->
 <BytexDigital.Blazor.Components.CookieConsent.CookieConsentHandler @rendermode="@RenderMode.Server" />
+
+<!-- Add this additionally, if you use WebAssembly components aswell and wish to interact with the library from the client too. -->
 <BytexDigital.Blazor.Components.CookieConsent.CookieConsentInitializer @rendermode="@RenderMode.WebAssembly" />
 ```
 
@@ -102,9 +113,6 @@ Add the required services in your Program.cs/Startup.cs and configure cookie cat
 
 The library implicitly adds a `necessary` (value of constant `CookieCategory.NecessaryCategoryIdentifier`) category.
 
-> ⚠️ When using Blazor Web App, the `AddCookieConsent` call must be made on both the server project AND the client project, regardless of where the user interface is rendered.
-> This is to ensure that all components work as expected, regardless of whether you're using them in Blazor Server or Blazor WebAssembly.
-
 <br>
 
 ##### 🅰️ If you're rendering the UI with Blazor WebAssembly, the call will have to be made as follows:
@@ -117,7 +125,7 @@ builder.Services.AddCookieConsent(o =>
 });
 ```
 
-*In the server project*
+*Add this additionally in the server project, if you use Blazor Server aswell and wish to interact with the library on the server.*
 ```csharp
 builder.Services.AddCookieConsent(o =>
 {
@@ -129,20 +137,20 @@ builder.Services.AddCookieConsent(o =>
 
 ##### 🅱️️ If you're rendering the UI with Blazor Server, the call will have to be made as follows:
 
-*In the WebAssembly client project*
-```csharp
-builder.Services.AddCookieConsent(o =>
-{
-    // The same configuration as on the server! Best to put this lambda in a shared project to reuse to reduce duplication.
-}, withUserInterface: false);
-```
-
 *In the server project*
 ```csharp
 builder.Services.AddCookieConsent(o =>
 {
     // Your configuration
 });
+```
+
+*Add this additionally in the client project, if you use Blazor WebAssembly aswell and wish to interact with the library on the client.*
+```csharp
+builder.Services.AddCookieConsent(o =>
+{
+    // The same configuration as on the server! Best to put this lambda in a shared project to reuse to reduce duplication.
+}, withUserInterface: false);
 ```
 
 <br>
