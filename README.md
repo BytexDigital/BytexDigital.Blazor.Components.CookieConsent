@@ -31,7 +31,7 @@ Install-Package BytexDigital.Blazor.Components.CookieConsent
 
 - Library version 1.1.0 or higher
 - .NET >= 8.0
-- You're using Blazor Web App (this is the case if your `<Router>` is inside your App.razor directly inside the `<body>` tag)
+- You're using Blazor Web App and your `<Router>` is rendered statically without a render mode set (no RenderMode attribute set)
 
 <br />
 
@@ -240,7 +240,7 @@ Install-Package BytexDigital.Blazor.Components.CookieConsent
 ### Requirements
 
 - .NET >= 8.0
-- You're fully using Blazor WebAssembly or Blazor Server (This means your `<Router>` is inside a component that is fulled rendered either with Blazor Server or Blazor WASM (That is the case if there is a  `[RenderModeWebAssembly]` or `[RenderModeServer]` attribute on the component containing the router or if the component containing the router is rendered with a `@rendermode="@RenderMode.WebAssembly"` or `@rendermode="@RenderMode.Server"` attribute))
+- You're using Blazor Web App and your `<Router>` is dynamically rendered within a Blazor Server or WASM component (This means your `<Router>` is inside a component that is fulled rendered either with Blazor Server or Blazor WASM (That is the case if there is a  `[RenderModeWebAssembly]` or `[RenderModeServer]` attribute on the component containing the router or if the component containing the router is rendered with a `@rendermode="@RenderMode.WebAssembly"` or `@rendermode="@RenderMode.Server"` attribute))
 
 <br />
 
