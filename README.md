@@ -13,7 +13,7 @@
 
 ## How to install
 
-  
+<br />
 
 > **Note**
 >
@@ -23,7 +23,7 @@
 > - If you use .NET 8 (or higher) Blazor WebApps AND have your `<Router>` dynamically rendered (this means the router's rendermode *is explicitly set* for example through `[RenderModeWebAssembly]` or `[RenderModeServer]`), then follow the second guide.
 > - If you use .NET 7 or prior, then follow the third guide.
 
-  
+<br />
 
 <details>
   <summary> 🔧 Installation .NET 8 and higher, Blazor Web App</summary>
