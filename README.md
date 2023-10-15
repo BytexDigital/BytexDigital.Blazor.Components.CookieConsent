@@ -227,7 +227,7 @@ builder.Services.AddCookieConsent(o =>
 </details>
 
 <details>
-  <summary> 🔧 Installation .NET 8 and higher, Full WebAssembly or Server</summary>
+  <summary> 🔧 Installation .NET 8 and higher, Full WebAssembly or Full Server</summary>
 
 <br>
 
