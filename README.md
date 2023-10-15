@@ -744,7 +744,7 @@ To accomplish this, you need to read the contents of the cookie which contains t
 
 The easiest way to achieve this is to use the helper package:
 ```ps1
-Install-Package BytexDigital.Blazor.Components.CookieConsent
+Install-Package BytexDigital.Blazor.Components.CookieConsent.AspNetCore
 ```
 
 After installation, add the following service registration:
