@@ -19,8 +19,12 @@
 >
 > The following installation instructions have been split up depending on how you use Blazor.
 >
-> - If you use .NET 8 (or higher) Blazor WebApps AND have your `<Router>` statically rendered (this means the router's rendermode *is not explicitly set* for example through `[RenderModeWebAssembly]` or `[RenderModeServer]`), then follow the first guide.
-> - If you use .NET 8 (or higher) Blazor WebApps AND have your `<Router>` dynamically rendered (this means the router's rendermode *is explicitly set* for example through `[RenderModeWebAssembly]` or `[RenderModeServer]`), then follow the second guide.
+> - If you use .NET 8 (or higher) Blazor WebApps AND have your `<Router>` statically rendered (this means the router's or it's parent component rendermode **is not explicitly set** for example through `[RenderModeWebAssembly]` or `[RenderModeServer]`), then follow the first guide.
+>
+>   
+> - If you use .NET 8 (or higher) Blazor WebApps AND have your `<Router>` dynamically rendered (this means the router's or it's parent component rendermode **is explicitly set** for example through `[RenderModeWebAssembly]` or `[RenderModeServer]`), then follow the second guide.
+>
+>   
 > - If you use .NET 7 or prior, then follow the third guide.
 
 <br />
