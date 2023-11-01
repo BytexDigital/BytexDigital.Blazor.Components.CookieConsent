@@ -741,14 +741,14 @@ If you integrate services such as Google Analytics and the user grants consent, 
 To achieve this, you can subscribe to the following event and evaluate whether a specific category consent has been
 revoked that requires action such as refreshing the page to stop aforementioned scripts:
 
-```csharp
+```csharp~~~~
 CookieConsentService.CategoryConsentChanged += (sender, args) =>
 {
     if (args.CategoryIdentifier == "google" &&
         args.ChangedTo == ConsentChangedArgs.ConsentChangeType.Revoked &&
         !args.IsInitialChange)
     {
-        // Reload the current page with a hard refresh (restart Blazor app).~~~~
+        // Reload the current page with a hard refresh (restart Blazor app).
         NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 };
@@ -784,10 +784,10 @@ bool isAllowed = preferences.IsCategoryAllowed("google");
 ```
 
 <br />
-~~~~
+
 ## Checking for scripts to be loaded before interacting with them or rendering content
 
-Sometimes your code may depend on `<script>` tags having run, which might only run/execute if their consent category has been enabled (see #JavaScript tags).
+Sometimes your code may depend on `<script>` tags having run, which might be dependant on whether their consent category has been enabled by the user ([see #javascript-tags](#javascript-tags)).
 To make your code run when these script tags are enabled, you might try to listen to the `CookieConsentService.CategoryConsentChanged` and execute your code if the category of these scripts is enabled.
 However, inside this event handler, it is not guaranteed that the scripts, enabled by the category you're waiting for, have already run and are ready for usage.
 
