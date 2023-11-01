@@ -1,5 +1,9 @@
 ﻿export let CookieConsent =
     {
+        Data: {
+            LoadedScripts: []
+        },
+        
         ReadCookie: function (name) {
             return document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || '';
         },
@@ -14,7 +18,7 @@
 
         ApplyPreferences: function (categories, services) {
             const activatableScriptTags = document.querySelectorAll("script[type='text/plain']");
-
+            
             activatableScriptTags.forEach(originalScriptElement => {
                 const requiredCategory = originalScriptElement.getAttribute("data-consent-category");
 
@@ -32,6 +36,21 @@
                         sourceUri = originalScriptElement.src;
                     }
 
+                    let scriptId = null;
+                    let scriptDataId = originalScriptElement.getAttribute("data-consent-script-id");
+                    let scriptDomId = originalScriptElement.id;
+
+                    // Determine ID which the script may be found with later once checking which script tags have already
+                    // been loaded for safe usage.
+                    if (scriptDataId) {
+                        scriptId = scriptDataId;
+                    } else if (scriptDomId) {
+                        scriptId = scriptDomId;
+                    } else if (originalScriptElement.src) {
+                        scriptId = originalScriptElement.src;
+                    }
+
+                    // Create the new script element and copy all attributes
                     const newScriptElement = document.createElement("script");
                     newScriptElement.textContent = originalScriptElement.innerHTML;
 
@@ -45,6 +64,23 @@
                             originalScriptElement[attributeName] || originalScriptElement.getAttribute(attributeName));
                     }
 
+                    // Once the script has loaded and executed, fire an event into Blazor to let subscribers know when it is safe
+                    // to assume the JS libraries are ready for usage e.g. in components.
+                    newScriptElement.addEventListener("load", () => {
+                        const loadedScript = {
+                            Category: requiredCategory,
+                            Id: scriptId
+                        };
+
+                        CookieConsent.Data.LoadedScripts.push(loadedScript);
+                        
+                        CookieConsent.BroadcastEventAll("JsBroadcastEventScriptLoaded", JSON.stringify({
+                            AllLoadedScripts: CookieConsent.Data.LoadedScripts,
+                            Script: loadedScript
+                        }));
+                    });
+                    
+                    // Load the script and place it in the DOM
                     if (sourceUri) {
                         newScriptElement.src = sourceUri;
                     }
@@ -52,6 +88,10 @@
                     originalScriptElement.parentNode.replaceChild(newScriptElement, originalScriptElement);
                 }
             });
+        },
+        
+        ReadLoadedScripts: function () {
+            return JSON.stringify(CookieConsent.Data.LoadedScripts);
         },
 
         /**
@@ -98,5 +138,16 @@
             } else if (window.CookieConsentContext.Broadcasting.ServerContext !== null) {
                 window.CookieConsentContext.Broadcasting.ServerContext.invokeMethodAsync("OnReceivedBroadcastAsync", eventName, eventDataJson);
             }
+        },
+
+        /**
+         * Broadcasts the given event data to the both client and server if they have registered to receive them.
+         * @param eventName Name of the event.
+         * @param eventDataJson JSON data of the event.
+         * @constructor
+         */
+        BroadcastEventAll: function (eventName, eventDataJson) {
+            this.BroadcastEvent(true, eventName, eventDataJson);
+            this.BroadcastEvent(false, eventName, eventDataJson);
         }
     };

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -21,6 +20,9 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Broadcasting
         protected const string JsBroadcastEventShowPreferencesModalRequested =
             nameof(JsBroadcastEventShowPreferencesModalRequested);
 
+        protected const string JsBroadcastEventScriptLoaded =
+            nameof(JsBroadcastEventScriptLoaded);
+
         protected readonly Lazy<Task<IJSObjectReference>> _importModule;
         protected readonly IJSRuntime _jsRuntime;
         protected readonly CookieConsentRuntimeContext _runtimeContext;
@@ -38,6 +40,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Broadcasting
         public event EventHandler<CookiePreferences> CookiePreferencesChanged;
         public event EventHandler<EventArgs> ShowConsentModalRequested;
         public event EventHandler<EventArgs> ShowPreferencesModalRequested;
+        public event EventHandler<CookieConsentScriptLoadedArgs> ScriptLoaded;
 
         public async Task InitializeAsync()
         {
@@ -94,12 +97,16 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Broadcasting
             {
                 JsBroadcastEventCookiePreferencesChanged => Task.Run(()
                     => CookiePreferencesChanged?.Invoke(this, JsonSerializer.Deserialize<CookiePreferences>(data))),
-                
+
                 JsBroadcastEventShowConsentModalRequested => Task.Run(()
                     => ShowConsentModalRequested?.Invoke(this, EventArgs.Empty)),
-                
+
                 JsBroadcastEventShowPreferencesModalRequested => Task.Run(()
                     => ShowPreferencesModalRequested?.Invoke(this, EventArgs.Empty)),
+
+                JsBroadcastEventScriptLoaded => Task.Run(()
+                    => ScriptLoaded?.Invoke(this,
+                        JsonSerializer.Deserialize<CookieConsentScriptLoadedArgs>(data))),
 
                 _ => throw new ArgumentOutOfRangeException(nameof(name), name, "Event name not known.")
             };

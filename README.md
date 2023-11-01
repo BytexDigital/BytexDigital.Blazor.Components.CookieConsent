@@ -759,7 +759,131 @@ bool isAllowed = preferences.IsCategoryAllowed("google");
 
 <br />
 
+## Checking for scripts to be loaded before interacting with them or rendering content~~~~
+
+Sometimes your code may depend on `<script>` tags having run, which might only run/execute if their consent category has been enabled (see #JavaScript tags).
+To make your code run when these script tags are enabled, you might try to listen to the `CookieConsentService.CategoryConsentChanged` and execute your code if the category of these scripts is enabled.
+However, inside this event handler, it is not guaranteed that the scripts, enabled by the category you're waiting for, have already run and are ready for usage.
+
+To avoid this race condition, you should additionally use `CookieConsentService.ScriptLoaded` and `CookieConsentService.GetLoadedScriptsAsync` to determine if a script you need has already been fully loaded and executed in the DOM.
+
+As an example, let's use the Google Maps API. This example assumes you've setup a cookie consent category with the ID `google`.
+
+First, you need to add the JS script tag to the Google Maps API library into your host file as follows.
+Pay attention to how we're giving this script tag a special ID to recognize it by, in this case it's `google-maps-api`.
+
+```html
+<script data-consent-category="google"
+        data-consent-script-id="google-maps-api"
+        src="https://maps.googleapis.com/maps/api/js?key=YOURKEY&v=3" type="text/plain">
+</script>
+```
+
+With this script tag added, we can now use the following setup inside a component to only render a map once we both know the category has been accepted by the user and the script has successfully loaded:
+
+```csharp
+// Flag whether we've called into JS to render the map. This flag is used 
+// inside our component to conditionally add the map div to the DOM or not.
+public bool RenderMap { get; set; }
+
+protected override void OnInitialized()
+{
+    // Notify us when scripts are loaded by the cookie consent manager
+    CookieConsentService.ScriptLoaded += CookieConsentServiceOnScriptLoaded;
+    
+    // Notify us if a category consent changes
+    CookieConsentService.CategoryConsentChanged += CookieConsentServiceOnCategoryConsentChanged;
+}
+
+protected override async Task OnAfterRenderAsync(bool firstRender)
+{
+    if (!firstRender) return;
+
+    // Attempt to render the map after first render
+    await RenderMapAsync();
+}
+
+private async void CookieConsentServiceOnCategoryConsentChanged(object sender, ConsentChangedArgs e)
+{
+    // Attempt to render it if a category consent changed
+    await RenderMapAsync();
+}
+
+private async void CookieConsentServiceOnScriptLoaded(object sender, CookieConsentScriptLoadedArgs e)
+{
+    // Attempt to render it if a script tag was loaded.
+    await RenderMapAsync();
+}
+
+private async Task RenderMapAsync()
+{
+    // Get the list of loaded scripts and preferences from the browser.
+    var loadedScripts = await CookieConsentService.GetLoadedScriptsAsync();
+    var preferences = await CookieConsentService.GetPreferencesAsync();
+
+    // If our google category isn't allowed, don't render the map.
+    if (!preferences.IsCategoryAllowed("google"))
+    {
+        RenderMap = false;
+        return;
+    }
+
+    // If the google-maps-api script hasn't loaded yet, don't render the map, as a call to the Google Maps JS API will fail!
+    if (loadedScripts.All(x => x.Id != "google-maps-api"))
+    {
+        RenderMap = false;[BytexDigital.Blazor.Components.CookieConsent.csproj](BytexDigital.Blazor.Components.CookieConsent%2FBytexDigital.Blazor.Components.CookieConsent.csproj)
+        return;
+    }
+    
+    // Note for the above: It's important you check both the scripts AND the category consent, as the
+    // latter may have been revoked by the user but the scripts are still loaded until the browser tab
+    // is refreshed!
+
+    // If all conditions are met but the map is already rendered, don't render it twice.
+    if (RenderMap) return;
+
+    // Call into the UI thread to...
+    await InvokeAsync(async () =>
+    {
+        // ...call into JavaScript to render the map since we know we're both allowed to and the Google Maps API script tag has loaded!
+        var module = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./app.js");
+        await module.InvokeVoidAsync("renderMap");
+    });
+}
+```
+
+**Another way** to achieve the same result is utilizing the `CookieConsentScriptsLoadedCheck` component.
+
+In this case, the above example would look as follows:
+
+```html
+<BytexDigital.Blazor.Components.CookieConsent.CookieConsentScriptsLoadedCheck Category="google" Scripts='new [] { "google-maps-api" }' OnRenderStateChanged="RenderMapAsync">
+    <div>
+        <!-- my map div -->
+    </div>
+</BytexDigital.Blazor.Components.CookieConsent.CookieConsentScriptsLoadedCheck>
+```
+
+```csharp
+// Will run every time the div went from hidden to shown or vice versa.
+async Task RenderMapAsync(bool isShown)
+{
+    if (isShown) {
+        // ...call into JavaScript to render the map since we know we're both allowed to and the Google Maps API script tag has loaded!
+        var module = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./app.js");
+        await module.InvokeVoidAsync("renderMap");
+    }
+}
+```
+
+<br />
+
 # Changelog
+
+### 1.2.0
+
+- Adds event `CookieConsentService.ScriptLoaded` to execute code when script tags have been loaded dynamically by the cookie consent manager
+- Adds component `CookieConsentScriptsLoadedCheck` that can be used to conditionally render content depending on whether scripts have been loaded by the cookie consent manager 
 
 ### 1.1.0
 

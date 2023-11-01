@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using BytexDigital.Blazor.Components.CookieConsent.Broadcasting;
 using Microsoft.Extensions.Logging;
@@ -23,7 +25,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
 
         protected Task<IJSObjectReference> Module => _module ??= _jsRuntime.InvokeAsync<IJSObjectReference>(
                 "import",
-                new[] { "./_content/BytexDigital.Blazor.Components.CookieConsent/cookieconsent.js" })
+                new object[] { "./_content/BytexDigital.Blazor.Components.CookieConsent/cookieconsent.js" })
             .AsTask();
 
         public CookieConsentService(
@@ -50,6 +52,18 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             _eventHandler.CookiePreferencesChanged += EventHandlerOnCookiePreferencesChanged;
             _eventHandler.ShowConsentModalRequested += EventHandlerOnShowConsentModalRequested;
             _eventHandler.ShowPreferencesModalRequested += EventHandlerOnShowPreferencesModalRequested;
+            _eventHandler.ScriptLoaded += EventHandlerOnScriptLoaded;
+        }
+
+        public event EventHandler<CookiePreferences> CookiePreferencesChanged;
+        public event EventHandler<ConsentChangedArgs> CategoryConsentChanged;
+        public event EventHandler<EventArgs> ShowConsentModalRequested;
+        public event EventHandler<EventArgs> ShowPreferencesModalRequested;
+        public event EventHandler<CookieConsentScriptLoadedArgs> ScriptLoaded;
+
+        private void EventHandlerOnScriptLoaded(object sender, CookieConsentScriptLoadedArgs e)
+        {
+            _ = Task.Run(() => ScriptLoaded?.Invoke(this, e));
         }
 
         private void EventHandlerOnShowPreferencesModalRequested(object sender, EventArgs e)
@@ -61,11 +75,6 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         {
             _ = Task.Run(() => ShowConsentModalRequested?.Invoke(this, EventArgs.Empty));
         }
-
-        public event EventHandler<CookiePreferences> CookiePreferencesChanged;
-        public event EventHandler<ConsentChangedArgs> CategoryConsentChanged;
-        public event EventHandler<EventArgs> ShowConsentModalRequested;
-        public event EventHandler<EventArgs> ShowPreferencesModalRequested;
 
         protected virtual async Task PublishCookiePreferencesChanged(CookiePreferences preferences)
         {
@@ -200,6 +209,33 @@ namespace BytexDigital.Blazor.Components.CookieConsent
                 _logger.LogTrace(ex, "Exception raised attempting to call into JavaScript");
 
                 return _cookiePreferencesCached;
+            }
+        }
+
+        /// <summary>
+        /// Returns the JS script tags that were loaded and have already executed. If JS isn't available, this will return an empty list.
+        /// </summary>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns></returns>
+        public virtual async Task<List<CookieConsentLoadedScript>> GetLoadedScriptsAsync(
+            CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var module = await Module;
+                var activatedScriptsJson = await module.InvokeAsync<string>(
+                    "CookieConsent.ReadLoadedScripts",
+                    cancellationToken);
+
+                return JsonSerializer.Deserialize<List<CookieConsentLoadedScript>>(activatedScriptsJson);
+            }
+            catch (Exception ex)
+            {
+                // We might get here because JS is unavailable (blocked, prerendering, etc.).
+                // Return default/cached data instead.
+                _logger.LogTrace(ex, "Exception raised attempting to call into JavaScript");
+
+                return new List<CookieConsentLoadedScript>();
             }
         }
 

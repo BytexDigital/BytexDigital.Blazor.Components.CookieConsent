@@ -1,0 +1,12 @@
+﻿@using System.Threading
+@using Microsoft.JSInterop
+@implements IDisposable
+
+@if (IsRendering)
+{
+    @ChildContent
+}
+else
+{
+    @NotLoaded
+}
