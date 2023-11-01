@@ -13,13 +13,31 @@
 
 ## How to install
 
+<br />
+
+> **Note**
+>
+> The following installation instructions have been split up depending on how you use Blazor.
+>
+> - If you use .NET 8 (or higher) Blazor WebApps AND have your `<Router>` statically rendered (this means the router's or it's parent component rendermode **is not explicitly set** for example through `[RenderModeWebAssembly]` or `[RenderModeServer]`), then follow the first guide.
+>
+>   
+> - If you use .NET 8 (or higher) Blazor WebApps AND have your `<Router>` dynamically rendered (this means the router's or it's parent component rendermode **is explicitly set** for example through `[RenderModeWebAssembly]` or `[RenderModeServer]`), then follow the second guide.
+>
+>   
+> - If you use .NET 7 or prior, then follow the third guide.
+
+<br />
+
 <details>
   <summary> 🔧 Installation .NET 8 and higher, Blazor Web App</summary>
 
 <br>
 
-> ℹ️ This library is compatible with Blazor WebAssembly and Server within one Blazor Web App project.
-> This means that the UI can be rendered in WebAssembly or Server and changes will propagate to all other interactive components regardless of whether they are running on WebAssembly or the Server. Usage of the `CookieConsentService` is also possible in all interactive components regardless of whether they are running on the server or in WebAssembly. Interactive means they are fully interactive either through Blazor Server or Blazor WebAssembly and NOT statically rendered Blazor components.
+> **Note**
+>
+> This library is compatible with dynamic Blazor WebAssembly and Server components within one Blazor Web App project.
+> This means that the UI can be rendered in WebAssembly or Server and changes will propagate to all other interactive components regardless of whether they are running on WebAssembly or the Server. Usage of the `CookieConsentService` is also possible in all interactive components regardless of whether they are running on the server or in WebAssembly. Interactive means they are explicitly rendered either through Blazor Server or Blazor WebAssembly (e.g. with `[RenderModeWebAssembly]` or `[RenderModeServer]`) and NOT statically rendered Blazor components.
 
 ```ps1
 Install-Package BytexDigital.Blazor.Components.CookieConsent
@@ -31,7 +49,7 @@ Install-Package BytexDigital.Blazor.Components.CookieConsent
 
 - Library version 1.1.0 or higher
 - .NET >= 8.0
-- You're using Blazor Web App (this is the case if your `<Router>` is inside your App.razor directly inside the `<body>` tag)
+- You're using Blazor Web App and your `<Router>` is rendered statically without a render mode set (no RenderMode attribute set)
 
 <br />
 
@@ -39,8 +57,15 @@ Install-Package BytexDigital.Blazor.Components.CookieConsent
 
 #### 1. Configure your App.razor
 
-First you will have to determine which Blazor implementation should display the Cookie Consent user interface.
-It can either be rendered with Blazor WebAssembly or Blazor Server.
+First you will have to determine which Blazor implementation should display the Cookie Consent user interface. It can either be rendered with Blazor WebAssembly or Blazor Server.
+
+> **Note**
+>
+> If you, for example, choose to render in Blazor WebAssembly, the main `CookieConsentHandler` will need to be configured to render in WebAssembly.
+> 
+> If you're running interactive Blazor Server components in the same project too and wish to be able to interact with the library there as well, for example to perform a `CookieConsentCheck`, you'll need to add a `CookieConsentInitializer` to render on the server which will hook everything up to communicate with the client project. If you're not running Blazor Server components or do not need to interact with them there, you can omit this initializer.
+>
+> The same applies the other way around if you're rendering the UI in Blazor Server and have WebAssembly components interacting with the cookie library, then the handler must be on the server and the initializer on the client.
 
 ##### 🅰️ If you choose to render it with Blazor WebAssembly, add the following beneath your router:
 
@@ -51,6 +76,8 @@ It can either be rendered with Blazor WebAssembly or Blazor Server.
 
 <!-- Add this -->
 <BytexDigital.Blazor.Components.CookieConsent.CookieConsentHandler @rendermode="@RenderMode.WebAssembly" />
+
+<!-- Add this additionally, if you use interactive Blazor Server components aswell and wish to interact with the library on the server too. -->
 <BytexDigital.Blazor.Components.CookieConsent.CookieConsentInitializer @rendermode="@RenderMode.Server" />
 ```
 
@@ -63,6 +90,8 @@ It can either be rendered with Blazor WebAssembly or Blazor Server.
 
 <!-- Add this -->
 <BytexDigital.Blazor.Components.CookieConsent.CookieConsentHandler @rendermode="@RenderMode.Server" />
+
+<!-- Add this additionally, if you use WebAssembly components aswell and wish to interact with the library on the client too. -->
 <BytexDigital.Blazor.Components.CookieConsent.CookieConsentInitializer @rendermode="@RenderMode.WebAssembly" />
 ```
 
@@ -102,9 +131,6 @@ Add the required services in your Program.cs/Startup.cs and configure cookie cat
 
 The library implicitly adds a `necessary` (value of constant `CookieCategory.NecessaryCategoryIdentifier`) category.
 
-> ⚠️ When using Blazor Web App, the `AddCookieConsent` call must be made on both the server project AND the client project, regardless of where the user interface is rendered.
-> This is to ensure that all components work as expected, regardless of whether you're using them in Blazor Server or Blazor WebAssembly.
-
 <br>
 
 ##### 🅰️ If you're rendering the UI with Blazor WebAssembly, the call will have to be made as follows:
@@ -117,7 +143,7 @@ builder.Services.AddCookieConsent(o =>
 });
 ```
 
-*In the server project*
+*Add this additionally in the server project, if you use Blazor Server aswell and wish to interact with the library on the server.*
 ```csharp
 builder.Services.AddCookieConsent(o =>
 {
@@ -129,20 +155,20 @@ builder.Services.AddCookieConsent(o =>
 
 ##### 🅱️️ If you're rendering the UI with Blazor Server, the call will have to be made as follows:
 
-*In the WebAssembly client project*
-```csharp
-builder.Services.AddCookieConsent(o =>
-{
-    // The same configuration as on the server! Best to put this lambda in a shared project to reuse to reduce duplication.
-}, withUserInterface: false);
-```
-
 *In the server project*
 ```csharp
 builder.Services.AddCookieConsent(o =>
 {
     // Your configuration
 });
+```
+
+*Add this additionally in the client project, if you use Blazor WebAssembly aswell and wish to interact with the library on the client.*
+```csharp
+builder.Services.AddCookieConsent(o =>
+{
+    // The same configuration as on the server! Best to put this lambda in a shared project to reuse to reduce duplication.
+}, withUserInterface: false);
 ```
 
 <br>
@@ -219,7 +245,7 @@ builder.Services.AddCookieConsent(o =>
 </details>
 
 <details>
-  <summary> 🔧 Installation .NET 8 and higher, Full WebAssembly or Server</summary>
+  <summary> 🔧 Installation .NET 8 and higher, Full WebAssembly or Full Server</summary>
 
 <br>
 
@@ -232,7 +258,7 @@ Install-Package BytexDigital.Blazor.Components.CookieConsent
 ### Requirements
 
 - .NET >= 8.0
-- You're fully using Blazor WebAssembly or Blazor Server (This means your `<Router>` is inside a component that is fulled rendered either with Blazor Server or Blazor WASM (That is the case if there is a  `[RenderModeWebAssembly]` or `[RenderModeServer]` attribute on the component containing the router or if the component containing the router is rendered with a `@rendermode="@RenderMode.WebAssembly"` or `@rendermode="@RenderMode.Server"` attribute))
+- You're using Blazor Web App and your `<Router>` is dynamically rendered within a Blazor Server or WASM component (This means your `<Router>` is inside a component that is fulled rendered either with Blazor Server or Blazor WASM (That is the case if there is a  `[RenderModeWebAssembly]` or `[RenderModeServer]` attribute on the component containing the router or if the component containing the router is rendered with a `@rendermode="@RenderMode.WebAssembly"` or `@rendermode="@RenderMode.Server"` attribute))
 
 <br />
 
@@ -710,7 +736,7 @@ CookieConsentService.ShowSettingsModalAsync();
 
 ## Stop scripts (like Google Analytics) from running if consent is revoked
 
-If you integrate services such as Google Analytics and the user grants consent, scripts might start running in the background. To stop these scripts from executing once the user revokes consent, it is necessary to refresh the page~~~~.
+If you integrate services such as Google Analytics and the user grants consent, scripts might start running in the background. To stop these scripts from executing once the user revokes consent, it is necessary to refresh the page.
 
 To achieve this, you can subscribe to the following event and evaluate whether a specific category consent has been
 revoked that requires action such as refreshing the page to stop aforementioned scripts:
@@ -736,7 +762,7 @@ To accomplish this, you need to read the contents of the cookie which contains t
 
 The easiest way to achieve this is to use the helper package:
 ```ps1
-Install-Package BytexDigital.Blazor.Components.CookieConsent
+Install-Package BytexDigital.Blazor.Components.CookieConsent.AspNetCore
 ```
 
 After installation, add the following service registration:
