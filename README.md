@@ -784,8 +784,8 @@ bool isAllowed = preferences.IsCategoryAllowed("google");
 ```
 
 <br />
-
-## Checking for scripts to be loaded before interacting with them or rendering content~~~~
+~~~~
+## Checking for scripts to be loaded before interacting with them or rendering content
 
 Sometimes your code may depend on `<script>` tags having run, which might only run/execute if their consent category has been enabled (see #JavaScript tags).
 To make your code run when these script tags are enabled, you might try to listen to the `CookieConsentService.CategoryConsentChanged` and execute your code if the category of these scripts is enabled.
