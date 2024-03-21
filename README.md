@@ -805,6 +805,13 @@ Pay attention to how we're giving this script tag a special ID to recognize it b
 </script>
 ```
 
+Now, there are two ways you can go about checking if this script is loaded in the browser. One utilizes the `CookieConsentService.ScriptLoaded` and `CookieConsentService.GetLoadedScriptsAsync` methods to achieve this, the other utilizes the ready-built component `CookieConsentScriptsLoadedCheck` which may be usable for you in some scenarios.
+
+<details>
+  <summary> 🅰️ Manually check for a loaded script</summary>
+
+<br>
+
 With this script tag added, we can now use the following setup inside a component to only render a map once we both know the category has been accepted by the user and the script has successfully loaded:
 
 ```csharp
@@ -857,7 +864,7 @@ private async Task RenderMapAsync()
     // If the google-maps-api script hasn't loaded yet, don't render the map, as a call to the Google Maps JS API will fail!
     if (loadedScripts.All(x => x.Id != "google-maps-api"))
     {
-        RenderMap = false;[BytexDigital.Blazor.Components.CookieConsent.csproj](BytexDigital.Blazor.Components.CookieConsent%2FBytexDigital.Blazor.Components.CookieConsent.csproj)
+        RenderMap = false;
         return;
     }
     
@@ -877,6 +884,12 @@ private async Task RenderMapAsync()
     });
 }
 ```
+</details>
+
+<details>
+  <summary> 🅱️ Use the *CookieConsentScriptsLoadedCheck* component to conditionally render other components</summary>
+
+<br>
 
 **Another way** to achieve the same result is utilizing the `CookieConsentScriptsLoadedCheck` component.
 
@@ -901,6 +914,7 @@ async Task RenderMapAsync(bool isShown)
     }
 }
 ```
+</details>
 
 <br />
 
