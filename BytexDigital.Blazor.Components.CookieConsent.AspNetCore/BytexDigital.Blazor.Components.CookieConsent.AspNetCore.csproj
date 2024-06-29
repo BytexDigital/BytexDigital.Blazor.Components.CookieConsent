@@ -22,7 +22,7 @@
         <PackageReleaseNotes>See https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent</PackageReleaseNotes>
     </PropertyGroup>
 	
-    <PropertyGroup>
+	<PropertyGroup>
 		<IsTrimmable>true</IsTrimmable>
 		<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
 	</PropertyGroup>
