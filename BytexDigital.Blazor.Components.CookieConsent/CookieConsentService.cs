@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -30,6 +31,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
                 new object[] { "./_content/BytexDigital.Blazor.Components.CookieConsent/cookieconsent.js" })
             .AsTask();
 
+        [DynamicDependency(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicFields, typeof(CookiePreferences))]
         public CookieConsentService(
             IOptions<CookieConsentOptions> options,
             IJSRuntime jsRuntime,

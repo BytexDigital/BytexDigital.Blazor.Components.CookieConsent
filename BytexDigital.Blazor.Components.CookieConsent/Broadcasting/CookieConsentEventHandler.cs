@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -29,6 +30,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Broadcasting
         protected readonly IJSRuntime _jsRuntime;
         protected readonly CookieConsentRuntimeContext _runtimeContext;
 
+        [DynamicDependency(nameof(OnReceivedBroadcastAsync))]
         public CookieConsentEventHandler(CookieConsentRuntimeContext runtimeContext, IJSRuntime jsRuntime, ICookieConsentInterop cookieConsentInterop)
         {
             _jsRuntime = jsRuntime;

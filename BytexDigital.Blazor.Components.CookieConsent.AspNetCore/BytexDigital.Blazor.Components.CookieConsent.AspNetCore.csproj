@@ -21,6 +21,11 @@
         <PackageVersion Condition=" '$(VersionSuffix)' != '' ">$(PackageVersion)-$(VersionSuffix)</PackageVersion>
         <PackageReleaseNotes>See https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent</PackageReleaseNotes>
     </PropertyGroup>
+	
+    <PropertyGroup>
+		<IsTrimmable>true</IsTrimmable>
+		<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+	</PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
