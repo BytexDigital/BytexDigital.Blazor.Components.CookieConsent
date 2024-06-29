@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Threading.Tasks;
+using BytexDigital.Blazor.Components.CookieConsent.Interop;
 using Microsoft.JSInterop;
 
 namespace BytexDigital.Blazor.Components.CookieConsent.Broadcasting
@@ -23,14 +24,16 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Broadcasting
         protected const string JsBroadcastEventScriptLoaded =
             nameof(JsBroadcastEventScriptLoaded);
 
+        protected readonly ICookieConsentInterop _cookieConsentInterop;
         protected readonly Lazy<Task<IJSObjectReference>> _importModule;
         protected readonly IJSRuntime _jsRuntime;
         protected readonly CookieConsentRuntimeContext _runtimeContext;
 
-        public CookieConsentEventHandler(CookieConsentRuntimeContext runtimeContext, IJSRuntime jsRuntime)
+        public CookieConsentEventHandler(CookieConsentRuntimeContext runtimeContext, IJSRuntime jsRuntime, ICookieConsentInterop cookieConsentInterop)
         {
             _jsRuntime = jsRuntime;
             _runtimeContext = runtimeContext;
+            _cookieConsentInterop = cookieConsentInterop;
             _importModule = new Lazy<Task<IJSObjectReference>>(() => _jsRuntime.InvokeAsync<IJSObjectReference>(
                     "import",
                     new object[] { "./_content/BytexDigital.Blazor.Components.CookieConsent/cookieconsent.js" })
@@ -46,9 +49,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Broadcasting
         {
             try
             {
-                var module = await _importModule.Value;
-
-                await module.InvokeVoidAsync(JsInteropRegisterReceiver,
+                await _cookieConsentInterop.RegisterBroadcastReceiverAsync(
                     DotNetObjectReference.Create(this),
                     RuntimeInformation.IsOSPlatform(OSPlatform.Create("Browser")));
             }
@@ -116,9 +117,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Broadcasting
 
         protected async Task PublishToJsAsync(string name, string data)
         {
-            var module = await _importModule.Value;
-
-            await module.InvokeVoidAsync(JsInteropBroadcast,
+            await _cookieConsentInterop.BroadcastEventAsync(
                 !RuntimeInformation.IsOSPlatform(OSPlatform.Create("Browser")), // Directed towards WASM?
                 name, // Event name
                 data); // Event data

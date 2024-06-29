@@ -7,6 +7,13 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Interop
 {
     internal class CookieConsentInterop : ICookieConsentInterop
     {
+        protected const string JsInteropRegisterReceiver = "CookieConsent.RegisterBroadcastReceiver";
+        protected const string JsInteropBroadcast = "CookieConsent.BroadcastEvent";
+        protected const string JsInteropReadLoadedScripts = "CookieConsent.ReadLoadedScripts";
+        protected const string JsInteropReadCookie = "CookieConsent.ReadCookie";
+        protected const string JsInteropSetCookie = "CookieConsent.SetCookie";
+        protected const string JsInteropApplyPreferences = "CookieConsent.ApplyPreferences";
+
         private readonly IJSRuntime _jsRuntime;
         private Task<IJSObjectReference> _module;
         private readonly IOptions<CookieConsentOptions> _options;
@@ -24,6 +31,45 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Interop
             _jsRuntime = jsRuntime;
         }
 
+        public async Task RegisterBroadcastReceiverAsync<T>(DotNetObjectReference<T> dotNetObjectReference, bool isOsPlatform) where T : class
+        {
+            if (_options.Value.ImportJsAutomatically)
+            {
+                var module = await Module;
+
+                await module.InvokeVoidAsync(JsInteropRegisterReceiver,
+                    dotNetObjectReference,
+                    isOsPlatform);
+            }
+            else
+            {
+
+                await _jsRuntime.InvokeVoidAsync(JsInteropRegisterReceiver,
+                    dotNetObjectReference,
+                    isOsPlatform);
+            }
+        }
+
+        public async Task BroadcastEventAsync(bool isOsPlatform, string name, string data)
+        {
+            if (_options.Value.ImportJsAutomatically)
+            {
+                var module = await Module;
+
+                await module.InvokeVoidAsync(JsInteropBroadcast,
+                    !isOsPlatform, // Directed towards WASM?
+                    name, // Event name
+                    data); // Event data
+            }
+            else
+            {
+                await _jsRuntime.InvokeVoidAsync(JsInteropBroadcast,
+                    !isOsPlatform, // Directed towards WASM?
+                    name, // Event name
+                    data); // Event data
+            }
+        }
+
         public async Task<string> ReadLoadedScriptsAsync(CancellationToken cancellationToken)
         {
             if (_options.Value.ImportJsAutomatically)
@@ -31,7 +77,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Interop
                 var module = await Module;
 
                 var activatedScriptsJson = await module.InvokeAsync<string>(
-                    "CookieConsent.ReadLoadedScripts",
+                    JsInteropReadLoadedScripts,
                     cancellationToken);
 
                 return activatedScriptsJson;
@@ -39,7 +85,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Interop
             else
             {
                 var activatedScriptsJson = await _jsRuntime.InvokeAsync<string>(
-                    "CookieConsent.ReadLoadedScripts",
+                    JsInteropReadLoadedScripts,
                     cancellationToken);
 
                 return activatedScriptsJson;
@@ -52,16 +98,16 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Interop
                 var module = await Module;
 
                 var cookieValue = await module.InvokeAsync<string>(
-                    "CookieConsent.ReadCookie", cookieName);
+                    JsInteropReadCookie, cookieName);
 
                 return cookieValue;
             }
             else
             {
                 var cookieValue = await _jsRuntime.InvokeAsync<string>(
-                    "CookieConsent.ReadCookie", cookieName);
+                    JsInteropReadCookie, cookieName);
 
-                return cookieValue; ;
+                return cookieValue;
             }
         }
 
@@ -72,12 +118,12 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Interop
                 var module = await Module;
 
                 await module.InvokeVoidAsync(
-                    "CookieConsent.SetCookie", cookieString);
+                    JsInteropSetCookie, cookieString);
             }
             else
             {
                 await _jsRuntime.InvokeVoidAsync(
-                    "CookieConsent.SetCookie", cookieString);
+                    JsInteropSetCookie, cookieString);
             }
         }
 
@@ -88,14 +134,14 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Interop
                 var module = await Module;
 
                 await module.InvokeVoidAsync(
-                    "CookieConsent.ApplyPreferences",
+                    JsInteropApplyPreferences,
                     allowedCategories,
                     allowedServices);
             }
             else
             {
                 await _jsRuntime.InvokeVoidAsync(
-                    "CookieConsent.ApplyPreferences",
+                    JsInteropApplyPreferences,
                     allowedCategories,
                     allowedServices);
             }
