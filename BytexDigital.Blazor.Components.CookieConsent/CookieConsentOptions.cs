@@ -8,6 +8,15 @@ namespace BytexDigital.Blazor.Components.CookieConsent
     public class CookieConsentOptions
     {
         /// <summary>
+        ///     Specifies whether to import the JavaScript <c>'_content/BytexDigital.Blazor.Components.CookieConsent/cookieconsent.js'</c> file automatically.
+        ///     <para>
+        ///         If you disable this option, you must manually import your own JavaScript via the <c>script</c> tag.
+        ///     </para>
+        ///     Default is <c>true</c>.
+        /// </summary>
+        public bool ImportJsAutomatically { get; set; } = true;
+
+        /// <summary>
         ///     Revision of the cookie policy the user agrees to. If the user's agreed to policy number is any different than the
         ///     currently configured, the prompt for consent will appear again.
         /// </summary>
