@@ -187,7 +187,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         {
             try
             {
-                var cookieValue = await _cookieConsentInterop.ReadCookiesAsync(_options.Value.CookieOptions.CookieName);
+                var cookieValue = await _cookieConsentInterop.ReadCookieAsync(_options.Value.CookieOptions.CookieName);
 
                 // If the cookie value is empty, no cookie is set yet. In this case
                 // return default data.

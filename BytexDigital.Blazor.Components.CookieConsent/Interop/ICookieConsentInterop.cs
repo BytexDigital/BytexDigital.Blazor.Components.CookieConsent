@@ -6,13 +6,13 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Interop
 {
     public interface ICookieConsentInterop
     {
-        Task RegisterBroadcastReceiverAsync<T>(DotNetObjectReference<T> dotNetObjectReference, bool isOsPlatform) where T : class;
+        Task RegisterBroadcastReceiverAsync<T>(DotNetObjectReference<T> dotNetObjectReference, bool isCallerWasm) where T : class;
 
-        Task BroadcastEventAsync(bool isOsPlatform, string name, string data);
+        Task BroadcastEventAsync(bool isDirectedTowardsWasm, string name, string data);
 
         Task<string> ReadLoadedScriptsAsync(CancellationToken cancellationToken = default);
 
-        Task<string> ReadCookiesAsync(string cookieName);
+        Task<string> ReadCookieAsync(string cookieName);
 
         Task SetCookieAsync(string cookieString);
 

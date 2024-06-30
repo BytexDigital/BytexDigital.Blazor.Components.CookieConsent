@@ -31,7 +31,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Interop
             _jsRuntime = jsRuntime;
         }
 
-        public async Task RegisterBroadcastReceiverAsync<T>(DotNetObjectReference<T> dotNetObjectReference, bool isOsPlatform) where T : class
+        public async Task RegisterBroadcastReceiverAsync<T>(DotNetObjectReference<T> dotNetObjectReference, bool isCallerWasm) where T : class
         {
             if (_options.Value.ImportJsAutomatically)
             {
@@ -39,32 +39,32 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Interop
 
                 await module.InvokeVoidAsync(JsInteropRegisterReceiver,
                     dotNetObjectReference,
-                    isOsPlatform);
+                    isCallerWasm);
             }
             else
             {
 
                 await _jsRuntime.InvokeVoidAsync(JsInteropRegisterReceiver,
                     dotNetObjectReference,
-                    isOsPlatform);
+                    isCallerWasm);
             }
         }
 
-        public async Task BroadcastEventAsync(bool isOsPlatform, string name, string data)
+        public async Task BroadcastEventAsync(bool isDirectedTowardsWasm, string name, string data)
         {
             if (_options.Value.ImportJsAutomatically)
             {
                 var module = await Module;
 
                 await module.InvokeVoidAsync(JsInteropBroadcast,
-                    !isOsPlatform, // Directed towards WASM?
+                    !isDirectedTowardsWasm, // Directed towards WASM?
                     name, // Event name
                     data); // Event data
             }
             else
             {
                 await _jsRuntime.InvokeVoidAsync(JsInteropBroadcast,
-                    !isOsPlatform, // Directed towards WASM?
+                    !isDirectedTowardsWasm, // Directed towards WASM?
                     name, // Event name
                     data); // Event data
             }
@@ -91,7 +91,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Interop
                 return activatedScriptsJson;
             }
         }
-        public async Task<string> ReadCookiesAsync(string cookieName)
+        public async Task<string> ReadCookieAsync(string cookieName)
         {
             if (_options.Value.ImportJsAutomatically)
             {
