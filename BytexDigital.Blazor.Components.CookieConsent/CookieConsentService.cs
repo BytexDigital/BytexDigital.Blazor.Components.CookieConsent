@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using BytexDigital.Blazor.Components.CookieConsent.Broadcasting;
+using BytexDigital.Blazor.Components.CookieConsent.Interop;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
@@ -14,32 +16,27 @@ namespace BytexDigital.Blazor.Components.CookieConsent
 {
     public abstract class CookieConsentService
     {
+        protected readonly ICookieConsentInterop _cookieConsentInterop;
         protected readonly CookieConsentEventHandler _eventHandler;
-        protected readonly IJSRuntime _jsRuntime;
         protected readonly ILogger<CookieConsentService> _logger;
         protected readonly IOptions<CookieConsentOptions> _options;
         private readonly CookieConsentRuntimeContext _runtimeContext;
         protected CookiePreferences _cookiePreferencesCached;
-        protected Task<IJSObjectReference> _module;
         protected CookiePreferences _previousCookiePreferences;
 
-        protected Task<IJSObjectReference> Module => _module ??= _jsRuntime.InvokeAsync<IJSObjectReference>(
-                "import",
-                new object[] { "./_content/BytexDigital.Blazor.Components.CookieConsent/cookieconsent.js" })
-            .AsTask();
-
+        [DynamicDependency(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicFields, typeof(CookiePreferences))]
         public CookieConsentService(
             IOptions<CookieConsentOptions> options,
-            IJSRuntime jsRuntime,
+            ICookieConsentInterop cookieConsentInterop,
             CookieConsentEventHandler eventHandler,
             CookieConsentRuntimeContext runtimeContext,
             ILogger<CookieConsentService> logger)
         {
             _options = options;
-            _jsRuntime = jsRuntime;
             _eventHandler = eventHandler;
             _runtimeContext = runtimeContext;
             _logger = logger;
+            _cookieConsentInterop = cookieConsentInterop;
 
             // Create a default cookie preferences object that is returned when Javascript turns out to be unavailable
             // and no call to SavePreferences has been made yet.
@@ -112,16 +109,9 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             // Attempt to write the new settings object to our cookie if possible.
             try
             {
-                var module = await Module;
+                await _cookieConsentInterop.SetCookieAsync(CreateCookieString(JsonSerializer.Serialize(cookiePreferences)));
 
-                await module.InvokeVoidAsync(
-                    "CookieConsent.SetCookie",
-                    CreateCookieString(JsonSerializer.Serialize(cookiePreferences)));
-
-                await module.InvokeVoidAsync(
-                    "CookieConsent.ApplyPreferences",
-                    cookiePreferences.AllowedCategories,
-                    cookiePreferences.AllowedServices);
+                await _cookieConsentInterop.ApplyPreferencesAsync(cookiePreferences.AllowedCategories, cookiePreferences.AllowedServices);
             }
             catch (Exception ex)
             {
@@ -188,10 +178,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         {
             try
             {
-                var module = await Module;
-                var cookieValue = await module.InvokeAsync<string>(
-                    "CookieConsent.ReadCookie",
-                    _options.Value.CookieOptions.CookieName);
+                var cookieValue = await _cookieConsentInterop.ReadCookieAsync(_options.Value.CookieOptions.CookieName);
 
                 // If the cookie value is empty, no cookie is set yet. In this case
                 // return default data.
@@ -222,10 +209,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         {
             try
             {
-                var module = await Module;
-                var activatedScriptsJson = await module.InvokeAsync<string>(
-                    "CookieConsent.ReadLoadedScripts",
-                    cancellationToken);
+                var activatedScriptsJson = await _cookieConsentInterop.ReadLoadedScriptsAsync(cancellationToken);
 
                 return JsonSerializer.Deserialize<List<CookieConsentLoadedScript>>(activatedScriptsJson);
             }
@@ -280,8 +264,9 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             return (await GetPreferencesAsync()).AcceptedRevision == _options.Value.Revision;
         }
 
-        public virtual async Task NotifyApplicationLoadedAsync()
+        public virtual Task NotifyApplicationLoadedAsync()
         {
+            return Task.CompletedTask;
         }
 
         protected virtual string CreateCookieString(string value)

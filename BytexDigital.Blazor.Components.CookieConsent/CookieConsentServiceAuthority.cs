@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BytexDigital.Blazor.Components.CookieConsent.Broadcasting;
+using BytexDigital.Blazor.Components.CookieConsent.Interop;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
@@ -11,10 +12,10 @@ namespace BytexDigital.Blazor.Components.CookieConsent
     {
         public CookieConsentServiceAuthority(
             IOptions<CookieConsentOptions> options,
-            IJSRuntime jsRuntime,
+            ICookieConsentInterop cookieConsentInterop,
             CookieConsentEventHandler eventHandler,
             CookieConsentRuntimeContext runtimeContext,
-            ILogger<CookieConsentService> logger) : base(options, jsRuntime, eventHandler, runtimeContext, logger)
+            ILogger<CookieConsentService> logger) : base(options, cookieConsentInterop, eventHandler, runtimeContext, logger)
         {
         }
 
@@ -26,10 +27,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             {
                 if (await IsCurrentRevisionAcceptedAsync())
                 {
-                    var module = await Module;
-
-                    await module.InvokeVoidAsync(
-                        "CookieConsent.ApplyPreferences",
+                    await _cookieConsentInterop.ApplyPreferencesAsync(
                         preferences.AllowedCategories,
                         preferences.AllowedServices);
                 }
