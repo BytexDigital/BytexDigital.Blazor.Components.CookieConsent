@@ -12,11 +12,10 @@ namespace BytexDigital.Blazor.Components.CookieConsent
     {
         public CookieConsentServiceAuthority(
             IOptions<CookieConsentOptions> options,
-            IJSRuntime jsRuntime,
             ICookieConsentInterop cookieConsentInterop,
             CookieConsentEventHandler eventHandler,
             CookieConsentRuntimeContext runtimeContext,
-            ILogger<CookieConsentService> logger) : base(options, jsRuntime, cookieConsentInterop, eventHandler, runtimeContext, logger)
+            ILogger<CookieConsentService> logger) : base(options, cookieConsentInterop, eventHandler, runtimeContext, logger)
         {
         }
 

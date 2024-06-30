@@ -10,9 +10,6 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Broadcasting
 {
     public class CookieConsentEventHandler
     {
-        protected const string JsInteropRegisterReceiver = "CookieConsent.RegisterBroadcastReceiver";
-        protected const string JsInteropBroadcast = "CookieConsent.BroadcastEvent";
-
         protected const string JsBroadcastEventCookiePreferencesChanged =
             nameof(JsBroadcastEventCookiePreferencesChanged);
 
@@ -26,20 +23,13 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Broadcasting
             nameof(JsBroadcastEventScriptLoaded);
 
         protected readonly ICookieConsentInterop _cookieConsentInterop;
-        protected readonly Lazy<Task<IJSObjectReference>> _importModule;
-        protected readonly IJSRuntime _jsRuntime;
         protected readonly CookieConsentRuntimeContext _runtimeContext;
 
         [DynamicDependency(nameof(OnReceivedBroadcastAsync))]
-        public CookieConsentEventHandler(CookieConsentRuntimeContext runtimeContext, IJSRuntime jsRuntime, ICookieConsentInterop cookieConsentInterop)
+        public CookieConsentEventHandler(CookieConsentRuntimeContext runtimeContext, ICookieConsentInterop cookieConsentInterop)
         {
-            _jsRuntime = jsRuntime;
             _runtimeContext = runtimeContext;
             _cookieConsentInterop = cookieConsentInterop;
-            _importModule = new Lazy<Task<IJSObjectReference>>(() => _jsRuntime.InvokeAsync<IJSObjectReference>(
-                    "import",
-                    new object[] { "./_content/BytexDigital.Blazor.Components.CookieConsent/cookieconsent.js" })
-                .AsTask());
         }
 
         public event EventHandler<CookiePreferences> CookiePreferencesChanged;

@@ -18,30 +18,21 @@ namespace BytexDigital.Blazor.Components.CookieConsent
     {
         protected readonly ICookieConsentInterop _cookieConsentInterop;
         protected readonly CookieConsentEventHandler _eventHandler;
-        protected readonly IJSRuntime _jsRuntime;
         protected readonly ILogger<CookieConsentService> _logger;
         protected readonly IOptions<CookieConsentOptions> _options;
         private readonly CookieConsentRuntimeContext _runtimeContext;
         protected CookiePreferences _cookiePreferencesCached;
-        protected Task<IJSObjectReference> _module;
         protected CookiePreferences _previousCookiePreferences;
-
-        protected Task<IJSObjectReference> Module => _module ??= _jsRuntime.InvokeAsync<IJSObjectReference>(
-                "import",
-                new object[] { "./_content/BytexDigital.Blazor.Components.CookieConsent/cookieconsent.js" })
-            .AsTask();
 
         [DynamicDependency(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicFields, typeof(CookiePreferences))]
         public CookieConsentService(
             IOptions<CookieConsentOptions> options,
-            IJSRuntime jsRuntime,
             ICookieConsentInterop cookieConsentInterop,
             CookieConsentEventHandler eventHandler,
             CookieConsentRuntimeContext runtimeContext,
             ILogger<CookieConsentService> logger)
         {
             _options = options;
-            _jsRuntime = jsRuntime;
             _eventHandler = eventHandler;
             _runtimeContext = runtimeContext;
             _logger = logger;
