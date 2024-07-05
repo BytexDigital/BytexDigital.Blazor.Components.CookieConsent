@@ -1,16 +1,15 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Threading.Tasks;
+using BytexDigital.Blazor.Components.CookieConsent.Interop;
 using Microsoft.JSInterop;
 
 namespace BytexDigital.Blazor.Components.CookieConsent.Broadcasting
 {
     public class CookieConsentEventHandler
     {
-        protected const string JsInteropRegisterReceiver = "CookieConsent.RegisterBroadcastReceiver";
-        protected const string JsInteropBroadcast = "CookieConsent.BroadcastEvent";
-
         protected const string JsBroadcastEventCookiePreferencesChanged =
             nameof(JsBroadcastEventCookiePreferencesChanged);
 
@@ -23,18 +22,14 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Broadcasting
         protected const string JsBroadcastEventScriptLoaded =
             nameof(JsBroadcastEventScriptLoaded);
 
-        protected readonly Lazy<Task<IJSObjectReference>> _importModule;
-        protected readonly IJSRuntime _jsRuntime;
+        protected readonly ICookieConsentInterop _cookieConsentInterop;
         protected readonly CookieConsentRuntimeContext _runtimeContext;
 
-        public CookieConsentEventHandler(CookieConsentRuntimeContext runtimeContext, IJSRuntime jsRuntime)
+        [DynamicDependency(nameof(OnReceivedBroadcastAsync))]
+        public CookieConsentEventHandler(CookieConsentRuntimeContext runtimeContext, ICookieConsentInterop cookieConsentInterop)
         {
-            _jsRuntime = jsRuntime;
             _runtimeContext = runtimeContext;
-            _importModule = new Lazy<Task<IJSObjectReference>>(() => _jsRuntime.InvokeAsync<IJSObjectReference>(
-                    "import",
-                    new object[] { "./_content/BytexDigital.Blazor.Components.CookieConsent/cookieconsent.js" })
-                .AsTask());
+            _cookieConsentInterop = cookieConsentInterop;
         }
 
         public event EventHandler<CookiePreferences> CookiePreferencesChanged;
@@ -46,9 +41,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Broadcasting
         {
             try
             {
-                var module = await _importModule.Value;
-
-                await module.InvokeVoidAsync(JsInteropRegisterReceiver,
+                await _cookieConsentInterop.RegisterBroadcastReceiverAsync(
                     DotNetObjectReference.Create(this),
                     RuntimeInformation.IsOSPlatform(OSPlatform.Create("Browser")));
             }
@@ -116,9 +109,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Broadcasting
 
         protected async Task PublishToJsAsync(string name, string data)
         {
-            var module = await _importModule.Value;
-
-            await module.InvokeVoidAsync(JsInteropBroadcast,
+            await _cookieConsentInterop.BroadcastEventAsync(
                 !RuntimeInformation.IsOSPlatform(OSPlatform.Create("Browser")), // Directed towards WASM?
                 name, // Event name
                 data); // Event data

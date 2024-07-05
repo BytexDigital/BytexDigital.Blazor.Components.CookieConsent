@@ -20,6 +20,11 @@
 		<PackageReleaseNotes>See https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent</PackageReleaseNotes>
 		<LangVersion>10</LangVersion>
 	</PropertyGroup>
+	
+	<PropertyGroup>
+		<IsTrimmable>true</IsTrimmable>
+		<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<None Include="..\LICENSE.md">

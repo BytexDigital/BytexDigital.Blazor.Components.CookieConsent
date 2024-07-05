@@ -4,6 +4,7 @@ using BytexDigital.Blazor.Components.CookieConsent.Broadcasting;
 using System;
 using BytexDigital.Blazor.Components.CookieConsent.Dialogs.Prompt.Default;
 using BytexDigital.Blazor.Components.CookieConsent.Dialogs.Settings.Default;
+using BytexDigital.Blazor.Components.CookieConsent.Interop;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -29,6 +30,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 services.AddScoped<CookieConsentService, CookieConsentServiceProxy>();
             }
 
+            services.AddScoped<ICookieConsentInterop, CookieConsentInterop>();
             services.AddScoped<CookieConsentEventHandler>();
             services.AddScoped<CookieConsentLocalizer>();
 

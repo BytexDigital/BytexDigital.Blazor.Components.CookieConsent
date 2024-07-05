@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BytexDigital.Blazor.Components.CookieConsent.Dialogs.Prompt.Default
 {
@@ -7,6 +8,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Dialogs.Prompt.Default
         /// <summary>
         /// Specifies the component type to use. Do not change unless you know what you are doing.
         /// </summary>
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
         public override Type ComponentType { get; set; } = typeof(CookieConsentDefaultPrompt);
 
         /// <summary>
