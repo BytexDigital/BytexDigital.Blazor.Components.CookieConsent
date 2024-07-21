@@ -74,7 +74,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             ["de"] = "Wir verwenden Cookies",
             ["nl"] = "We gebruiken cookies",
             ["es"] = "Nosotras usamos cookies",
-            ["fr"] = "On utilises des cookies",
+            ["fr"] = "Utilisation des cookies",
             ["it"] = "Usiamo i cookie"
         };
 
@@ -87,7 +87,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             ["de"] = "Diese Webseite verwendet Cookies, um Ihre Erfahrung zu verbessern.",
             ["nl"] = "Deze website maakt gebruik van cookies om uw ervaring te verbeteren.",
             ["es"] = "Este sitio web utiliza cookies para una mejor experiencia.",
-            ["fr"] = "Ce site web utilice des cookies pour améliorer votre visite.",
+            ["fr"] = "Ce site web utilise des cookies pour améliorer votre visite.",
             ["it"] = "Questo sito web utilizza i cookie per migliorare la tua esperienza."
         };
 
@@ -100,7 +100,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             ["de"] = "Alle akzeptieren",
             ["nl"] = "Alles accepteren.",
             ["es"] = "Aceptar todas.",
-            ["fr"] = "Tout accepter.",
+            ["fr"] = "Tout Accepter",
             ["it"] = "Accetta tutto"
         };
 
@@ -114,7 +114,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             ["de"] = "Alles klar!",
             ["nl"] = "Ik begrijp het!",
             ["es"] = "Entiendo!",
-            ["fr"] = "Je comprends!",
+            ["fr"] = "Je comprends.",
             ["it"] = "Ho capito!"
         };
 
@@ -141,7 +141,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
             ["de"] = "Präferenzen ändern",
             ["nl"] = "Voorkeuren wijzigen",
             ["es"] = "Administrar preferencias",
-            ["fr"] = "Gérer les préférences",
+            ["fr"] = "Préférences",
             ["it"] = "Gestisci preferenze"
         };
 
