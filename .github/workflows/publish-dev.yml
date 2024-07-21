@@ -30,8 +30,10 @@ jobs:
         working-directory: ./BytexDigital.Blazor.Components.CookieConsent
         run: npm run build
 
-      - name: Build project
-        run: dotnet build -c Release -p:VersionSuffix=development.$(date +%s)
+      # - name: Build project
+      #   run: dotnet build -c Release -p:VersionSuffix=development.$(date +%s)
+      - name: Build project with alternative assembly name
+        run: dotnet build -c Release -p:VersionSuffix=preview.$(date +%s) -p:OverwriteAssemblyName=CC
 
       - name: Push project
         run: dotnet nuget push **/*.nupkg -s ${{secrets.GH_NUGET_FEED_URL}} -k ${{secrets.GITHUB_TOKEN}} --skip-duplicate
