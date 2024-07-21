@@ -11,8 +11,8 @@
 
 <br />
 
-![NuGet Version](https://img.shields.io/nuget/v/BytexDigital.Blazor.Components.CookieConsent?style=flat-square&labelColor=%23172554&color=%233b82f6)
-![NuGet Version](https://img.shields.io/nuget/vpre/BytexDigital.Blazor.Components.CookieConsent?style=flat-square&labelColor=%23022c22&color=%23059669)
+![NuGet Version](https://img.shields.io/nuget/v/BytexDigital.Blazor.Components.CookieConsent?style=flat-square&labelColor=%23172554&color=%233b82f6&label=Stable)
+![NuGet Version](https://img.shields.io/nuget/vpre/BytexDigital.Blazor.Components.CookieConsent?style=flat-square&labelColor=%23022c22&color=%23059669&label=Preview)
 
 ## How to install
 
