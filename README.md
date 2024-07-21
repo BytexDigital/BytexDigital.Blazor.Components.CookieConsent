@@ -11,6 +11,12 @@
 
 <br />
 
+<p align="center">
+![NuGet Version](https://img.shields.io/nuget/v/BytexDigital.Blazor.Components.CookieConsent?style=flat-square&labelColor=%231a2e05&color=%2384cc16)
+![NuGet Version](https://img.shields.io/nuget/vpre/BytexDigital.Blazor.Components.CookieConsent?style=flat-square&labelColor=%23022c22&color=%2310b981)
+</p>
+
+
 ## How to install
 
 <br />
