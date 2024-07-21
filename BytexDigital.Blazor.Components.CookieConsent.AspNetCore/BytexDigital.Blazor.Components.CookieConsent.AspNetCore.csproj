@@ -15,6 +15,7 @@
         <Company>Bytex Digital UG (haftungsbeschränkt)</Company>
         <IsPublishable>True</IsPublishable>
         <SignAssembly>False</SignAssembly>
+        <PackageId>BytexDigital.Blazor.Components.CookieConsent.AspNetCore</PackageId>
         <PackageProjectUrl>https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent</PackageProjectUrl>
         <PackageIcon>logo_squared_128.png</PackageIcon>
         <PackageVersion>1.2.0</PackageVersion>

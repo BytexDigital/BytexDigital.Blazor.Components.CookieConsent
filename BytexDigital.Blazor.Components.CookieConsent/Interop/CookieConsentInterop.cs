@@ -20,7 +20,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Interop
 
         private Task<IJSObjectReference> Module => _module ??= _jsRuntime.InvokeAsync<IJSObjectReference>(
                 "import",
-                new object[] { "./_content/BytexDigital.Blazor.Components.CookieConsent/cookieconsent.js" })
+                new object[] { "./_content/BytexDigital.Blazor.Components.CC/cookieconsent.js" })
             .AsTask();
 
         public CookieConsentInterop(
