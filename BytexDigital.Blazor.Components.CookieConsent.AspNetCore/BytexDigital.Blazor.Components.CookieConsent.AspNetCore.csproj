@@ -21,7 +21,7 @@
         <PackageVersion Condition=" '$(VersionSuffix)' != '' ">$(PackageVersion)-$(VersionSuffix)</PackageVersion>
         <PackageReleaseNotes>See https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent</PackageReleaseNotes>
         <LangVersion>10</LangVersion>
-        <AssemblyName>BytexDigital.Blazor.Components.CC.AspNetCore</AssemblyName>
+        <AssemblyName Condition=" '$(OverwriteAssemblyName)' != '' ">BytexDigital.Blazor.Components.$(OverwriteAssemblyName).AspNetCore</AssemblyName>
     </PropertyGroup>
 	
     <PropertyGroup>
