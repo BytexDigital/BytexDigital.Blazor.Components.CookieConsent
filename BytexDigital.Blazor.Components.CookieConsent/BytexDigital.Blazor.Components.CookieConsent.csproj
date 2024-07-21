@@ -19,6 +19,7 @@
 		<PackageVersion Condition=" '$(VersionSuffix)' != '' ">$(PackageVersion)-$(VersionSuffix)</PackageVersion>
 		<PackageReleaseNotes>See https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent</PackageReleaseNotes>
 		<LangVersion>10</LangVersion>
+		<AssemblyName>BytexDigital.Blazor.Components.CC</AssemblyName>
 	</PropertyGroup>
 	
 	<PropertyGroup>
