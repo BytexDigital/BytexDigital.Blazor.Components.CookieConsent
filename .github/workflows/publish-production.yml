@@ -29,6 +29,13 @@ jobs:
       - name: Build CSS
         working-directory: ./BytexDigital.Blazor.Components.CookieConsent
         run: npm run build
+        
+      - name: Remove NPM artifacts
+        working-directory: ./BytexDigital.Blazor.Components.CookieConsent
+        run: |
+          rm -fr node_modules
+          rm -f package.json
+          rm -f package-lock.json
 
       # - name: Build project
       #   run: dotnet build -c Release
