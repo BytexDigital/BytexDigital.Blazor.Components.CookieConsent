@@ -21,7 +21,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
                 return false;
             }
 
-            if (AllowedServices.Intersect(other.AllowedServices).Count() != AllowedCategories.Length)
+            if (AllowedServices.Intersect(other.AllowedServices).Count() != AllowedServices.Length)
             {
                 return false;
             }
