@@ -135,7 +135,9 @@
 
             if (toWasm && window.CookieConsentContext.Broadcasting.WasmContext !== null) {
                 window.CookieConsentContext.Broadcasting.WasmContext.invokeMethodAsync("OnReceivedBroadcastAsync", eventName, eventDataJson);
-            } else if (window.CookieConsentContext.Broadcasting.ServerContext !== null) {
+            }
+            
+            if (!toWasm && window.CookieConsentContext.Broadcasting.ServerContext !== null) {
                 window.CookieConsentContext.Broadcasting.ServerContext.invokeMethodAsync("OnReceivedBroadcastAsync", eventName, eventDataJson);
             }
         },
