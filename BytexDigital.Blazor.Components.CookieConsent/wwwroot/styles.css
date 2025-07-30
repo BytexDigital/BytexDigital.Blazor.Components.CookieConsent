@@ -419,32 +419,73 @@
     /* Font used */
     --cc-font-family: Inter var, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
-    /* Accent color for primary button */
+    /* Light theme colors (default) */
     --cc-color-accent: theme(colors.slate.800);
-
-    /* Accent color for primary button when hovered */
     --cc-color-accent-dark: theme(colors.slate.900);
-
-    /* Color for secondary button */
     --cc-color-secondary: theme(colors.gray.200);
-
-    /* Color for secondary button when hovered */
     --cc-color-secondary-dark: theme(colors.gray.300);
-
-    /* Color for links ("Display policy" links within preferences dialogue) */
     --cc-color-link: theme(colors.slate.400);
-    
-    /* Color for links when hovered */
     --cc-color-link-highlight: theme(colors.blue.500);
-
-    /* Default color for text */
     --cc-color-text: theme(colors.slate.700);
-
-    /* Background color for active category switch */
     --cc-color-switch-active: theme(colors.slate.800);
-
-    /* (Transparent) Color for background when any modal is opened */
     --cc-color-modal-background: theme(colors.gray.800 / 75%);
+    --cc-color-background: theme(colors.white);
+    --cc-color-border: theme(colors.gray.100);
+    --cc-color-close-button-bg: theme(colors.gray.100);
+    --cc-color-close-button-bg-hover: theme(colors.gray.200);
+  }
+
+  /* Automatic dark mode based on system preference */
+  @media (prefers-color-scheme: dark) {
+    .cc-isolation-container:not(.cc-theme-light) {
+      --cc-color-accent: theme(colors.blue.600);
+      --cc-color-accent-dark: theme(colors.blue.700);
+      --cc-color-secondary: theme(colors.gray.700);
+      --cc-color-secondary-dark: theme(colors.gray.600);
+      --cc-color-link: theme(colors.gray.400);
+      --cc-color-link-highlight: theme(colors.blue.400);
+      --cc-color-text: theme(colors.gray.100);
+      --cc-color-switch-active: theme(colors.blue.600);
+      --cc-color-modal-background: theme(colors.black / 80%);
+      --cc-color-background: theme(colors.gray.800);
+      --cc-color-border: theme(colors.gray.600);
+      --cc-color-close-button-bg: theme(colors.gray.700);
+      --cc-color-close-button-bg-hover: theme(colors.gray.600);
+    }
+  }
+
+  /* Force dark theme */
+  .cc-isolation-container.cc-theme-dark {
+    --cc-color-accent: theme(colors.blue.600);
+    --cc-color-accent-dark: theme(colors.blue.700);
+    --cc-color-secondary: theme(colors.gray.700);
+    --cc-color-secondary-dark: theme(colors.gray.600);
+    --cc-color-link: theme(colors.gray.400);
+    --cc-color-link-highlight: theme(colors.blue.400);
+    --cc-color-text: theme(colors.gray.100);
+    --cc-color-switch-active: theme(colors.blue.600);
+    --cc-color-modal-background: theme(colors.black / 80%);
+    --cc-color-background: theme(colors.gray.800);
+    --cc-color-border: theme(colors.gray.600);
+    --cc-color-close-button-bg: theme(colors.gray.700);
+    --cc-color-close-button-bg-hover: theme(colors.gray.600);
+  }
+
+  /* Force light theme */
+  .cc-isolation-container.cc-theme-light {
+    --cc-color-accent: theme(colors.slate.800);
+    --cc-color-accent-dark: theme(colors.slate.900);
+    --cc-color-secondary: theme(colors.gray.200);
+    --cc-color-secondary-dark: theme(colors.gray.300);
+    --cc-color-link: theme(colors.slate.400);
+    --cc-color-link-highlight: theme(colors.blue.500);
+    --cc-color-text: theme(colors.slate.700);
+    --cc-color-switch-active: theme(colors.slate.800);
+    --cc-color-modal-background: theme(colors.gray.800 / 75%);
+    --cc-color-background: theme(colors.white);
+    --cc-color-border: theme(colors.gray.100);
+    --cc-color-close-button-bg: theme(colors.gray.100);
+    --cc-color-close-button-bg-hover: theme(colors.gray.200);
   }
 
   .cc-isolation-container .cc-font  {

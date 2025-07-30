@@ -3,9 +3,9 @@
 @using Microsoft.Extensions.Options
 @inherits CookieConsentPromptComponentBase
 
-<div class="cc-isolation-container">
+<div class="cc-isolation-container @GetThemeClass()">
     <div class="cc-font cc-fixed cc-pointer-events-none cc-text-brand-text cc-w-full cc-mh-48 cc-flex @ConsentModalYPositionCss @ConsentModalXPositionCss" style="z-index: 1000;">
-        <div class="cc-bg-white cc-pointer-events-auto cc-filter cc-drop-shadow-2xl cc-animate-fade-move-in @(!IsConsentModalLayoutBar ? "cc-w-full lg:cc-w-max lg:cc-rounded-md lg:cc-m-5" : "cc-w-full") cc-flex cc-justify-center">
+        <div class="cc-bg-brand-background cc-pointer-events-auto cc-filter cc-drop-shadow-2xl cc-animate-fade-move-in @(!IsConsentModalLayoutBar ? "cc-w-full lg:cc-w-max lg:cc-rounded-md lg:cc-m-5" : "cc-w-full") cc-flex cc-justify-center">
             <div class="@(IsConsentModalLayoutBar ? "cc-max-w-4xl" : "cc-max-w-3xl") cc-px-7 cc-py-5">
                 <div class="cc-flex cc-flex-col lg:cc-flex-row cc-gap-6">
                     <div class="cc-flex cc-flex-col cc-justify-between">
@@ -121,6 +121,17 @@
     private bool OnlyRequiredCategoriesExist => Options.Value.Categories.All(x => x.IsRequired);
     private bool IsConsentModalLayoutBar => VariantOptions.Layout == ConsentModalLayout.Bar;
     private string CultureCode => CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+
+    private string GetThemeClass()
+    {
+        return Options.Value.Theme switch
+        {
+            ThemeOptions.Light => "cc-theme-light",
+            ThemeOptions.Dark => "cc-theme-dark",
+            ThemeOptions.Automatic => "", // Uses automatic detection via CSS media queries
+            _ => ""
+        };
+    }
 
     protected override void OnInitialized()
     {
