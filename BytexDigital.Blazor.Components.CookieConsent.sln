@@ -9,9 +9,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BytexDigital.Blazor.Components.CookieConsent.AspNetCore", "BytexDigital.Blazor.Components.CookieConsent.AspNetCore\BytexDigital.Blazor.Components.CookieConsent.AspNetCore.csproj", "{CE80B2A2-9800-4F2D-8DE7-1E50F78112A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BytexDigital.Blazor.Components.CookieConsent.SampleApp", "BytexDigital.Blazor.Components.CookieConsent.SampleApp\BytexDigital.Blazor.Components.CookieConsent.SampleApp\BytexDigital.Blazor.Components.CookieConsent.SampleApp.csproj", "{286BD141-4076-4E74-B9D6-BC55D0A3E20B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BytexDigital.Blazor.Components.CookieConsent.SampleApp", "sample-app\BytexDigital.Blazor.Components.CookieConsent.SampleApp\BytexDigital.Blazor.Components.CookieConsent.SampleApp.csproj", "{202CE291-15D7-9A2B-D726-8A32DBAD045B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BytexDigital.Blazor.Components.CookieConsent.SampleApp.Client", "BytexDigital.Blazor.Components.CookieConsent.SampleApp\BytexDigital.Blazor.Components.CookieConsent.SampleApp.Client\BytexDigital.Blazor.Components.CookieConsent.SampleApp.Client.csproj", "{1851C0F4-82E5-4A16-B4FE-C4AE7590EB2E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BytexDigital.Blazor.Components.CookieConsent.SampleApp.Client", "sample-app\BytexDigital.Blazor.Components.CookieConsent.SampleApp.Client\BytexDigital.Blazor.Components.CookieConsent.SampleApp.Client.csproj", "{8EBC2A38-B1F5-2960-468E-D9CCB6302DD0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{347A5F51-19EF-451F-B623-0E809EFF1CEE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SampleApp", "SampleApp", "{E38B169B-0CB5-4111-BFD5-9CAF99946346}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,19 +31,25 @@ Global
 		{CE80B2A2-9800-4F2D-8DE7-1E50F78112A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE80B2A2-9800-4F2D-8DE7-1E50F78112A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE80B2A2-9800-4F2D-8DE7-1E50F78112A5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{286BD141-4076-4E74-B9D6-BC55D0A3E20B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{286BD141-4076-4E74-B9D6-BC55D0A3E20B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{286BD141-4076-4E74-B9D6-BC55D0A3E20B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{286BD141-4076-4E74-B9D6-BC55D0A3E20B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1851C0F4-82E5-4A16-B4FE-C4AE7590EB2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1851C0F4-82E5-4A16-B4FE-C4AE7590EB2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1851C0F4-82E5-4A16-B4FE-C4AE7590EB2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1851C0F4-82E5-4A16-B4FE-C4AE7590EB2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{202CE291-15D7-9A2B-D726-8A32DBAD045B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{202CE291-15D7-9A2B-D726-8A32DBAD045B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{202CE291-15D7-9A2B-D726-8A32DBAD045B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{202CE291-15D7-9A2B-D726-8A32DBAD045B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EBC2A38-B1F5-2960-468E-D9CCB6302DD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EBC2A38-B1F5-2960-468E-D9CCB6302DD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EBC2A38-B1F5-2960-468E-D9CCB6302DD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EBC2A38-B1F5-2960-468E-D9CCB6302DD0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2D83D7C7-FCE5-4A78-81A3-7822BB9C363F}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E371BFFA-DD71-4D18-95E3-FC825EC498A4} = {347A5F51-19EF-451F-B623-0E809EFF1CEE}
+		{CE80B2A2-9800-4F2D-8DE7-1E50F78112A5} = {347A5F51-19EF-451F-B623-0E809EFF1CEE}
+		{202CE291-15D7-9A2B-D726-8A32DBAD045B} = {E38B169B-0CB5-4111-BFD5-9CAF99946346}
+		{8EBC2A38-B1F5-2960-468E-D9CCB6302DD0} = {E38B169B-0CB5-4111-BFD5-9CAF99946346}
 	EndGlobalSection
 EndGlobal

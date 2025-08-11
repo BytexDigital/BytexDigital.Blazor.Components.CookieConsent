@@ -58,7 +58,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
 
         private string GetThemeClass()
         {
-            return Options.Value.Theme switch
+            return (Options.Value.CheckOptions.Theme ?? Options.Value.Theme) switch
             {
                 ThemeOptions.Light => "cc-theme-light",
                 ThemeOptions.Dark => "cc-theme-dark",
@@ -130,7 +130,7 @@ namespace BytexDigital.Blazor.Components.CookieConsent
 
         private async Task EvaluateStateAsync(CookiePreferences preferences = null)
         {
-            // If the user hasn't given permission the the newest cookie policy, we should not display anything.
+            // If the user hasn't given permission to the newest cookie policy, we should not display anything.
             if (!await CookieConsentService.IsCurrentRevisionAcceptedAsync())
             {
                 IsAllowed = false;

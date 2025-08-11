@@ -1,4 +1,5 @@
 ﻿@using System.Globalization
+@using System.Runtime.InteropServices
 @using BytexDigital.Blazor.Components.CookieConsent.Internal
 @using Microsoft.Extensions.Options
 @inherits CookieConsentPromptComponentBase
@@ -124,7 +125,9 @@
 
     private string GetThemeClass()
     {
-        return Options.Value.Theme switch
+        var variantSettings = Options.Value.ConsentPromptVariant as CookieConsentDefaultPromptVariant;
+            
+        return (variantSettings?.Theme ?? Options.Value.Theme) switch
         {
             ThemeOptions.Light => "cc-theme-light",
             ThemeOptions.Dark => "cc-theme-dark",

@@ -1,0 +1,12 @@
+﻿<Router AppAssembly="typeof(Program).Assembly" AdditionalAssemblies="new[] { typeof(Client._Imports).Assembly }">
+    <Found Context="routeData">
+        <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
+        <FocusOnNavigate RouteData="routeData" Selector="h1" />
+    </Found>
+</Router>
+
+<!-- Add this -->
+<BytexDigital.Blazor.Components.CookieConsent.CookieConsentHandler @rendermode="@InteractiveWebAssembly" />
+
+<!-- Add this additionally, if you use interactive Blazor Server components aswell and wish to interact with the library on the server too. -->
+<BytexDigital.Blazor.Components.CookieConsent.CookieConsentInitializer @rendermode="@InteractiveWebAssembly" />

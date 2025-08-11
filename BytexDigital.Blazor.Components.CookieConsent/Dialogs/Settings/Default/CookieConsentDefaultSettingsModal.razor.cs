@@ -22,7 +22,9 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Dialogs.Settings.Default
 
         private string GetThemeClass()
         {
-            return Options.Value.Theme switch
+            var variantSettings = Options.Value.SettingsModalVariant as CookieConsentDefaultSettingsModalVariant;
+            
+            return (variantSettings?.Theme ?? Options.Value.Theme) switch
             {
                 ThemeOptions.Light => "cc-theme-light",
                 ThemeOptions.Dark => "cc-theme-dark",
