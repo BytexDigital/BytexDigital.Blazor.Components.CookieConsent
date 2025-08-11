@@ -20,6 +20,17 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Dialogs.Settings.Default
 
         private string CultureCode => CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
 
+        private string GetThemeClass()
+        {
+            return Options.Value.Theme switch
+            {
+                ThemeOptions.Light => "cc-theme-light",
+                ThemeOptions.Dark => "cc-theme-dark",
+                ThemeOptions.Automatic => "", // Uses automatic detection via CSS media queries
+                _ => ""
+            };
+        }
+
         public List<string> AcceptedCategories { get; set; } = new();
         public List<string> AcceptedServices { get; set; } = new();
 

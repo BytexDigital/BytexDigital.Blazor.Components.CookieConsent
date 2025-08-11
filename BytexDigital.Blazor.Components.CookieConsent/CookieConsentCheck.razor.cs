@@ -56,6 +56,17 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         /// </summary>
         public bool IsAllowed { get; private set; }
 
+        private string GetThemeClass()
+        {
+            return Options.Value.Theme switch
+            {
+                ThemeOptions.Light => "cc-theme-light",
+                ThemeOptions.Dark => "cc-theme-dark",
+                ThemeOptions.Automatic => "", // Uses automatic detection via CSS media queries
+                _ => ""
+            };
+        }
+
         public void Dispose()
         {
             CookieConsentService.CookiePreferencesChanged -= CookieConsentService_CookiePreferencesChanged;

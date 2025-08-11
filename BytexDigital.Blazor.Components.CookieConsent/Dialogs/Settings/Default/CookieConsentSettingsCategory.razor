@@ -1,8 +1,8 @@
 ﻿@using Microsoft.Extensions.Options
 @namespace BytexDigital.Blazor.Components.CookieConsent.Dialogs.Settings.Default
 
-<div class="cc-rounded-md cc-bg-gray-100 cc-text-brand-text" @key="@($"category_{Category.Identifier}")">
-    <div class="cc-w-full cc-rounded-md hover:cc-bg-gray-200">
+<div class="cc-rounded-md cc-bg-brand-close-button-bg cc-text-brand-text" @key="@($"category_{Category.Identifier}")">
+    <div class="cc-w-full cc-rounded-md hover:cc-bg-brand-close-button-bg-hover">
         <div class="cc-flex cc-items-center cc-justify-between cc-items-center">
             <div class="cc-grow cc-flex cc-p-3 cc-cursor-pointer" @onclick="() => Collapsed = !Collapsed">
                 @if (Collapsed)
