@@ -23,6 +23,12 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         public int Revision { get; set; } = 1;
 
         /// <summary>
+        ///     Theme configuration for the cookie consent UI. Supports automatic detection of user's system preference,
+        ///     or manual selection of light or dark theme.
+        /// </summary>
+        public ThemeOptions Theme { get; set; } = ThemeOptions.Automatic;
+
+        /// <summary>
         ///     Automatically runs the consent check once the CookieConsentHandler component was rendered. This will also activate
         ///     any scripts inside the DOM. If user consent is required, the consent modal will appear.
         ///     <para>
@@ -377,5 +383,12 @@ namespace BytexDigital.Blazor.Components.CookieConsent
     {
         Bar,
         Cloud
+    }
+
+    public enum ThemeOptions
+    {
+        Automatic,
+        Light,
+        Dark
     }
 }

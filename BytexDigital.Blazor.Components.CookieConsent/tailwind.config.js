@@ -54,6 +54,10 @@ module.exports = {
                 'brand-text': "var(--cc-color-text)",
                 'brand-switch-active': "var(--cc-color-switch-active)",
                 'brand-modal-background': "var(--cc-color-modal-background)",
+                'brand-background': "var(--cc-color-background)",
+                'brand-border': "var(--cc-color-border)",
+                'brand-close-button-bg': "var(--cc-color-close-button-bg)",
+                'brand-close-button-bg-hover': "var(--cc-color-close-button-bg-hover)",
             },
             keyframes: {
                 'fade-out': {

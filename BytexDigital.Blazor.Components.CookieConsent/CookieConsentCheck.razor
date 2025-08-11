@@ -10,8 +10,8 @@ else
     }
     else
     {
-        <div class="cc-isolation-container">
-            <div class="cc-font-sans cc-font-overwrite cc-w-full cc-h-full cc-bg-gray-100 cc-flex cc-flex-col cc-items-center cc-justify-center cc-p-6">
+        <div class="cc-isolation-container @GetThemeClass()">
+            <div class="cc-font-sans cc-font-overwrite cc-w-full cc-h-full cc-bg-brand-close-button-bg cc-flex cc-flex-col cc-items-center cc-justify-center cc-p-6 cc-text-brand-text">
                 <p class="cc-text-xs cc-text-center">
                     @Localizer.GetLocalization(Options.Value.CheckOptions.Text)
                 </p>
@@ -21,7 +21,7 @@ else
                 </p>
 
                 <div class="cc-mt-5 cc-flex cc-flex-wrap cc-justify-center cc-gap-5">
-                    <button @onclick="AcceptRequiredAsync" class="cc-block cc-p-3 cc-px-5  cc-rounded-md cc-bg-slate-800 cc-text-white cc-text-sm cc-font-semibold hover:cc-bg-slate-900 cc-transition-all cc-duration-100 cc-ease-in-out">
+                    <button @onclick="AcceptRequiredAsync" class="cc-block cc-p-3 cc-px-5  cc-rounded-md cc-bg-brand-accent cc-text-white cc-text-sm cc-font-semibold hover:cc-bg-brand-accent-dark cc-transition-all cc-duration-100 cc-ease-in-out">
                         @Localizer.GetLocalization(Options.Value.CheckOptions.AcceptText)
                     </button>
 
