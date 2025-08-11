@@ -18,7 +18,7 @@
         <PackageId>BytexDigital.Blazor.Components.CookieConsent.AspNetCore</PackageId>
         <PackageProjectUrl>https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent</PackageProjectUrl>
         <PackageIcon>logo_squared_128.png</PackageIcon>
-        <PackageVersion>1.2.2</PackageVersion>
+        <PackageVersion>1.3.0</PackageVersion>
         <PackageVersion Condition=" '$(VersionSuffix)' != '' ">$(PackageVersion)-$(VersionSuffix)</PackageVersion>
         <PackageReleaseNotes>See https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent</PackageReleaseNotes>
         <LangVersion>10</LangVersion>
