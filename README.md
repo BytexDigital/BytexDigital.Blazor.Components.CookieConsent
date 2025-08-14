@@ -78,10 +78,10 @@ First you will have to determine which Blazor implementation should display the 
 </Router>
 
 <!-- Add this -->
-<BytexDigital.Blazor.Components.CookieConsent.CookieConsentHandler @rendermode="@RenderMode.WebAssembly" />
+<BytexDigital.Blazor.Components.CookieConsent.CookieConsentHandler @rendermode="@RenderMode.InteractiveWebAssembly" />
 
 <!-- Add this additionally, if you use interactive Blazor Server components aswell and wish to interact with the library on the server too. -->
-<BytexDigital.Blazor.Components.CookieConsent.CookieConsentInitializer @rendermode="@RenderMode.Server" />
+<BytexDigital.Blazor.Components.CookieConsent.CookieConsentInitializer @rendermode="@RenderMode.InteractiveServer" />
 ```
 
 ##### 🅱️ If you choose to render it with Blazor server, add the following instead:
@@ -92,10 +92,10 @@ First you will have to determine which Blazor implementation should display the 
 </Router>
 
 <!-- Add this -->
-<BytexDigital.Blazor.Components.CookieConsent.CookieConsentHandler @rendermode="@RenderMode.Server" />
+<BytexDigital.Blazor.Components.CookieConsent.CookieConsentHandler @rendermode="@RenderMode.InteractiveServer" />
 
 <!-- Add this additionally, if you use WebAssembly components aswell and wish to interact with the library on the client too. -->
-<BytexDigital.Blazor.Components.CookieConsent.CookieConsentInitializer @rendermode="@RenderMode.WebAssembly" />
+<BytexDigital.Blazor.Components.CookieConsent.CookieConsentInitializer @rendermode="@RenderMode.InteractiveWebAssembly" />
 ```
 
 <br />
@@ -261,7 +261,7 @@ Install-Package BytexDigital.Blazor.Components.CookieConsent
 ### Requirements
 
 - .NET >= 8.0
-- You're using Blazor Web App and your `<Router>` is dynamically rendered within a Blazor Server or WASM component (This means your `<Router>` is inside a component that is fulled rendered either with Blazor Server or Blazor WASM (That is the case if there is a  `[RenderModeWebAssembly]` or `[RenderModeServer]` attribute on the component containing the router or if the component containing the router is rendered with a `@rendermode="@RenderMode.WebAssembly"` or `@rendermode="@RenderMode.Server"` attribute))
+- You're using Blazor Web App and your `<Router>` is dynamically rendered within a Blazor Server or WASM component (This means your `<Router>` is inside a component that is fulled rendered either with Blazor Server or Blazor WASM (That is the case if there is a  `[RenderModeWebAssembly]` or `[RenderModeServer]` attribute on the component containing the router or if the component containing the router is rendered with a `@rendermode="@RenderMode.InteractiveWebAssembly"` or `@rendermode="@RenderMode.InteractiveServer"` attribute))
 
 <br />
 
