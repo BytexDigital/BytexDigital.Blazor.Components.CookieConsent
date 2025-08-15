@@ -1,0 +1,9 @@
+{
+  "solution": {
+    "path": "BytexDigital.Blazor.Components.CookieConsent.sln",
+    "projects": [
+      "BytexDigital.Blazor.Components.CookieConsent\\BytexDigital.Blazor.Components.CookieConsent.csproj",
+      "BytexDigital.Blazor.Components.CookieConsent.AspNetCore\\BytexDigital.Blazor.Components.CookieConsent.AspNetCore.csproj"
+    ]
+  }
+}
