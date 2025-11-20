@@ -923,6 +923,9 @@ async Task RenderMapAsync(bool isShown)
 
 # Changelog
 
+### 1.3.0
+- Adds dark mode support for the default provided UI components (https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent/pull/42)
+
 ### 1.2.0
 
 - Adds event `CookieConsentService.ScriptLoaded` to execute code when script tags have been loaded dynamically by the cookie consent manager
