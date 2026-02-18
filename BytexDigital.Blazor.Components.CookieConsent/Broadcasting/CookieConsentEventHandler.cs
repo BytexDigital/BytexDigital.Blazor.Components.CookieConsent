@@ -55,8 +55,15 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Broadcasting
         {
             _ = Task.Run(() => CookiePreferencesChanged?.Invoke(this, cookiePreferences));
 
-            await PublishToJsAsync(JsBroadcastEventCookiePreferencesChanged,
-                JsonSerializer.Serialize(cookiePreferences));
+            try
+            {
+                await PublishToJsAsync(JsBroadcastEventCookiePreferencesChanged,
+                    JsonSerializer.Serialize(cookiePreferences));
+            }
+            catch (JSException)
+            {
+                // Ignore as this is most likely due to unavailability of JS (maybe the user disabled it).
+            }
         }
 
         public async Task BroadcastShowConsentModalRequestedAsync()
@@ -110,7 +117,8 @@ namespace BytexDigital.Blazor.Components.CookieConsent.Broadcasting
         protected async Task PublishToJsAsync(string name, string data)
         {
             await _cookieConsentInterop.BroadcastEventAsync(
-                !RuntimeInformation.IsOSPlatform(OSPlatform.Create("Browser")), // Directed towards WASM?
+                // Directed towards WASM or the server?
+                !RuntimeInformation.IsOSPlatform(OSPlatform.Create("Browser")),
                 name, // Event name
                 data); // Event data
         }
