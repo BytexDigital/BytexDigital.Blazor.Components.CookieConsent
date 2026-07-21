@@ -24,7 +24,7 @@ jobs:
 
       - name: Restore NPM packages
         working-directory: ./BytexDigital.Blazor.Components.CookieConsent
-        run: npm install --only=dev
+        run: npm ci
 
       - name: Build CSS
         working-directory: ./BytexDigital.Blazor.Components.CookieConsent
