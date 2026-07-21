@@ -21,17 +21,24 @@ namespace BytexDigital.Blazor.Components.CookieConsent
         
         public bool Equals(CookiePreferences other)
         {
+            if (other == null)
+            {
+                return false;
+            }
+
             if (AcceptedRevision != other.AcceptedRevision)
             {
                 return false;
             }
 
-            if (AllowedCategories.Intersect(other.AllowedCategories).Count() != AllowedCategories.Length)
+            if (AllowedCategories?.Length != other.AllowedCategories?.Length ||
+                AllowedCategories.Intersect(other.AllowedCategories).Count() != AllowedCategories.Length)
             {
                 return false;
             }
 
-            if (AllowedServices.Intersect(other.AllowedServices).Count() != AllowedServices.Length)
+            if (AllowedServices?.Length != other.AllowedServices?.Length ||
+                AllowedServices.Intersect(other.AllowedServices).Count() != AllowedServices.Length)
             {
                 return false;
             }
