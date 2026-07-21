@@ -1,7 +1,5 @@
 /* Tailwind CSS v4 with cc: prefix, no preflight. */
-@layer theme, base, components, utilities;
-@import "tailwindcss/theme.css" layer(theme) prefix(cc);
-@import "tailwindcss/utilities.css" layer(utilities) prefix(cc);
+@import "tailwindcss" prefix(cc);
 
 @theme {
   --font-family-sans: "Inter var", ui-sans-serif, system-ui, -apple-system,
