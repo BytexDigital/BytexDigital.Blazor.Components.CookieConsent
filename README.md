@@ -923,6 +923,10 @@ async Task RenderMapAsync(bool isShown)
 
 # Changelog
 
+### 1.3.1
+- Switched from Tailwind CSS v3 to v4, including updated CSS variable system and build tooling (`@tailwindcss/cli`)
+- Fixed `CookiePreferences.Equals` incorrectly returning `true` when `AllowedServices` or `AllowedCategories` arrays differ between objects
+
 ### 1.3.0
 - Adds dark mode support for the default provided UI components (https://github.com/BytexDigital/BytexDigital.Blazor.Components.CookieConsent/pull/42)
 
