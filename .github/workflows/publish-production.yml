@@ -6,8 +6,6 @@ jobs:
   publish:
     name: Publish
     runs-on: ubuntu-latest
-    env:
-      NODE_ENV: production
     steps:
       - name: Setup dotnet tools
         uses: actions/setup-dotnet@v1
