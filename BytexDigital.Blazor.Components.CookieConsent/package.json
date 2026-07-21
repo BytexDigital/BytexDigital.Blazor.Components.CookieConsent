@@ -2,17 +2,15 @@
   "name": "bytexdigital.blazor.components.cookieconsent",
   "version": "1.0.0",
   "description": "",
-  "main": "postcss.config.js",
+  "private": true,
   "devDependencies": {
-    "@tailwindcss/forms": "^0.3.4",
-    "@tailwindcss/typography": "^0.4.1",
-    "npm-run-all": "^4.1.5",
-    "tailwindcss": "^3.0.2"
+    "@tailwindcss/cli": "^4.0.0",
+    "tailwindcss": "^4.0.0"
   },
   "scripts": {
-    "all": "npm-run-all --parallel build",
-    "dev": "npx tailwindcss -i wwwroot/styles.css -o wwwroot/styles.min.css --watch",
-    "build": "npx tailwindcss -i wwwroot/styles.css -o wwwroot/styles.temp.css && node postprocess-css.js wwwroot/styles.temp.css && npx tailwindcss -i wwwroot/styles.temp.css -o wwwroot/styles.min.css --minify && node -e \"require('fs').unlinkSync('wwwroot/styles.temp.css')\""
+    "all": "npm run build",
+    "dev": "npx @tailwindcss/cli -i wwwroot/styles.css -o wwwroot/styles.min.css --watch",
+    "build": "npx @tailwindcss/cli -i wwwroot/styles.css -o wwwroot/styles.min.css --minify"
   },
   "author": "",
   "license": "ISC"
