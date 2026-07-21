@@ -12,7 +12,7 @@
   "scripts": {
     "all": "npm-run-all --parallel build",
     "dev": "npx tailwindcss -i wwwroot/styles.css -o wwwroot/styles.min.css --watch",
-    "build": "npx tailwindcss -i wwwroot/styles.css -o wwwroot/styles.min.css --minify"
+    "build": "npx tailwindcss -i wwwroot/styles.css -o wwwroot/styles.temp.css && node postprocess-css.js wwwroot/styles.temp.css && npx tailwindcss -i wwwroot/styles.temp.css -o wwwroot/styles.min.css --minify && node -e \"require('fs').unlinkSync('wwwroot/styles.temp.css')\""
   },
   "author": "",
   "license": "ISC"

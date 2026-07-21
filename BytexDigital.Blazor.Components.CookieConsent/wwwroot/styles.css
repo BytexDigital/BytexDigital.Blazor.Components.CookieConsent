@@ -1,15 +1,8 @@
-﻿@tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  .cc-isolation-container,
-  .cc-isolation-container::before,
-  .cc-isolation-container::after,
-  .cc-isolation-container * .cc-isolation-container *::before,
-  .cc-isolation-container *::after {
-    all: revert;
-  }
 
   /*
   1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
