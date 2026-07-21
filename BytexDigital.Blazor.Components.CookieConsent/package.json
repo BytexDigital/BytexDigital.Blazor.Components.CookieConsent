@@ -9,8 +9,8 @@
   },
   "scripts": {
     "all": "npm run build",
-    "dev": "npx tailwindcss -i wwwroot/styles.css -o wwwroot/styles.min.css --watch",
-    "build": "npx tailwindcss -i wwwroot/styles.css -o wwwroot/styles.min.css --minify"
+    "dev": "tailwindcss -i wwwroot/styles.css -o wwwroot/styles.min.css --watch",
+    "build": "tailwindcss -i wwwroot/styles.css -o wwwroot/styles.min.css --minify"
   },
   "author": "",
   "license": "ISC"
